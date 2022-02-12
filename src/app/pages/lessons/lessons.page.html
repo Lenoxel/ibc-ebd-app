@@ -3,6 +3,11 @@
     <ion-title>
       Lições
     </ion-title>
+    <ion-buttons slot="primary">
+      <ion-button fill="clear" color="danger" (click)="logout()">
+        Sair
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -17,17 +22,16 @@
     <ion-item button lines="full">
       <ion-label>
         <h2>Obediência</h2>
-        <h3>Lição nº 3</h3>
         <p>30/01/2022</p>
         <p>
           <ion-text color="success">Próxima lição</ion-text>
         </p>
       </ion-label>
+      <ion-badge slot="end" color="primary">Lição nº 3</ion-badge>
     </ion-item>
     <ion-item button lines="full">
       <ion-label>
         <h2>Disciplina</h2>
-        <h3>Lição nº 2</h3>
         <p>23/01/2022</p>
         <p>
           <ion-text color="danger">3 chamadas pendentes</ion-text>
@@ -43,11 +47,11 @@
           <ion-label>79</ion-label>
         </ion-chip>
       </ion-label>
+      <ion-badge slot="end" color="primary">Lição nº 2</ion-badge>
     </ion-item>
     <ion-item button lines="full">
       <ion-label>
         <h2>Autoridade espiritual</h2>
-        <h3>Lição nº 1</h3>
         <p>16/01/2022</p>
         <p>
           <ion-text color="danger">1 chamada pendente</ion-text>
@@ -63,6 +67,7 @@
           <ion-label>84</ion-label>
         </ion-chip>
       </ion-label>
+      <ion-badge slot="end" color="primary">Lição nº 1</ion-badge>
     </ion-item>
   </ion-list>
 </ion-content>

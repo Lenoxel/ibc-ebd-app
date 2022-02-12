@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  ebdApiEndpoint: 'https://ibcportal.herokuapp.com/api/ebd',
 };

@@ -1,19 +1,24 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './guards/auth/auth.guard';
+import { AutoLoginGuard } from './guards/auto-login/auto-login.guard';
 
 const routes: Routes = [
   {
+    path: 'tabs',
+    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule),
+    canLoad: [AuthGuard],
+  },
+  {
+    path: 'login',
+    loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule),
+    canLoad: [AutoLoginGuard],
+  },
+  {
     path: '',
-    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
+    redirectTo: '/login',
+    pathMatch: 'full'
   },
-  {
-    path: 'analytics',
-    loadChildren: () => import('./pages/analytics/analytics.module').then( m => m.AnalyticsPageModule)
-  },
-  {
-    path: 'lessons',
-    loadChildren: () => import('./pages/lessons/lessons.module').then( m => m.LessonsPageModule)
-  }
 ];
 @NgModule({
   imports: [

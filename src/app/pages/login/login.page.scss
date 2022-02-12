@@ -1,0 +1,22 @@
+ion-content {
+    --padding-top: 10vh;
+    --padding-start: 5vw;
+    --padding-end: 5vw;
+    --background: var(--ion-color-light);
+}
+ 
+.input-group {
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+ 
+.errors {
+    font-size: 14px;
+    color: #fff;
+    background: var(--ion-color-danger);
+    padding-left: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}

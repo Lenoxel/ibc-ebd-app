@@ -3,6 +3,11 @@
     <ion-title>
       Indicadores
     </ion-title>
+    <ion-buttons slot="primary">
+      <ion-button fill="clear" color="danger" (click)="logout()">
+        Sair
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -12,4 +17,198 @@
       <ion-title size="large">Indicadores</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <ion-grid>
+    <div class="ion-padding">
+      <ion-row>
+        <ion-col size-lg="6">
+          <ion-row>
+            <ion-col size-lg="4">
+              <ion-card>
+                <ion-card-header>
+                  Classes
+                </ion-card-header>
+                <ion-card-content class="ion-text-center" style="font-size: 32px; font-weight: bolder;">
+                  <span>15</span>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+            <ion-col size-lg="4">
+              <ion-card>
+                <ion-card-header>
+                  Lições
+                </ion-card-header>
+                <ion-card-content class="ion-text-center" style="font-size: 32px; font-weight: bolder;">
+                  <span>7</span>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+            <ion-col size-lg="4">
+              <ion-card>
+                <ion-card-header>
+                  Média de Alunos Presentes
+                </ion-card-header>
+                <ion-card-content class="ion-text-center" style="font-size: 32px; font-weight: bolder;">
+                  <span>287</span>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size-lg="12">
+              <ion-card>
+                <ion-card-header>
+                  Acompanhamento de Presença por Domingo
+                </ion-card-header>
+                <ion-card-content>
+                  <canvas #lineCanvasPresences style="position: relative; height:20vh; width:40vw"></canvas>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+
+        <ion-col size-lg="6" class="ion-text-center ion-align-self-center">
+          <ion-row>
+            <ion-col size-lg="6">
+              <ion-card>
+                <ion-card-header>
+                  Alunos Exemplares
+                </ion-card-header>
+                <ion-list>
+                  <ion-item *ngFor="let student of exemplaryStudents" lines="full">
+                    <ion-avatar slot="start">
+                      <img [src]="student?.picture || 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/1024px-User-avatar.svg.png'" />
+                    </ion-avatar>
+                    <ion-label class="ion-text-wrap">
+                      <h2>{{student?.name}}</h2>
+                      <ion-chip *ngFor="let info of student?.infos" color="success" style="height: auto;">
+                        <ion-label color="success" class="ion-text-wrap">{{info}}</ion-label>
+                      </ion-chip>
+                    </ion-label>
+                  </ion-item>
+                </ion-list>
+              </ion-card>
+            </ion-col>
+
+            <ion-col size-lg="6">
+              <ion-card>
+                <ion-card-header>
+                  Alunos Preocupantes
+                </ion-card-header>
+                <ion-list>
+                  <ion-item *ngFor="let student of worryingStudents" lines="full">
+                    <ion-avatar slot="start">
+                      <img [src]="student?.picture || 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/1024px-User-avatar.svg.png'" />
+                    </ion-avatar>
+                    <ion-label class="ion-text-wrap">
+                      <h2>{{student?.name}}</h2>
+                      <ion-chip *ngFor="let info of student?.infos" color="danger" style="height: auto;">
+                        <ion-label color="danger" class="ion-text-wrap">{{info}}</ion-label>
+                      </ion-chip>
+                    </ion-label>
+                  </ion-item>
+                </ion-list>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-lg="6">
+          <ion-item>
+            <ion-select [(ngModel)]="selectedYear" interface="action-sheet" placeholder="Selecione um ano" cancel-text="Cancelar">
+              <ion-select-option *ngFor="let year of utilService?.years" [value]="year">{{year}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+
+        <ion-col size-lg="6">
+          <ion-item>
+            <ion-select [(ngModel)]="selectedMonth" interface="action-sheet" placeholder="Selecione um mês" cancel-text="Cancelar">
+              <ion-select-option *ngFor="let month of utilService?.months" [value]="month?.value">{{month?.text}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-card>
+            <ion-card-header>
+              Frequência das Classes
+            </ion-card-header>
+            <ion-card-content>
+              <canvas #doubleLineCanvas style="position: relative; height:20vh; width:40vw"></canvas>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-lg="12">
+          <ion-item>
+            <ion-select [(ngModel)]="selectedSunday" interface="action-sheet" placeholder="Selecione um Domingo" cancel-text="Cancelar">
+              <ion-select-option *ngFor="let sunday of sundaysOfMonth" [value]="sunday">{{sunday}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col *ngFor="let class of classes" size-lg="3" size-md="6" size-sm="12">
+          <ion-card>
+            <ion-item-group>
+              <ion-item-divider>{{class?.name}}</ion-item-divider>
+            
+              <ion-item lines="none">
+                <ion-label>Matriculados</ion-label>
+                <ion-note slot="end" color="primary">
+                  <ion-text style="font-size: 24px">
+                    {{class?.enrolled}}
+                  </ion-text>
+                </ion-note>
+              </ion-item>
+              <ion-item lines="none">
+                <ion-label>Presentes</ion-label>
+                <ion-note slot="end" color="success">
+                  <ion-text style="font-size: 24px">
+                    {{class?.presents}}
+                  </ion-text>
+                </ion-note>
+              </ion-item>
+              <ion-item lines="none">
+                <ion-label>Ausentes</ion-label>
+                <ion-note slot="end" color="danger">
+                  <ion-text style="font-size: 24px">
+                    {{class?.absents}}
+                  </ion-text>
+                </ion-note>
+              </ion-item>
+            </ion-item-group>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+
+      <!-- <ion-card>
+        <ion-card-header>
+          Presenças por Domingo
+        </ion-card-header>
+        <ion-card-content>
+          <canvas #barCanvas style="position: relative; height:20vh; width:40vw"></canvas>
+        </ion-card-content>
+      </ion-card>
+  
+      <ion-card>
+        <ion-card-header>
+          Presenças por Domingo
+        </ion-card-header>
+        <ion-card-content>
+          <canvas #doughnutCanvas style="position: relative; height:20vh; width:40vw"></canvas>
+        </ion-card-content>
+      </ion-card> -->
+    </div>
+  </ion-grid>
 </ion-content>
