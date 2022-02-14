@@ -1,32 +1,26 @@
 import { Injectable } from '@angular/core';
-
-import { Storage } from '@ionic/storage-angular';
+import { Storage } from '@capacitor/storage';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StorageService {
-  private customStorage: Storage | null = null;
 
-  constructor(private storage: Storage) {
-    this.init();
-  }
-
-  async init() {
-    // If using, define drivers here: await this.storage.defineDriver(/*...*/);
-    const storage = await this.storage.create();
-    this.customStorage = storage;
-  }
+  constructor() { }
 
   async get(key: string) {
-    return this.customStorage?.get(key);
+    const { value } = await Storage.get({ key });
+    return await JSON.parse(value);
   }
 
   async set(key: string, value: any) {
-    this.customStorage?.set(key, value);
+    await Storage.set({
+      key,
+      value: JSON.stringify(value),
+    });
   }
 
   async delete(key: string) {
-    this.customStorage?.remove(key);
+    await Storage.remove({ key });
   }
 }

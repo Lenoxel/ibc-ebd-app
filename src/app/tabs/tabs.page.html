@@ -6,7 +6,7 @@
       <ion-label>Lições</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="analytics">
+    <ion-tab-button tab="{{(authService?.$user | async)?.fullAccess ? 'analytics' : 'analytics/class'}}">
       <ion-icon name="analytics-outline"></ion-icon>
       <ion-label>Indicadores</ion-label>
     </ion-tab-button>

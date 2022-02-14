@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 export class LessonsPage implements OnInit {
 
   constructor(
-    private authService: AuthService,
+    public authService: AuthService,
     private navController: NavController,
   ) { }
 

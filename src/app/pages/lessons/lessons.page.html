@@ -5,7 +5,7 @@
     </ion-title>
     <ion-buttons slot="primary">
       <ion-button fill="clear" color="danger" (click)="logout()">
-        Sair
+        {{ (authService?.$user | async)?.name }} | Sair
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -33,19 +33,21 @@
       <ion-label>
         <h2>Disciplina</h2>
         <p>23/01/2022</p>
-        <p>
-          <ion-text color="danger">3 chamadas pendentes</ion-text>
-        </p>
-        <ion-chip outline color="success">
-          <ion-icon name="person-outline"></ion-icon>
-          <ion-icon name="checkmark-outline"></ion-icon>
-          <ion-label>161</ion-label>
-        </ion-chip>
-        <ion-chip outline color="danger">
-          <ion-icon name="person-outline"></ion-icon>
-          <ion-icon name="close-outline"></ion-icon>
-          <ion-label>79</ion-label>
-        </ion-chip>
+        <ng-container *ngIf="(authService?.$user | async)?.fullAccess">
+          <p>
+            <ion-text color="danger">3 chamadas pendentes</ion-text>
+          </p>
+          <ion-chip outline color="success">
+            <ion-icon name="person-outline"></ion-icon>
+            <ion-icon name="checkmark-outline"></ion-icon>
+            <ion-label>161</ion-label>
+          </ion-chip>
+          <ion-chip outline color="danger">
+            <ion-icon name="person-outline"></ion-icon>
+            <ion-icon name="close-outline"></ion-icon>
+            <ion-label>79</ion-label>
+          </ion-chip>
+        </ng-container>
       </ion-label>
       <ion-badge slot="end" color="primary">Lição nº 2</ion-badge>
     </ion-item>
@@ -53,19 +55,21 @@
       <ion-label>
         <h2>Autoridade espiritual</h2>
         <p>16/01/2022</p>
-        <p>
-          <ion-text color="danger">1 chamada pendente</ion-text>
-        </p>
-        <ion-chip outline color="success">
-          <ion-icon name="person-outline"></ion-icon>
-          <ion-icon name="checkmark-outline"></ion-icon>
-          <ion-label>196</ion-label>
-        </ion-chip>
-        <ion-chip outline color="danger">
-          <ion-icon name="person-outline"></ion-icon>
-          <ion-icon name="close-outline"></ion-icon>
-          <ion-label>84</ion-label>
-        </ion-chip>
+        <ng-container *ngIf="(authService?.$user | async)?.fullAccess">
+          <p>
+            <ion-text color="danger">1 chamada pendente</ion-text>
+          </p>
+          <ion-chip outline color="success">
+            <ion-icon name="person-outline"></ion-icon>
+            <ion-icon name="checkmark-outline"></ion-icon>
+            <ion-label>196</ion-label>
+          </ion-chip>
+          <ion-chip outline color="danger">
+            <ion-icon name="person-outline"></ion-icon>
+            <ion-icon name="close-outline"></ion-icon>
+            <ion-label>84</ion-label>
+          </ion-chip>
+        </ng-container>
       </ion-label>
       <ion-badge slot="end" color="primary">Lição nº 1</ion-badge>
     </ion-item>

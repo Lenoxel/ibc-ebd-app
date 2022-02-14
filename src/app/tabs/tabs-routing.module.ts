@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { FullAccessGuard } from '../guards/full-access/full-access.guard';
 import { TabsPage } from './tabs.page';
 
 const routes: Routes = [
@@ -13,7 +14,12 @@ const routes: Routes = [
       },
       {
         path: 'analytics',
-        loadChildren: () => import('../pages/analytics/analytics.module').then(m => m.AnalyticsPageModule)
+        loadChildren: () => import('../pages/analytics/analytics.module').then(m => m.AnalyticsPageModule),
+        canLoad: [FullAccessGuard],
+      },
+      {
+        path: 'analytics/class',
+        loadChildren: () => import('../pages/class-analytics/class-analytics.module').then( m => m.ClassAnalyticsPageModule),
       },
       {
         path: '',

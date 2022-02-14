@@ -179,7 +179,7 @@ export class AnalyticsPage implements OnInit, AfterViewInit {
 
   constructor(
     public utilService: UtilService,
-    private authService: AuthService,
+    public authService: AuthService,
     private navController: NavController,
   ) { }
 

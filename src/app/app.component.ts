@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { SplashScreen } from '@capacitor/splash-screen';
 import { NavController, Platform } from '@ionic/angular';
 import { AuthService } from './services/auth/auth.service';
 
