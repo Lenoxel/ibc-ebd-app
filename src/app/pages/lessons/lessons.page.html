@@ -19,21 +19,14 @@
   </ion-header>
 
   <ion-list>
-    <ion-item button lines="full">
+    <ion-item *ngFor="let lesson of ebdLessons$ | async; let first = first" button lines="full">
       <ion-label>
-        <h2>Obediência</h2>
-        <p>30/01/2022</p>
-        <p>
+        <h2>{{lesson?.title}}</h2>
+        <p>{{lesson?.date | date: 'dd/MM/yyyy'}}</p>
+        <p *ngIf="first">
           <ion-text color="success">Próxima lição</ion-text>
         </p>
-      </ion-label>
-      <ion-badge slot="end" color="primary">Lição nº 3</ion-badge>
-    </ion-item>
-    <ion-item button lines="full">
-      <ion-label>
-        <h2>Disciplina</h2>
-        <p>23/01/2022</p>
-        <ng-container *ngIf="(authService?.$user | async)?.fullAccess">
+        <ng-container *ngIf="!first && (authService?.$user | async)?.fullAccess">
           <p>
             <ion-text color="danger">3 chamadas pendentes</ion-text>
           </p>
@@ -49,29 +42,7 @@
           </ion-chip>
         </ng-container>
       </ion-label>
-      <ion-badge slot="end" color="primary">Lição nº 2</ion-badge>
-    </ion-item>
-    <ion-item button lines="full">
-      <ion-label>
-        <h2>Autoridade espiritual</h2>
-        <p>16/01/2022</p>
-        <ng-container *ngIf="(authService?.$user | async)?.fullAccess">
-          <p>
-            <ion-text color="danger">1 chamada pendente</ion-text>
-          </p>
-          <ion-chip outline color="success">
-            <ion-icon name="person-outline"></ion-icon>
-            <ion-icon name="checkmark-outline"></ion-icon>
-            <ion-label>196</ion-label>
-          </ion-chip>
-          <ion-chip outline color="danger">
-            <ion-icon name="person-outline"></ion-icon>
-            <ion-icon name="close-outline"></ion-icon>
-            <ion-label>84</ion-label>
-          </ion-chip>
-        </ng-container>
-      </ion-label>
-      <ion-badge slot="end" color="primary">Lição nº 1</ion-badge>
+      <ion-badge slot="end" color="primary">Lição nº {{lesson?.number}}</ion-badge>
     </ion-item>
   </ion-list>
 </ion-content>

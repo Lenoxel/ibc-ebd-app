@@ -1,9 +1,30 @@
 ion-card-header {
     font-size: 16px;
+    font-weight: bolder;
+    color: var(--ion-color-primary);
 }
 
 ion-item-divider {
     font-size: 18px;
     font-weight: bolder;
     --color: var(--ion-color-secondary);
+}
+
+ion-avatar { 
+    margin: auto;
+}
+
+:host ::ng-deep .swiper-pagination {
+    bottom: 0px !important;
+
+    .swiper-pagination-bullet {
+        width: 12px !important;
+        height: 12px !important;
+        border-radius: 16px !important;
+        background: var(--ion-color-primary);
+    }
+}
+
+:host ::ng-deep .swiper-wrapper {
+    align-items: center !important;
 }

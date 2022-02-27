@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, from, Observable } from 'rxjs';
 import { StorageService } from '../storage/storage.service';
 import { map, switchMap, tap } from 'rxjs/operators';
-import { EBD_API_ENDPOINT } from 'config';
+import { API_ENDPOINT } from 'config';
 import jwt_decode from 'jwt-decode';
 import { IUser } from 'src/app/interfaces';
 
@@ -12,7 +12,7 @@ import { IUser } from 'src/app/interfaces';
 })
 export class AuthService {
   $isAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
-  token = '';
+  token: { access: string; refresh: string } = null;
   $user:  BehaviorSubject<IUser> = new BehaviorSubject<IUser>(null);
 
   constructor(
@@ -24,7 +24,7 @@ export class AuthService {
 
   async loadToken() {
     const token = await this.storageService.get('jwt');
-    if (token) {
+    if (token && this.validRefreshToken(token)) {
       this.token = token;
       this.$isAuthenticated.next(true);
       this.loadUser(token);
@@ -33,7 +33,17 @@ export class AuthService {
     }
   }
 
-  async loadUser({ access }: { access: string; refresh: string }) {
+  validAccessToken({ access }: { access: string; refresh: string } = this.token) {
+    const { exp }: any = jwt_decode(access);
+    return !!(new Date().getTime() < Number(`${exp}000`));
+  }
+
+  validRefreshToken({ refresh }: { access: string; refresh: string }  = this.token) {
+    const { exp }: any = jwt_decode(refresh);
+    return !!(new Date().getTime() < Number(`${exp}000`));
+  }
+
+  async loadUser({ access }: { access: string; refresh: string } = this.token) {
     const tempUser: any = jwt_decode(access);
 
     const user: IUser = {
@@ -53,7 +63,7 @@ export class AuthService {
   }
 
   login(credentials: { email: string; password: string }): Observable<any> {
-    return this.httpClient.post(`${EBD_API_ENDPOINT}/login/`, credentials).pipe(
+    return this.httpClient.post(`${API_ENDPOINT}/ebd/login/`, credentials).pipe(
       map((token: any) => token),
       switchMap(token => from(this.storageService.set('jwt', token))),
       tap(() => this.$isAuthenticated.next(true)),
@@ -63,5 +73,11 @@ export class AuthService {
   async logout() {
     this.$isAuthenticated.next(false);
     this.storageService.delete('jwt');
+  }
+
+  refreshAccessToken(token: { refresh: string } = this.token): Observable<any> {
+    return this.httpClient.post(`${API_ENDPOINT}/token/refresh/`, token).pipe(
+      map(({ access }: { access: string }) => ({ access, refresh: token.refresh })),
+    );
   }
 }

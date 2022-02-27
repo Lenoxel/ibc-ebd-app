@@ -4,7 +4,10 @@ import { UtilService } from 'src/app/services/util/util.service';
 import randomColor from 'randomcolor';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { NavController } from '@ionic/angular';
+import { SwiperComponent } from 'swiper/angular';
+import SwiperCore, { Autoplay, Keyboard, Pagination, SwiperOptions } from 'swiper';
 
+SwiperCore.use([Autoplay, Keyboard, Pagination]);
 Chart.register(...registerables);
 
 @Component({
@@ -18,11 +21,28 @@ export class AnalyticsPage implements OnInit, AfterViewInit {
   // @ViewChild('barCanvas') private barCanvas: ElementRef;
   // @ViewChild('doughnutCanvas') private doughnutCanvas: ElementRef;
 
+  @ViewChild('swiperExemplaryStudents', { static: true }) private swiperExemplaryStudents: SwiperComponent;
+  @ViewChild('swiperWorryingStudents', { static: true }) private swiperWorryingStudents: SwiperComponent;
+
   lineChartPresences: Chart;
   lineChartAbsences: Chart;
   doubleLineChart: any;
   // barChart: Chart;
   // doughnutChart: Chart;
+
+  swiperExemplaryStudentsConfig: SwiperOptions = {
+    slidesPerView: 1.0,
+    pagination: true,
+    keyboard: true,
+    autoplay: true,
+  };
+
+  swiperWorryingStudentsConfig: SwiperOptions = {
+    slidesPerView: 1.0,
+    pagination: true,
+    keyboard: true,
+    autoplay: true,
+  };
 
   classes = [
     {
@@ -33,87 +53,87 @@ export class AnalyticsPage implements OnInit, AfterViewInit {
     },
     {
       name: 'Gideão',
-      enrolled: 27,
-      absents: 8,
-      presents: 19,
+      enrolled: 21,
+      absents: 10,
+      presents: 11,
     },
     {
       name: 'Adriel',
-      enrolled: 27,
-      absents: 8,
-      presents: 19,
+      enrolled: 17,
+      absents: 4,
+      presents: 13,
     },
     {
       name: 'Ouro de Ofir',
-      enrolled: 27,
+      enrolled: 18,
       absents: 8,
-      presents: 19,
+      presents: 10,
     },
     {
       name: 'El Shaday',
-      enrolled: 27,
-      absents: 8,
+      enrolled: 24,
+      absents: 5,
       presents: 19,
     },
     {
       name: 'Sabaot',
-      enrolled: 27,
-      absents: 8,
-      presents: 19,
+      enrolled: 22,
+      absents: 6,
+      presents: 16,
     },
     {
       name: 'Emanuel',
-      enrolled: 27,
+      enrolled: 18,
       absents: 8,
-      presents: 19,
+      presents: 10,
     },
     {
       name: 'Ágape',
-      enrolled: 27,
-      absents: 8,
-      presents: 19,
+      enrolled: 28,
+      absents: 7,
+      presents: 21,
     },
     {
       name: 'Peniel',
-      enrolled: 27,
-      absents: 8,
+      enrolled: 30,
+      absents: 11,
       presents: 19,
     },
     {
       name: 'Judá',
-      enrolled: 27,
-      absents: 8,
-      presents: 19,
+      enrolled: 32,
+      absents: 10,
+      presents: 22,
     },
     {
       name: 'Doxa',
-      enrolled: 27,
+      enrolled: 35,
       absents: 8,
-      presents: 19,
+      presents: 27,
     },
     {
       name: 'Maternal',
-      enrolled: 27,
-      absents: 8,
-      presents: 19,
+      enrolled: 12,
+      absents: 3,
+      presents: 9,
     },
     {
       name: 'Jardim',
-      enrolled: 27,
-      absents: 8,
-      presents: 19,
+      enrolled: 16,
+      absents: 5,
+      presents: 11,
     },
     {
       name: 'Primários',
-      enrolled: 27,
-      absents: 8,
-      presents: 19,
+      enrolled: 20,
+      absents: 7,
+      presents: 13,
     },
     {
       name: 'Juniores',
-      enrolled: 27,
-      absents: 8,
-      presents: 19,
+      enrolled: 8,
+      absents: 3,
+      presents: 5,
     },
   ];
 
@@ -127,53 +147,82 @@ export class AnalyticsPage implements OnInit, AfterViewInit {
     {
       name: 'Doninho',
       picture: '',
-      infos: [
-        'Pontual',
-        'Presente nos últimos 36 domingos',
-      ],
+      infos: [{
+        title: 'Pontual',
+        count: 26
+      }, {
+        title: 'Assíduo',
+        count: 31
+      }],
     },
     {
       name: 'Gabriel Lenon',
       picture: 'https://res.cloudinary.com/dps5k8b3f/image/upload/v1630780319/imnhaqy1ob8ugwcdqpyw.jpg',
-      infos: [
-        'Participativo',
-        'Presente nos últimos 13 domingos',
-      ],
+      infos: [{
+        title: 'Participativo',
+        count: 7
+      }, {
+        title: 'Assíduo',
+        count: 14
+      }],
     },
     {
       name: 'Rebeka Beatriz',
       picture: '',
-      infos: [
-        'Pontual',
-        'Presente nos últimos 7 domingos',
-      ],
+      infos: [{
+        title: 'Pontual',
+        count: 23
+      }, {
+        title: 'Assídua',
+        count: 16
+      }, {
+        title: 'Colaborativa',
+        count: 9
+      }],
+    },
+    {
+      name: 'Anderson Neves',
+      picture: '',
+      infos: [{
+        title: 'Pontual',
+        count: 17
+      }, {
+        title: 'Colaborativo',
+        count: 14
+      }],
     },
   ];
 
   worryingStudents = [
     {
-      name: 'Wesney',
+      name: 'Ricardo José',
       picture: '',
-      infos: [
-        'Chega sempre atrasado',
-        'Ausente nos últimos 11 domingos',
-      ],
+      infos: [{
+        title: 'Não pontual',
+        count: 7
+      }, {
+        title: 'Não assíduo',
+        count: 18
+      }],
     },
     {
-      name: 'Alysson',
+      name: 'Felipe Alves',
       picture: '',
-      infos: [
-        'Chega sempre atrasado',
-        'Ausente nos últimos 6 domingos',
-      ],
+      infos: [{
+        title: 'Não pontual',
+        count: 13
+      }],
     },
     {
-      name: 'Carol',
+      name: 'Fernanda Dalina',
       picture: '',
-      infos: [
-        'Não justifica as faltas',
-        'Ausente nos últimos 37 domingos',
-      ],
+      infos: [{
+        title: 'Descompromissada',
+        count: 8
+      }, {
+        title: 'Não assídua',
+        count: 19
+      }],
     },
   ];
 
@@ -263,7 +312,32 @@ export class AnalyticsPage implements OnInit, AfterViewInit {
       },
       options: {
         responsive: true,
-        aspectRatio: 3.0,
+        aspectRatio: 2.4,
+        scales: {
+          y: {
+            ticks: {
+              font: {
+                size: 14,
+              },
+            }
+          },
+          x: {
+            ticks: {
+              font: {
+                size: 14,
+              },
+            }
+          },
+        },
+        plugins: {
+          legend: {
+            labels: {
+              font: {
+                size: 14,
+              }
+            }
+          }
+        },
       }
     });
   }
@@ -283,38 +357,48 @@ export class AnalyticsPage implements OnInit, AfterViewInit {
       data: {
         labels: ['02/01', '09/01', '16/01', '23/01'],
         datasets: this.classes.map(({ name: label }, index) => ({
-            label,
-            data: [
-              Math.round((Math.random() * 30)),
-              Math.round((Math.random() * 30)),
-              Math.round((Math.random() * 30)),
-              Math.round((Math.random() * 30))
-            ],
-            backgroundColor: randomColorsList[index],
-            borderColor: randomColorsList[index].replace('0.7', '1.0'),
-            fill: false,
-            tension: 0.3,
-            pointRadius: 5,
+          label,
+          data: [
+            Math.round((Math.random() * 30)),
+            Math.round((Math.random() * 30)),
+            Math.round((Math.random() * 30)),
+            Math.round((Math.random() * 30))
+          ],
+          backgroundColor: randomColorsList[index],
+          borderColor: randomColorsList[index].replace('0.7', '1.0'),
+          fill: false,
+          tension: 0.3,
+          pointRadius: 5,
         })),
       },
       options: {
         responsive: true,
         aspectRatio: 2.75,
-        // title: {
-        //   display: true,
-        //   position: 'top',
-        //   text: 'Facebook to Instagram - Social Networking',
-        //   fontSize: 12,
-        //   fontColor: '#666'
-        // },
-        // legend: {
-        //   display: true,
-        //   position: 'bottom',
-        //   labels: {
-        //     fontColor: '#999',
-        //     fontSize: 14
-        //   }
-        // }
+        scales: {
+          y: {
+            ticks: {
+              font: {
+                size: 14,
+              },
+            }
+          },
+          x: {
+            ticks: {
+              font: {
+                size: 14,
+              },
+            }
+          },
+        },
+        plugins: {
+          legend: {
+            labels: {
+              font: {
+                size: 16,
+              }
+            }
+          }
+        },
       }
     });
   }
