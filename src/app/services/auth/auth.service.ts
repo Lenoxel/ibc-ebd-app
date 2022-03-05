@@ -33,6 +33,7 @@ export class AuthService {
     }
   }
 
+  // validAccessToken({ access }: { access: string; refresh: string } = this.token) {
   validAccessToken({ access }: { access: string; refresh: string } = this.token) {
     const { exp }: any = jwt_decode(access);
     return !!(new Date().getTime() < Number(`${exp}000`));
@@ -65,9 +66,15 @@ export class AuthService {
   login(credentials: { email: string; password: string }): Observable<any> {
     return this.httpClient.post(`${API_ENDPOINT}/ebd/login/`, credentials).pipe(
       map((token: any) => token),
-      switchMap(token => from(this.storageService.set('jwt', token))),
+      switchMap(token => from(this.handleToken(token))),
       tap(() => this.$isAuthenticated.next(true)),
     );
+  }
+
+  async handleToken(token) {
+    this.token = token;
+    await this.storageService.set('jwt', token);
+    return await this.loadToken();
   }
 
   async logout() {
@@ -75,7 +82,7 @@ export class AuthService {
     this.storageService.delete('jwt');
   }
 
-  refreshAccessToken(token: { refresh: string } = this.token): Observable<any> {
+  refreshAccessToken(token: { refresh: string } = this.token): Observable<{ access: string; refresh: string }> {
     return this.httpClient.post(`${API_ENDPOINT}/token/refresh/`, token).pipe(
       map(({ access }: { access: string }) => ({ access, refresh: token.refresh })),
     );

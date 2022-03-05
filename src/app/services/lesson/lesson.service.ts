@@ -20,4 +20,8 @@ export class LessonService {
   getEbdLesson(lessonId: number): Observable<any> {
     return this.httpClient.get(`${API_ENDPOINT}/ebd/lessons/${lessonId}`);
   }
+
+  getEbdClassesByLesson(lessonId: number): Observable<any> {
+    return this.httpClient.get(`${API_ENDPOINT}/ebd/lessons/${lessonId}/classes`);
+  }
 }

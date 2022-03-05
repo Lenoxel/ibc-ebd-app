@@ -1,11 +1,16 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Indicadores
+      <h5>
+        Olá, {{ (authService?.$user | async)?.name }}
+      </h5>
+      <h2>
+        Indicadores
+      </h2>
     </ion-title>
     <ion-buttons slot="primary">
-      <ion-button fill="clear" color="danger" (click)="logout()">
-        {{ (authService?.$user | async)?.name }} | Sair
+      <ion-button fill="clear" slot="icon-only" color="light" (click)="logout()" size="large">
+        <ion-icon name="log-out-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>

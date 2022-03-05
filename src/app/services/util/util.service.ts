@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ToastController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
@@ -60,5 +61,23 @@ export class UtilService {
     },
   ];
 
-  constructor() { }
+  constructor(
+    private toastController: ToastController,
+  ) { }
+
+  async showToastController(message: string, color: string, position: 'top' | 'bottom' | 'middle', duration = 3000) {
+    if (await this.toastController.getTop()) {
+      this.toastController.dismiss();
+    }
+
+    const toast = await this.toastController.create({
+      message,
+      color,
+      position,
+      duration,
+      cssClass: 'toast-controller',
+    });
+
+    toast.present();
+  }
 }

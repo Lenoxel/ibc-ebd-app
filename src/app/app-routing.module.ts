@@ -19,6 +19,14 @@ const routes: Routes = [
     redirectTo: '/login',
     pathMatch: 'full'
   },
+  {
+    path: 'lesson/:lessonId/classes',
+    loadChildren: () => import('./pages/lesson-classes/lesson-classes.module').then( m => m.LessonClassesPageModule)
+  },
+  {
+    path: 'lesson/:lessonId/classes/:classId/presences',
+    loadChildren: () => import('./pages/lesson-class-presences/lesson-class-presences.module').then( m => m.LessonClassPresencesPageModule)
+  },
 ];
 @NgModule({
   imports: [

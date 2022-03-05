@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Injectable, Injector} from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { StorageService } from '../storage/storage.service';
 
@@ -14,7 +14,11 @@ export class TokenInterceptorService {
     private injector: Injector
   ) { }
 
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(request: HttpRequest<any>, next: HttpHandler) {
+    return from(this.handle(request, next));
+  }
+
+  async handle(request: HttpRequest<any>, next: HttpHandler) {
     if (request.url?.includes('login') || request.url?.includes('token/verify') || request.url?.includes('token/refresh')) {
       request = request.clone({
         setHeaders: {
@@ -22,7 +26,7 @@ export class TokenInterceptorService {
         }
       });
 
-      return next.handle(request);
+      return next.handle(request).toPromise();
     } else {
       const authService = this.injector.get(AuthService);
 
@@ -36,24 +40,22 @@ export class TokenInterceptorService {
           }
         });
 
-        return next.handle(request);
+        return next.handle(request).toPromise();
       } else {
         const storageService = this.injector.get(StorageService);
 
-        authService.refreshAccessToken().subscribe({
-          next: (token) => {
-            storageService.set('jwt', token);
+        const token = await authService.refreshAccessToken().toPromise();
 
-            request = request.clone({
-              setHeaders: {
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json',
-              }
-            });
+        storageService.set('jwt', token);
 
-            next.handle(request);
+        request = request.clone({
+          setHeaders: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
           }
         });
+
+        return next.handle(request).toPromise();
       }
     }
   }

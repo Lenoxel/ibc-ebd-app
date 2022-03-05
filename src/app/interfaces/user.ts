@@ -2,6 +2,7 @@ export interface IUser {
     email: string;
     exp: number;
     groups: { id: number; name: string }[];
+    classes: { id: number; name: string }[];
     iat: number;
     isSuperuser: boolean;
     jti: string;

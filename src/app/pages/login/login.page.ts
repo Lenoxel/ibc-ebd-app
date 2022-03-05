@@ -40,7 +40,7 @@ export class LoginPage implements OnInit {
     await loading.present();
 
     this.authService.login(this.credentialsFormGroup.value).subscribe({
-      next: async () => {
+      next: async (token) => {
         await loading.dismiss();
         this.router.navigateByUrl('/tabs', { replaceUrl: true });
       },
