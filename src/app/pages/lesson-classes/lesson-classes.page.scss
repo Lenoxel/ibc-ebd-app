@@ -2,3 +2,9 @@ ion-item {
     border: 3px solid var(--ion-color-primary);
     border-radius: 20px;
 }
+
+ion-list-header {
+    flex-direction: column;
+    justify-content: left;
+    align-items: flex-start;
+}

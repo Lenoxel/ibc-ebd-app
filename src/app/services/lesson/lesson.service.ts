@@ -24,4 +24,8 @@ export class LessonService {
   getEbdClassesByLesson(lessonId: number): Observable<any> {
     return this.httpClient.get(`${API_ENDPOINT}/ebd/lessons/${lessonId}/classes`);
   }
+
+  getEbdPresencesRegister(lessonId: number, classId: number): Observable<any> {
+    return this.httpClient.get(`${API_ENDPOINT}/ebd/lessons/${lessonId}/classes/${classId}/presences`);
+  }
 }

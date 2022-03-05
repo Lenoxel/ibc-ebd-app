@@ -1,4 +1,4 @@
-<ion-header [translucent]="true">
+<ion-header #header [translucent]="true" [ngStyle]="{'top': headerMarginTop}">
   <ion-toolbar>
     <ion-title>
       <h5>
@@ -16,7 +16,11 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content
+  [fullscreen]="true"
+  [scrollEvents]="true"
+  (ionScroll)="onContentScroll($event)"
+>
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Lições</ion-title>
@@ -24,7 +28,7 @@
   </ion-header>
 
   <ion-list>
-    <ion-item *ngFor="let lesson of ebdLessons$ | async; let first = first" button lines="full" (click)="handleLessonClick(lesson?.id)">
+    <ion-item *ngFor="let lesson of ebdLessons$ | async; let first = first" button lines="full" (click)="lesson?.is_next_lesson ? showLessonNotAcessibleYet() : handleLessonClick(lesson)">
       <ion-label class="ion-text-wrap">
         <h2>{{lesson?.title}}</h2>
         <h3 class="lesson-date">{{lesson?.date | date: 'dd/MM/yyyy'}}</h3>
@@ -35,17 +39,17 @@
           <!-- <p *ngIf="lesson?.presence_records?.pending_calls?.length">
             <ion-text color="danger">{{lesson?.presence_records?.pending_calls?.length}} chamadas pendentes</ion-text>
           </p> -->
-          <ion-chip outline color="success" style="height: auto;" (click)="showPresenceRecordsInfo('presents', lesson?.presence_records?.presents)">
+          <ion-chip outline color="success" style="height: auto;" (click)="showPresenceRecordsInfo('presents', lesson?.presence_records?.presents); $event.stopPropagation()">
             <ion-icon name="person-outline"></ion-icon>
             <ion-icon name="checkmark-outline"></ion-icon>
             <ion-label>{{lesson?.presence_records?.presents}}</ion-label>
           </ion-chip>
-          <ion-chip outline color="danger" style="height: auto;" (click)="showPresenceRecordsInfo('absents', lesson?.presence_records?.absents)">
+          <ion-chip outline color="danger" style="height: auto;" (click)="showPresenceRecordsInfo('absents', lesson?.presence_records?.absents); $event.stopPropagation()">
             <ion-icon name="person-outline"></ion-icon>
             <ion-icon name="close-outline"></ion-icon>
             <ion-label>{{lesson?.presence_records?.absents}}</ion-label>
           </ion-chip>
-          <ion-chip outline color="dark" style="height: auto;" (click)="showPresenceRecordsInfo('pending', lesson?.presence_records?.pending)">
+          <ion-chip outline color="dark" style="height: auto;" (click)="showPresenceRecordsInfo('pending', lesson?.presence_records?.pending); $event.stopPropagation()">
             <ion-icon name="pencil-outline"></ion-icon>
             <ion-icon name="help-outline"></ion-icon>
             <ion-label>{{lesson?.presence_records?.pending}}</ion-label>

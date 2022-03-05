@@ -49,6 +49,8 @@ export class AuthService {
 
     const user: IUser = {
       ...tempUser,
+      classesAsATeacher: tempUser?.classes_as_a_teacher,
+      classesAsASecretary: tempUser?.classes_as_a_secretary,
       isSuperuser: tempUser?.is_superuser,
       tokenType: tempUser?.token_type,
       userId: tempUser?.user_id,

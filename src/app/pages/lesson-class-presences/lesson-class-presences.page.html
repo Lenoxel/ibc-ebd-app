@@ -3,10 +3,45 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="tabs"></ion-back-button>
     </ion-buttons>
-    <ion-title>Chamada</ion-title>
+    <ion-title>
+      <h2>
+        Registro de Chamada
+      </h2>
+      <h6>
+        {{lessonDate | date: 'dd/MM/yyyy'}}
+      </h6>
+    </ion-title>
   </ion-toolbar>
 </ion-header>
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Registro de Chamada<</ion-title>
+    </ion-toolbar>
+  </ion-header>
 
-<ion-content>
+  <ion-list>
+    <ion-item lines="full">
+      <ion-label class="ion-text-wrap">
+        <h2><strong>Classe {{className}}</strong></h2>
+        <h3 style="font-weight: 400;">{{lessonTitle}}</h3>
+      </ion-label>
+    </ion-item>
 
+    <ion-item *ngFor="let presenceRegister of ebdPresencesRegister$ | async" lines="full">
+      <ion-label class="ion-text-wrap">
+        <h2>{{presenceRegister['student_name']}}</h2>
+        <h5 *ngIf="presenceRegister['register_on']">
+          <span *ngIf="presenceRegister?.attended">Chegou às {{presenceRegister['register_on'] | date: 'HH:mm'}}</span>
+          <span *ngIf="!presenceRegister?.attended">Recebeu falta em {{presenceRegister['register_on'] | date: 'dd/MM/yyyy HH:mm'}}</span>
+        </h5>
+      </ion-label>
+      <ion-button style="margin-right: 5px;" color="success" size="default" [fill]="presenceRegister?.attended && presenceRegister?.register_on ? 'solid' : 'clear'" (click)="givePresence(presenceRegister)" [disabled]="presenceRegister?.underAction">
+        <ion-icon slot="icon-only" name="checkmark-circle-outline"></ion-icon>
+      </ion-button>
+      <ion-button style="margin-left: 5px;" color="danger" size="default" [fill]="!presenceRegister?.attended && presenceRegister?.register_on ? 'solid' : 'clear'" (click)="giveAbsence(presenceRegister)" [disabled]="presenceRegister?.underAction">
+        <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
 </ion-content>

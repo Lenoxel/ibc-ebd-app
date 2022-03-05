@@ -24,6 +24,8 @@ export class AnalyticsPage implements OnInit, AfterViewInit {
   @ViewChild('swiperExemplaryStudents', { static: true }) private swiperExemplaryStudents: SwiperComponent;
   @ViewChild('swiperWorryingStudents', { static: true }) private swiperWorryingStudents: SwiperComponent;
 
+  headerMarginTop = '0px';
+
   lineChartPresences: Chart;
   lineChartAbsences: Chart;
   doubleLineChart: any;
@@ -239,6 +241,10 @@ export class AnalyticsPage implements OnInit, AfterViewInit {
     this.doubleLineChartMethod();
     // this.barChartMethod();
     // this.doughnutChartMethod();
+  }
+
+  onContentScroll(event) {
+    this.headerMarginTop = `-${event?.detail?.scrollTop * 0.75}px`;
   }
 
   async logout() {

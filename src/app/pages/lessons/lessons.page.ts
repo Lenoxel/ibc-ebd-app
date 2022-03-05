@@ -1,7 +1,8 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NavController } from '@ionic/angular';
-import { Observable, of } from 'rxjs';
+import { NavController, ViewDidEnter } from '@ionic/angular';
+import { Observable } from 'rxjs';
+import { ILesson } from 'src/app/interfaces';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { LessonService } from 'src/app/services/lesson/lesson.service';
 import { UtilService } from 'src/app/services/util/util.service';
@@ -11,8 +12,9 @@ import { UtilService } from 'src/app/services/util/util.service';
   templateUrl: './lessons.page.html',
   styleUrls: ['./lessons.page.scss'],
 })
-export class LessonsPage implements OnInit, AfterViewInit {
+export class LessonsPage implements OnInit, ViewDidEnter {
   ebdLessons$: Observable<any>;
+  headerMarginTop = '0px';
 
   constructor(
     public authService: AuthService,
@@ -20,27 +22,41 @@ export class LessonsPage implements OnInit, AfterViewInit {
     private lessonService: LessonService,
     private utilService: UtilService,
     private router: Router,
-  ) { }
+  ) {}
+
+  ionViewDidEnter(): void {
+  }
 
   ngOnInit() {
     this.getEbdLessons();
   }
 
-  ngAfterViewInit() {
+  onContentScroll(event) {
+    this.headerMarginTop = `-${event?.detail?.scrollTop * 0.75}px`;
   }
 
   getEbdLessons() {
     this.ebdLessons$ = this.lessonService.getEbdLessons();
   }
 
-  handleLessonClick(lessonId: number) {
-    if (this.authService.$user.getValue()?.classes?.length) {
-      const userEbdClass = this.authService.$user.getValue().classes.find(ebdClass => ebdClass?.id === lessonId);
-      if (userEbdClass) {
-        this.router.navigateByUrl(`lesson/${lessonId}/classes/${userEbdClass?.id}/presences`);
-      }
+  handleLessonClick({ id: lessonId, title, date }: ILesson) {
+    if (this.authService.$user.getValue()?.classesAsASecretary?.length) {
+      const userEbdClass = this.authService.$user.getValue().classesAsASecretary[0];
+      this.router.navigateByUrl(
+        `lesson/${lessonId}/classes/${userEbdClass?.id}/presences`,
+        { state: { lessonTitle: title, lessonDate: date } }
+      );
+    } else if (this.authService.$user.getValue()?.classesAsATeacher?.length) {
+      const userEbdClass = this.authService.$user.getValue().classesAsATeacher[0];
+      this.router.navigateByUrl(
+        `lesson/${lessonId}/classes/${userEbdClass?.id}/presences`,
+        { state: { lessonTitle: title, lessonDate: date } }
+      );
     } else {
-      this.router.navigateByUrl(`lesson/${lessonId}/classes`);
+      this.router.navigateByUrl(
+        `lesson/${lessonId}/classes`,
+        { state: { lessonTitle: title, lessonDate: date } }
+      );
     }
   }
 
@@ -71,6 +87,14 @@ export class LessonsPage implements OnInit, AfterViewInit {
     };
 
     return lookUpTable[type](quantity);
+  }
+
+  showLessonNotAcessibleYet() {
+    this.utilService.showToastController(
+      `Essa lição não está acessível pois ainda não aconteceu.`,
+      'light',
+      'top'
+    );
   }
 
   async logout() {
