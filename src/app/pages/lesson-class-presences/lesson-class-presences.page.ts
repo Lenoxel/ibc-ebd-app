@@ -71,4 +71,8 @@ export class LessonClassPresencesPage implements OnInit {
       }, 350);
     }
   }
+
+  giveCharacteristic(partialPresenceRegister: IPresenceRegister, title: string, isPositive: boolean) {
+    partialPresenceRegister[title] = isPositive;
+  }
 }
