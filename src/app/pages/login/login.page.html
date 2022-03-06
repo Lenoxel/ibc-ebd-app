@@ -16,11 +16,12 @@
       </div>
 
       <ion-item>
-        <ion-input type="password" placeholder="Senha" formControlName="password"></ion-input>
+        <ion-input [type]="isTextFieldType ? 'text' : 'password'" clearOnEdit="false" placeholder="Senha" formControlName="password"></ion-input>
+        <ion-icon (click)="togglePasswordFieldType()" color="primary" [name]="isTextFieldType ? 'eye-outline' : 'eye-off-outline'"></ion-icon>
       </ion-item>
       <div *ngIf="(password.dirty) && password.errors" class="errors">
         <span *ngIf="password.errors?.required">A senha é obrigatória</span>
-        <span *ngIf="password.errors?.minlength">A senha precisa ter pelo menos 6 caracteres</span>
+        <span *ngIf="password.errors?.minlength">A senha precisa ter pelo menos 8 caracteres</span>
       </div>
     </div>
  

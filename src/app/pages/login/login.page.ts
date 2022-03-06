@@ -11,6 +11,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 })
 export class LoginPage implements OnInit {
   credentialsFormGroup: FormGroup;
+  isTextFieldType = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -31,9 +32,13 @@ export class LoginPage implements OnInit {
   ngOnInit() {
     this.credentialsFormGroup = this.formBuilder.group({
       username: ['', [Validators.required]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
     });
   }
+
+  togglePasswordFieldType = () => {
+    this.isTextFieldType = !this.isTextFieldType;
+  };
 
   async login() {
     const loading = await this.loadingController.create();
