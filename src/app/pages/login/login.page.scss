@@ -2,7 +2,7 @@ ion-content {
     --padding-top: 10vh;
     --padding-start: 5vw;
     --padding-end: 5vw;
-    --background: var(--ion-color-light);
+    --background: var(--ion-color-light) url('../../../assets/icon/splash.png') no-repeat center center / cover !important;
 }
  
 .input-group {

@@ -68,7 +68,7 @@ export class LessonClassPresencesPage implements OnInit {
 
       setTimeout(() => {
         presenceRegister.underAction = false;
-      }, 350);
+      }, 300);
     }
   }
 

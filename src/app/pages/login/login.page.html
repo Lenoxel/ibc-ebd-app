@@ -5,17 +5,16 @@
 </ion-header>
  
 <ion-content>
- 
   <form (ngSubmit)="login()" [formGroup]="credentialsFormGroup">
     <div class="input-group">
-      <ion-item>
+      <ion-item color="light">
         <ion-input type="text" placeholder="Login" formControlName="username"></ion-input>
       </ion-item>
       <div *ngIf="(username.dirty) && username.errors" class="errors">
         <span *ngIf="username.errors?.required">O login é obrigatório</span>
       </div>
 
-      <ion-item>
+      <ion-item color="light">
         <ion-input [type]="isTextFieldType ? 'text' : 'password'" clearOnEdit="false" placeholder="Senha" formControlName="password"></ion-input>
         <ion-icon (click)="togglePasswordFieldType()" color="primary" [name]="isTextFieldType ? 'eye-outline' : 'eye-off-outline'"></ion-icon>
       </ion-item>

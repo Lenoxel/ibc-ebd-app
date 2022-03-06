@@ -318,7 +318,7 @@ export class AnalyticsPage implements OnInit, AfterViewInit {
       },
       options: {
         responsive: true,
-        aspectRatio: 2.4,
+        aspectRatio: 1.89,
         scales: {
           y: {
             ticks: {
