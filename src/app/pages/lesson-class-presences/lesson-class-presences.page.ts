@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { IPresenceRegister } from 'src/app/interfaces/presenceRegister';
 import { LessonService } from 'src/app/services/lesson/lesson.service';
@@ -11,6 +12,7 @@ import { LessonService } from 'src/app/services/lesson/lesson.service';
 })
 export class LessonClassPresencesPage implements OnInit {
   ebdPresencesRegister$: Observable<any>;
+  ebdLabels$: Observable<any>;
   classId: number = null;
   className = '';
   lessonId: number = null;
@@ -21,10 +23,16 @@ export class LessonClassPresencesPage implements OnInit {
     private lessonService: LessonService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
+    private alertController: AlertController,
   ) { }
 
   ngOnInit() {
+    this.getEbdLabels();
     this.handleParams();
+  }
+
+  getEbdLabels() {
+    this.ebdLabels$ = this.lessonService.getEbdLabels();
   }
 
   handleParams() {
@@ -59,6 +67,40 @@ export class LessonClassPresencesPage implements OnInit {
     }
   }
 
+  async handleGiveAbsence(presenceRegister: IPresenceRegister) {
+    const alert = await this.alertController.create({
+      header: 'Justificar falta?',
+      inputs: [
+        {
+          name: 'justification',
+          type: 'text',
+          placeholder: 'Digite aqui a justificativa'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Não',
+          role: 'cancel',
+          handler: () => {
+            this.giveAbsence(presenceRegister);
+          }
+        }, {
+          text: 'Sim',
+          handler: ({ justification }) => {
+            if (justification) {
+              presenceRegister.justification = justification;
+              this.giveAbsence(presenceRegister);
+            } else {
+              this.handleGiveAbsence(presenceRegister);
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
   giveAbsence(presenceRegister: IPresenceRegister) {
     if (presenceRegister.attended || !presenceRegister.register_on) {
       presenceRegister.underAction = true;
@@ -72,7 +114,11 @@ export class LessonClassPresencesPage implements OnInit {
     }
   }
 
-  giveCharacteristic(partialPresenceRegister: IPresenceRegister, title: string, isPositive: boolean) {
-    partialPresenceRegister[title] = isPositive;
+  giveCharacteristic(partialPresenceRegister: IPresenceRegister, title: string, isPositive: boolean = null) {
+    if (isPositive !== null) {
+      partialPresenceRegister[title] = isPositive;
+    } else {
+      partialPresenceRegister[title] = !partialPresenceRegister[title];
+    }
   }
 }

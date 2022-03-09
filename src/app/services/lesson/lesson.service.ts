@@ -13,6 +13,10 @@ export class LessonService {
     private httpClient: HttpClient,
   ) { }
 
+  getEbdLabels(): Observable<any> {
+    return this.httpClient.get(`${API_ENDPOINT}/ebd/labels`);
+  }
+
   getEbdLessons(): Observable<any> {
     return this.httpClient.get(`${API_ENDPOINT}/ebd/lessons`);
   }

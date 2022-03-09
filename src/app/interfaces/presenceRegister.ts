@@ -2,6 +2,7 @@
 export interface IPresenceRegister {
     id: number;
     attended: boolean;
+    justification: string;
     register_on: Date;
     student_name: string;
     student_nickname: string;

@@ -41,7 +41,7 @@
           <ion-button style="margin-right: 5px;" color="success" size="default" [fill]="presenceRegister?.attended && presenceRegister?.register_on ? 'solid' : 'clear'" (click)="givePresence(presenceRegister); $event.stopPropagation()" [disabled]="presenceRegister?.underAction">
             <ion-icon slot="icon-only" name="checkmark-circle-outline"></ion-icon>
           </ion-button>
-          <ion-button style="margin-left: 5px;" color="danger" size="default" [fill]="!presenceRegister?.attended && presenceRegister?.register_on ? 'solid' : 'clear'" (click)="giveAbsence(presenceRegister); $event.stopPropagation()" [disabled]="presenceRegister?.underAction">
+          <ion-button style="margin-left: 5px;" color="danger" size="default" [fill]="!presenceRegister?.attended && presenceRegister?.register_on ? 'solid' : 'clear'" (click)="handleGiveAbsence(presenceRegister); $event.stopPropagation()" [disabled]="presenceRegister?.underAction">
             <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
           </ion-button>
         </ion-item>
@@ -49,44 +49,9 @@
         <ion-list slot="content">
           <ion-item lines="full">
             <ion-label class="ion-text-wrap">
-              <ion-chip style="height: auto;" color="success" [outline]="!presenceRegister['broughtBible']" [style]="presenceRegister['broughtBible'] ? 'background: var(--ion-color-success); color: var(--ion-color-light)' : ''" (click)="giveCharacteristic(presenceRegister, 'broughtBible', true)">
-                <ion-icon name="thumbs-up-outline"></ion-icon>
-                <ion-label>Trouxe Bíblia</ion-label>
-              </ion-chip>
-
-              <ion-chip style="height: auto;" color="success" [outline]="!presenceRegister['broughtMagazine']" [style]="presenceRegister['broughtMagazine'] ? 'background: var(--ion-color-success); color: var(--ion-color-light)' : ''" (click)="giveCharacteristic(presenceRegister, 'broughtMagazine', true)">
-                <ion-icon name="thumbs-up-outline"></ion-icon>
-                <ion-label>Trouxe Revista</ion-label>
-              </ion-chip>
-              
-              <ion-chip style="height: auto;" color="success" [outline]="!presenceRegister['punctual']" [style]="presenceRegister['punctual'] ? 'background: var(--ion-color-success); color: var(--ion-color-light)' : ''" (click)="giveCharacteristic(presenceRegister, 'punctual', true)">
-                <ion-icon name="thumbs-up-outline"></ion-icon>
-                <ion-label>Pontual</ion-label>
-              </ion-chip>
-  
-              <ion-chip style="height: auto;" color="success" [outline]="!presenceRegister['participatory']" [style]="presenceRegister['participatory'] ? 'background: var(--ion-color-success); color: var(--ion-color-light)' : ''" (click)="giveCharacteristic(presenceRegister, 'participatory', true)">
-                <ion-icon name="thumbs-up-outline"></ion-icon>
-                <ion-label>Participativo</ion-label>
-              </ion-chip>
-  
-              <ion-chip style="height: auto;" color="success" [outline]="!presenceRegister['collaborative']" [style]="presenceRegister['collaborative'] ? 'background: var(--ion-color-success); color: var(--ion-color-light)' : ''" (click)="giveCharacteristic(presenceRegister, 'collaborative', true)">
-                <ion-icon name="thumbs-up-outline"></ion-icon>
-                <ion-label>Colaborativo</ion-label>
-              </ion-chip>
-
-              <ion-chip style="height: auto;" color="danger" [outline]="[false].includes(presenceRegister['punctual']) ? false : true" [style]="[false].includes(presenceRegister['punctual']) ? 'background: var(--ion-color-danger); color: var(--ion-color-light)' : ''" (click)="giveCharacteristic(presenceRegister, 'punctual', false)">
-                <ion-icon name="thumbs-down-outline"></ion-icon>
-                <ion-label>Atrasado</ion-label>
-              </ion-chip>
-
-              <ion-chip style="height: auto;" color="danger" [outline]="[false].includes(presenceRegister['participatory']) ? false : true" [style]="[false].includes(presenceRegister['participatory']) ? 'background: var(--ion-color-danger); color: var(--ion-color-light)' : ''" (click)="giveCharacteristic(presenceRegister, 'participatory', false)">
-                <ion-icon name="thumbs-down-outline"></ion-icon>
-                <ion-label>Não participativo</ion-label>
-              </ion-chip>
-
-              <ion-chip style="height: auto;" color="danger" [outline]="[false].includes(presenceRegister['collaborative']) ? false : true" [style]="[false].includes(presenceRegister['collaborative']) ? 'background: var(--ion-color-danger); color: var(--ion-color-light)' : ''" (click)="giveCharacteristic(presenceRegister, 'collaborative', false)">
-                <ion-icon name="thumbs-down-outline"></ion-icon>
-                <ion-label>Descompromissado</ion-label>
+              <ion-chip *ngFor="let label of ebdLabels$ | async" style="height: auto;" [color]="label?.type === 'positive' ? 'success' : 'danger'" [outline]="label?.type === 'positive' ? (!presenceRegister[label?.title]) : ([false].includes(presenceRegister[label?.title]) ? false : true)" [style]="label?.type === 'positive' ? (presenceRegister[label?.title] ? 'background: var(--ion-color-success); color: var(--ion-color-light)' : '') : ([false].includes(presenceRegister[label?.title]) ? 'background: var(--ion-color-danger); color: var(--ion-color-light)' : '')" (click)="giveCharacteristic(presenceRegister, label?.title)">
+                <ion-icon [name]="label?.type === 'positive' ? 'thumbs-up-outline' : 'thumbs-down-outline'"></ion-icon>
+                <ion-label>{{label?.title}}</ion-label>
               </ion-chip>
             </ion-label>
           </ion-item>
