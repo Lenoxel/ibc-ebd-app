@@ -8,5 +8,6 @@ export interface IPresenceRegister {
     student_nickname: string;
     student_ebd_relation: string;
     lesson_title: string;
+    labels?: any[];
     underAction?: boolean;
 }

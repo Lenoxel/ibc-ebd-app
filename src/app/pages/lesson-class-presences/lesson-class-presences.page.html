@@ -49,7 +49,7 @@
         <ion-list slot="content">
           <ion-item lines="full">
             <ion-label class="ion-text-wrap">
-              <ion-chip *ngFor="let label of ebdLabels$ | async" style="height: auto;" [color]="label?.type === 'positive' ? 'success' : 'danger'" [outline]="label?.type === 'positive' ? (!presenceRegister[label?.title]) : ([false].includes(presenceRegister[label?.title]) ? false : true)" [style]="label?.type === 'positive' ? (presenceRegister[label?.title] ? 'background: var(--ion-color-success); color: var(--ion-color-light)' : '') : ([false].includes(presenceRegister[label?.title]) ? 'background: var(--ion-color-danger); color: var(--ion-color-light)' : '')" (click)="giveCharacteristic(presenceRegister, label?.title)">
+              <ion-chip *ngFor="let label of ebdLabels$ | async" style="height: auto;" [color]="label?.type === 'positive' ? 'success' : 'danger'" [outline]="label?.type === 'positive' ? (!presenceRegister?.labels[label?.title]) : ([false].includes(presenceRegister?.labels[label?.title]) ? false : true)" [style]="label?.type === 'positive' ? (presenceRegister?.labels[label?.title] ? 'background: var(--ion-color-success); color: var(--ion-color-light)' : '') : ([false].includes(presenceRegister?.labels[label?.title]) ? 'background: var(--ion-color-danger); color: var(--ion-color-light)' : '')" (click)="giveCharacteristic(presenceRegister, label?.title)">
                 <ion-icon [name]="label?.type === 'positive' ? 'thumbs-up-outline' : 'thumbs-down-outline'"></ion-icon>
                 <ion-label>{{label?.title}}</ion-label>
               </ion-chip>

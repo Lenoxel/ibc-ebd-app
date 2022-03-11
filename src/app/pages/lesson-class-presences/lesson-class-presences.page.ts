@@ -91,6 +91,7 @@ export class LessonClassPresencesPage implements OnInit {
               presenceRegister.justification = justification;
               this.giveAbsence(presenceRegister);
             } else {
+              presenceRegister.justification = null;
               this.handleGiveAbsence(presenceRegister);
             }
           }
@@ -116,9 +117,9 @@ export class LessonClassPresencesPage implements OnInit {
 
   giveCharacteristic(partialPresenceRegister: IPresenceRegister, title: string, isPositive: boolean = null) {
     if (isPositive !== null) {
-      partialPresenceRegister[title] = isPositive;
+      partialPresenceRegister.labels[title] = isPositive;
     } else {
-      partialPresenceRegister[title] = !partialPresenceRegister[title];
+      partialPresenceRegister.labels[title] = !partialPresenceRegister.labels[title] ?? true;
     }
   }
 }
