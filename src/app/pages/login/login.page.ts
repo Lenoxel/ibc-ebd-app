@@ -54,7 +54,8 @@ export class LoginPage implements OnInit {
 
         const alert = await this.alertController.create({
           header: 'Erro no Login',
-          message: res?.error?.error || res?.error?.detail || 'Por favor, tente novamente.',
+          // eslint-disable-next-line max-len
+          message: res?.error?.error || res?.error?.detail || res?.error?.message?.[0] || res?.error?.message || 'Por favor, tente novamente.',
           buttons: ['OK'],
         });
 

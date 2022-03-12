@@ -65,7 +65,7 @@ export class UtilService {
     private toastController: ToastController,
   ) { }
 
-  async showToastController(message: string, color: string, position: 'top' | 'bottom' | 'middle', duration = 2500) {
+  async showToastController(message: string, color: string, position: 'top' | 'bottom' | 'middle', duration = 2500, icon: string = '') {
     if (await this.toastController.getTop()) {
       this.toastController.dismiss();
     }
@@ -75,6 +75,7 @@ export class UtilService {
       color,
       position,
       duration,
+      icon,
       cssClass: 'toast-controller',
     });
 

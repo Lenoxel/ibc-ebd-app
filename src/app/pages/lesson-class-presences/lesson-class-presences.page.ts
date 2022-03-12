@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { AlertController, IonAccordion, IonAccordionGroup, ToastController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { IPresenceRegister } from 'src/app/interfaces/presenceRegister';
 import { LessonService } from 'src/app/services/lesson/lesson.service';
+import { UtilService } from 'src/app/services/util/util.service';
 
 @Component({
   selector: 'app-lesson-class-presences',
@@ -11,6 +12,8 @@ import { LessonService } from 'src/app/services/lesson/lesson.service';
   styleUrls: ['./lesson-class-presences.page.scss'],
 })
 export class LessonClassPresencesPage implements OnInit {
+  @ViewChild(IonAccordionGroup) accordionGroup: IonAccordionGroup;
+
   ebdPresencesRegister$: Observable<any>;
   ebdLabels$: Observable<any>;
   classId: number = null;
@@ -24,6 +27,8 @@ export class LessonClassPresencesPage implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private alertController: AlertController,
+    private toastController: ToastController,
+    private utilService: UtilService,
   ) { }
 
   ngOnInit() {
@@ -56,13 +61,13 @@ export class LessonClassPresencesPage implements OnInit {
 
   givePresence(presenceRegister: IPresenceRegister) {
     if (!presenceRegister.attended || !presenceRegister.register_on) {
-      presenceRegister.underAction = true;
+      // presenceRegister.underAction = true;
 
       presenceRegister.attended = true;
       presenceRegister.register_on = new Date();
 
       setTimeout(() => {
-        presenceRegister.underAction = false;
+        // presenceRegister.underAction = false;
       }, 350);
     }
   }
@@ -104,13 +109,13 @@ export class LessonClassPresencesPage implements OnInit {
 
   giveAbsence(presenceRegister: IPresenceRegister) {
     if (presenceRegister.attended || !presenceRegister.register_on) {
-      presenceRegister.underAction = true;
+      // presenceRegister.underAction = true;
 
       presenceRegister.attended = false;
       presenceRegister.register_on = new Date();
 
       setTimeout(() => {
-        presenceRegister.underAction = false;
+        // presenceRegister.underAction = false;
       }, 300);
     }
   }
@@ -121,5 +126,26 @@ export class LessonClassPresencesPage implements OnInit {
     } else {
       partialPresenceRegister.labels[title] = !partialPresenceRegister.labels[title] ?? true;
     }
+  }
+
+  async savePresenceRegister(presenceRegister: IPresenceRegister) {
+    presenceRegister.underAction = true;
+    setTimeout(async () => {
+      presenceRegister.underAction = false;
+
+      this.collapseAccordion();
+
+      this.utilService.showToastController(
+        `${presenceRegister.attended ? 'Presença' : 'Falta'} de ${presenceRegister.student_name} salva com sucesso!`,
+        'primary',
+        'top',
+        2500,
+        'checkmark-circle-outline',
+      );
+    }, 500);
+  }
+
+  async collapseAccordion() {
+    this.accordionGroup.value = '';
   }
 }

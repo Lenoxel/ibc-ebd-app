@@ -57,6 +57,10 @@ ion-toolbar {
     --color: var(--ion-color-primary-contrast);
 }
 
+ion-progress-bar {
+    height: 5px;
+}
+
 // ion-content {
 //    --background: var(--ion-color-primary);
 //    --color: var(--ion-color-primary-contrast);

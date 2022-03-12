@@ -40,17 +40,19 @@ export class LessonsPage implements OnInit, ViewDidEnter {
   }
 
   handleLessonClick({ id: lessonId, title, date }: ILesson) {
-    if (this.authService.$user.getValue()?.classesAsASecretary?.length) {
-      const userEbdClass = this.authService.$user.getValue().classesAsASecretary[0];
+    const { classesAsASecretary, classesAsATeacher } = this.authService.$user.getValue();
+
+    if (classesAsASecretary?.length) {
+      const userEbdClass = classesAsASecretary[0];
       this.router.navigateByUrl(
         `lesson/${lessonId}/classes/${userEbdClass?.id}/presences`,
-        { state: { lessonTitle: title, lessonDate: date } }
+        { state: { lessonTitle: title, lessonDate: date, className: userEbdClass?.name } }
       );
-    } else if (this.authService.$user.getValue()?.classesAsATeacher?.length) {
-      const userEbdClass = this.authService.$user.getValue().classesAsATeacher[0];
+    } else if (classesAsATeacher?.length) {
+      const userEbdClass = classesAsATeacher[0];
       this.router.navigateByUrl(
         `lesson/${lessonId}/classes/${userEbdClass?.id}/presences`,
-        { state: { lessonTitle: title, lessonDate: date } }
+        { state: { lessonTitle: title, lessonDate: date, className: userEbdClass?.name} }
       );
     } else {
       this.router.navigateByUrl(

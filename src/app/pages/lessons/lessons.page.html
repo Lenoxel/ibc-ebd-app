@@ -9,6 +9,10 @@
       </h2>
     </ion-title>
     <ion-buttons slot="primary">
+      <ion-button fill="clear" slot="icon-only" color="light" (click)="getEbdLessons()" size="large">
+        <ion-icon name="refresh-outline"></ion-icon>
+      </ion-button>
+
       <ion-button fill="clear" slot="icon-only" color="light" (click)="logout()" size="large">
         <ion-icon name="log-out-outline"></ion-icon>
       </ion-button>
@@ -27,8 +31,8 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-list>
-    <ion-item *ngFor="let lesson of ebdLessons$ | async; let first = first" button lines="full" (click)="lesson?.is_next_lesson ? showLessonNotAcessibleYet() : handleLessonClick(lesson)">
+  <ion-list *ngIf="ebdLessons$ | async as ebdLessons; else loadingTemplate">
+    <ion-item *ngFor="let lesson of ebdLessons; let first = first" button lines="full" (click)="lesson?.is_next_lesson ? showLessonNotAcessibleYet() : handleLessonClick(lesson)">
       <ion-label class="ion-text-wrap">
         <h2>{{lesson?.title}}</h2>
         <h3 class="lesson-date">{{lesson?.date | date: 'dd/MM/yyyy'}}</h3>
@@ -59,4 +63,8 @@
       <ion-badge class="lesson-number" slot="end" color="primary">Lição nº {{lesson?.number}}</ion-badge>
     </ion-item>
   </ion-list>
+
+  <ng-template #loadingTemplate>
+    <ion-progress-bar type="indeterminate"></ion-progress-bar>
+  </ng-template>
 </ion-content>

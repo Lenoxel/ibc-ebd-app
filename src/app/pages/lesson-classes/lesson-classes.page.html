@@ -19,8 +19,14 @@
      <h6 style="margin-top: 5px;">{{lessonDate | date: 'dd/MM/yyyy'}}</h6>
     </ion-list-header>
 
-    <ion-item *ngFor="let class of ebdClasses$ | async" button detail lines="none" class="ion-margin" (click)="handleClassCick(class)">
-      <h2>{{class['class_name']}}</h2>
-    </ion-item>
+    <ng-container *ngIf="ebdClasses$ | async as ebdClasses; else loadingTemplate">
+      <ion-item *ngFor="let class of ebdClasses" button detail lines="none" class="ion-margin" (click)="handleClassCick(class)">
+        <h2>{{class['class_name']}}</h2>
+      </ion-item>
+    </ng-container>
+
+    <ng-template #loadingTemplate>
+      <ion-progress-bar type="indeterminate"></ion-progress-bar>
+    </ng-template>
   </ion-list>
 </ion-content>
