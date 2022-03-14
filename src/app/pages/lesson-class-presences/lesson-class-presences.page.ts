@@ -61,14 +61,11 @@ export class LessonClassPresencesPage implements OnInit {
 
   givePresence(presenceRegister: IPresenceRegister) {
     if (!presenceRegister.attended || !presenceRegister.register_on) {
-      // presenceRegister.underAction = true;
 
       presenceRegister.attended = true;
       presenceRegister.register_on = new Date();
 
-      setTimeout(() => {
-        // presenceRegister.underAction = false;
-      }, 350);
+      this.expandAccordion(`accordion-${presenceRegister?.id}`);
     }
   }
 
@@ -109,14 +106,11 @@ export class LessonClassPresencesPage implements OnInit {
 
   giveAbsence(presenceRegister: IPresenceRegister) {
     if (presenceRegister.attended || !presenceRegister.register_on) {
-      // presenceRegister.underAction = true;
 
       presenceRegister.attended = false;
       presenceRegister.register_on = new Date();
 
-      setTimeout(() => {
-        // presenceRegister.underAction = false;
-      }, 300);
+      this.expandAccordion(`accordion-${presenceRegister?.id}`);
     }
   }
 
@@ -147,5 +141,9 @@ export class LessonClassPresencesPage implements OnInit {
 
   async collapseAccordion() {
     this.accordionGroup.value = '';
+  }
+
+  async expandAccordion(value: string) {
+    this.accordionGroup.value = value;
   }
 }

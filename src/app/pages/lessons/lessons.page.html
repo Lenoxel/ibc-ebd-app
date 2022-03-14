@@ -60,7 +60,7 @@
           </ion-chip>
         </ng-container>
       </ion-label>
-      <ion-badge class="lesson-number" slot="end" color="primary">Lição nº {{lesson?.number}}</ion-badge>
+      <ion-badge *ngIf="lesson?.number" class="lesson-number" slot="end" color="primary">Lição nº {{lesson?.number}}</ion-badge>
     </ion-item>
   </ion-list>
 
