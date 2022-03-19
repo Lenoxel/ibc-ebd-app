@@ -80,7 +80,9 @@ export class LessonClassPresencesPage implements OnInit {
   }
 
   giveCharacteristic(partialPresenceRegister: IPresenceRegister, label: IEbdLabel) {
-    let choosedLabel = partialPresenceRegister.labels.find(uniqueLabel => uniqueLabel.id === label?.id);
+    let choosedLabel = partialPresenceRegister.labels.find(
+      uniqueLabel => uniqueLabel.id ? uniqueLabel.id === label?.id : uniqueLabel.label_id === label?.id
+    );
 
     if (choosedLabel) {
       choosedLabel = null;
@@ -100,8 +102,12 @@ export class LessonClassPresencesPage implements OnInit {
   }
 
   async handleGivePresence(presenceRegister: IPresenceRegister) {
-    const hours = presenceRegister?.tempRegisterOn.getHours();
-    const minutes = presenceRegister?.tempRegisterOn.getMinutes();
+    if (!presenceRegister?.tempRegisterOn && presenceRegister.register_on) {
+      presenceRegister.tempRegisterOn = new Date(presenceRegister.register_on);
+    }
+
+    const hours = presenceRegister?.tempRegisterOn?.getHours();
+    const minutes = presenceRegister?.tempRegisterOn?.getMinutes();
 
     const alert = await this.alertController.create({
       header: `Confirme o horário de chegada de ${presenceRegister?.student_name}`,
@@ -181,7 +187,11 @@ export class LessonClassPresencesPage implements OnInit {
       justification: presenceRegister?.justification,
       // eslint-disable-next-line @typescript-eslint/naming-convention
       register_on: presenceRegister?.register_on,
-      labels: presenceRegister?.labels,
+      labels: presenceRegister?.labels.map((label) => ({
+        id: label?.id || label?.label_id,
+        title: label?.title || label?.label_title,
+        type: label?.type || label?.label_type,
+      })),
     };
 
     this.lessonService.saveUniqueEbdPresenceRegister(
