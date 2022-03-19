@@ -50,7 +50,7 @@ export class TokenInterceptorService {
 
         request = request.clone({
           setHeaders: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token?.access}`,
             'Content-Type': 'application/json',
           }
         });

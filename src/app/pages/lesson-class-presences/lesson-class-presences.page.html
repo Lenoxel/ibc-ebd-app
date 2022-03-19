@@ -33,30 +33,33 @@
         <ion-item slot="header" lines="none">
           <ion-label class="ion-text-wrap">
             <h2>{{presenceRegister['student_name']}}</h2>
-            <h5 *ngIf="presenceRegister['register_on']">
-              <span *ngIf="presenceRegister?.attended">Chegou às {{presenceRegister['register_on'] | date: 'HH:mm'}}</span>
-              <span *ngIf="!presenceRegister?.attended">Recebeu falta em {{presenceRegister['register_on'] | date: 'dd/MM/yyyy HH:mm'}}</span>
+            <h5 *ngIf="!presenceRegister?.underAction && (presenceRegister['register_on'] || presenceRegister['tempRegisterOn'])">
+              <span *ngIf="presenceRegister?.attended">Chegou às {{(presenceRegister['register_on'] || presenceRegister['tempRegisterOn']) | date: 'HH:mm'}}</span>
+              <span *ngIf="!presenceRegister?.attended">Recebeu falta em {{(presenceRegister['register_on'] || presenceRegister['tempRegisterOn']) | date: 'dd/MM/yyyy HH:mm'}}</span>
             </h5>
+            <ion-text *ngIf="presenceRegister?.tempRegisterOn && !presenceRegister?.register_on" color="warning">
+              <h6>Falta Salvar</h6>
+            </ion-text>
           </ion-label>
-          <ion-button style="margin-right: 5px;" color="success" size="default" [fill]="presenceRegister?.attended && presenceRegister?.register_on ? 'solid' : 'clear'" (click)="givePresence(presenceRegister); $event.stopPropagation()" [disabled]="presenceRegister?.underAction">
+          <ion-button style="margin-right: 5px;" color="success" size="default" [fill]="presenceRegister?.attended && (presenceRegister?.register_on || presenceRegister?.tempRegisterOn) ? 'solid' : 'clear'" (click)="givePresence(presenceRegister); $event.stopPropagation()" [disabled]="presenceRegister?.underAction">
             <ion-icon slot="icon-only" name="checkmark-circle-outline"></ion-icon>
           </ion-button>
-          <ion-button style="margin-left: 5px;" color="danger" size="default" [fill]="!presenceRegister?.attended && presenceRegister?.register_on ? 'solid' : 'clear'" (click)="handleGiveAbsence(presenceRegister); $event.stopPropagation()" [disabled]="presenceRegister?.underAction">
+          <ion-button style="margin-left: 5px;" color="danger" size="default" [fill]="!presenceRegister?.attended && (presenceRegister?.register_on || presenceRegister?.tempRegisterOn) ? 'solid' : 'clear'" (click)="giveAbsence(presenceRegister); $event.stopPropagation()" [disabled]="presenceRegister?.underAction">
             <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
           </ion-button>
         </ion-item>
-    
+
         <ion-list slot="content" lines="full">
           <ion-item lines="none">
             <ion-label class="ion-text-wrap">
-              <ion-chip *ngFor="let label of ebdLabels$ | async" style="height: auto;" [color]="label?.type === 'positive' ? 'success' : 'danger'" [outline]="!presenceRegister?.labels[label?.title]" [style]="label?.type === 'positive' ? (presenceRegister?.labels[label?.title] ? 'background: var(--ion-color-success); color: var(--ion-color-light)' : '') : (presenceRegister?.labels[label?.title] ? 'background: var(--ion-color-danger); color: var(--ion-color-light)' : '')" (click)="giveCharacteristic(presenceRegister, label?.title)" [disabled]="presenceRegister?.underAction">
+              <ion-chip *ngFor="let label of ebdLabels$ | async" style="height: auto;" [color]="label?.type === 'positive' ? 'success' : 'danger'" [outline]="!presenceRegister?.labelIds?.includes(label?.id)" [style]="label?.type === 'positive' ? (presenceRegister?.labelIds?.includes(label?.id) ? 'background: var(--ion-color-success); color: var(--ion-color-light)' : '') : (presenceRegister?.labelIds?.includes(label?.id) ? 'background: var(--ion-color-danger); color: var(--ion-color-light)' : '')" (click)="giveCharacteristic(presenceRegister, label)" [disabled]="presenceRegister?.underAction">
                 <ion-icon [name]="label?.type === 'positive' ? 'thumbs-up-outline' : 'thumbs-down-outline'"></ion-icon>
                 <ion-label>{{label?.title}}</ion-label>
               </ion-chip>
             </ion-label>
           </ion-item>
 
-          <ion-button (click)="savePresenceRegister(presenceRegister)" expand="full" fill="solid" [disabled]="presenceRegister?.underAction || !presenceRegister?.register_on">
+          <ion-button (click)="handleSavePresenceRegister(presenceRegister)" expand="full" fill="solid" [disabled]="presenceRegister?.underAction || (!presenceRegister?.register_on && !presenceRegister?.tempRegisterOn)">
             Salvar
           </ion-button>
         </ion-list>

@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AlertController, IonAccordion, IonAccordionGroup, ToastController } from '@ionic/angular';
+import { AlertController, IonAccordionGroup } from '@ionic/angular';
 import { Observable } from 'rxjs';
+import { IEbdLabel } from 'src/app/interfaces';
 import { IPresenceRegister } from 'src/app/interfaces/presenceRegister';
 import { LessonService } from 'src/app/services/lesson/lesson.service';
 import { UtilService } from 'src/app/services/util/util.service';
@@ -27,7 +28,6 @@ export class LessonClassPresencesPage implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private alertController: AlertController,
-    private toastController: ToastController,
     private utilService: UtilService,
   ) { }
 
@@ -60,13 +60,80 @@ export class LessonClassPresencesPage implements OnInit {
   }
 
   givePresence(presenceRegister: IPresenceRegister) {
-    if (!presenceRegister.attended || !presenceRegister.register_on) {
+    if (!presenceRegister.attended || !presenceRegister.tempRegisterOn) {
 
       presenceRegister.attended = true;
-      presenceRegister.register_on = new Date();
+      presenceRegister.tempRegisterOn = new Date();
 
       this.expandAccordion(`accordion-${presenceRegister?.id}`);
     }
+  }
+
+  giveAbsence(presenceRegister: IPresenceRegister) {
+    if (presenceRegister.attended || !presenceRegister.tempRegisterOn) {
+
+      presenceRegister.attended = false;
+      presenceRegister.tempRegisterOn = new Date();
+
+      this.expandAccordion(`accordion-${presenceRegister?.id}`);
+    }
+  }
+
+  giveCharacteristic(partialPresenceRegister: IPresenceRegister, label: IEbdLabel) {
+    let choosedLabel = partialPresenceRegister.labels.find(uniqueLabel => uniqueLabel.id === label?.id);
+
+    if (choosedLabel) {
+      choosedLabel = null;
+      partialPresenceRegister.labelIds = partialPresenceRegister.labelIds.filter(labelId => labelId !== label?.id);
+    } else {
+      partialPresenceRegister.labels.push(label);
+      partialPresenceRegister.labelIds.push(label?.id);
+    }
+  }
+
+  async handleSavePresenceRegister(presenceRegister: IPresenceRegister) {
+    if (presenceRegister.attended) {
+      this.handleGivePresence(presenceRegister);
+    } else {
+      this.handleGiveAbsence(presenceRegister);
+    }
+  }
+
+  async handleGivePresence(presenceRegister: IPresenceRegister) {
+    const hours = presenceRegister?.tempRegisterOn.getHours();
+    const minutes = presenceRegister?.tempRegisterOn.getMinutes();
+
+    const alert = await this.alertController.create({
+      header: `Confirme o horário de chegada de ${presenceRegister?.student_name}`,
+      inputs: [
+        {
+          name: 'arrivalTime',
+          type: 'time',
+          value: `${hours < 10 ? `0${hours}` : hours}:${minutes < 10 ? `0${minutes}` : minutes}`,
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        }, {
+          text: 'Salvar',
+          handler: ({ arrivalTime }) => {
+            if (arrivalTime) {
+              const hoursAndMinutes = (arrivalTime as string)?.split(':');
+
+              presenceRegister.tempRegisterOn.setHours(Number(hoursAndMinutes[0]), Number(hoursAndMinutes[1]));
+
+              this.savePresenceRegister(presenceRegister);
+            } else {
+              this.handleGivePresence(presenceRegister);
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
   async handleGiveAbsence(presenceRegister: IPresenceRegister) {
@@ -84,14 +151,14 @@ export class LessonClassPresencesPage implements OnInit {
           text: 'Não',
           role: 'cancel',
           handler: () => {
-            this.giveAbsence(presenceRegister);
+            this.savePresenceRegister(presenceRegister);
           }
         }, {
           text: 'Sim',
           handler: ({ justification }) => {
             if (justification) {
               presenceRegister.justification = justification;
-              this.giveAbsence(presenceRegister);
+              this.savePresenceRegister(presenceRegister);
             } else {
               presenceRegister.justification = null;
               this.handleGiveAbsence(presenceRegister);
@@ -104,29 +171,25 @@ export class LessonClassPresencesPage implements OnInit {
     await alert.present();
   }
 
-  giveAbsence(presenceRegister: IPresenceRegister) {
-    if (presenceRegister.attended || !presenceRegister.register_on) {
-
-      presenceRegister.attended = false;
-      presenceRegister.register_on = new Date();
-
-      this.expandAccordion(`accordion-${presenceRegister?.id}`);
-    }
-  }
-
-  giveCharacteristic(partialPresenceRegister: IPresenceRegister, title: string, isPositive: boolean = null) {
-    if (isPositive !== null) {
-      partialPresenceRegister.labels[title] = isPositive;
-    } else {
-      partialPresenceRegister.labels[title] = !partialPresenceRegister.labels[title] ?? true;
-    }
-  }
 
   async savePresenceRegister(presenceRegister: IPresenceRegister) {
     presenceRegister.underAction = true;
-    setTimeout(async () => {
-      presenceRegister.underAction = false;
+    presenceRegister.register_on = presenceRegister.tempRegisterOn;
 
+    const presenceRegisterToUpdate: Partial<IPresenceRegister> = {
+      attended: presenceRegister?.attended,
+      justification: presenceRegister?.justification,
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      register_on: presenceRegister?.register_on,
+      labels: presenceRegister?.labels,
+    };
+
+    this.lessonService.saveUniqueEbdPresenceRegister(
+      this.lessonId,
+      this.classId,
+      presenceRegister?.id,
+      presenceRegisterToUpdate,
+    ).subscribe((data) => {
       this.collapseAccordion();
 
       this.utilService.showToastController(
@@ -136,7 +199,19 @@ export class LessonClassPresencesPage implements OnInit {
         2500,
         'checkmark-circle-outline',
       );
-    }, 500);
+
+      presenceRegister.underAction = false;
+    }, err => {
+      this.utilService.showToastController(
+        `Ocorreu um erro ao dar ${presenceRegister.attended ? 'presença' : 'falta'} para ${presenceRegister.student_name}.`,
+        'danger',
+        'top',
+        2500,
+        'close-circle-outline',
+      );
+
+      presenceRegister.underAction = false;
+    });
   }
 
   async collapseAccordion() {
