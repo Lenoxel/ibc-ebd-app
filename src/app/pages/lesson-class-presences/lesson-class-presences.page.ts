@@ -86,10 +86,19 @@ export class LessonClassPresencesPage implements OnInit {
 
     if (choosedLabel) {
       choosedLabel = null;
-      partialPresenceRegister.labelIds = partialPresenceRegister.labelIds.filter(labelId => labelId !== label?.id);
+      partialPresenceRegister.labels = partialPresenceRegister.labels.filter(
+        uniqueLabel => uniqueLabel?.id !== label?.id && uniqueLabel?.label_id !== label?.label_id
+      );
+      partialPresenceRegister.labelIds = partialPresenceRegister.labelIds.filter(
+        labelId => labelId !== label?.id && labelId !== label?.label_id
+      );
+      partialPresenceRegister.labels_to_remove.push(label);
     } else {
       partialPresenceRegister.labels.push(label);
       partialPresenceRegister.labelIds.push(label?.id);
+      partialPresenceRegister.labels_to_remove = partialPresenceRegister.labels_to_remove.filter(
+        uniqueLabel => uniqueLabel?.id !== label?.id
+      );
     }
   }
 
@@ -192,6 +201,8 @@ export class LessonClassPresencesPage implements OnInit {
         title: label?.title || label?.label_title,
         type: label?.type || label?.label_type,
       })),
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      labels_to_remove: presenceRegister.labels_to_remove,
     };
 
     this.lessonService.saveUniqueEbdPresenceRegister(
@@ -204,7 +215,7 @@ export class LessonClassPresencesPage implements OnInit {
 
       this.utilService.showToastController(
         `${presenceRegister.attended ? 'Presença' : 'Falta'} de ${presenceRegister.student_name} salva com sucesso!`,
-        'primary',
+        'success',
         'top',
         2500,
         'checkmark-circle-outline',

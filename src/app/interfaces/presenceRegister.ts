@@ -12,6 +12,7 @@ export interface IPresenceRegister {
     student_ebd_relation: string;
     lesson_title: string;
     labels?: IEbdLabel[];
+    labels_to_remove?: IEbdLabel[];
     labelIds?: number[];
     underAction?: boolean;
 }
