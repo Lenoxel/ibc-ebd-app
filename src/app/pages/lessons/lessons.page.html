@@ -37,7 +37,7 @@
         <h4 *ngIf="lesson?.magazine_title">{{lesson?.magazine_title}}</h4>
         <h2>{{lesson?.title}}</h2>
         <h3 class="lesson-date">{{lesson?.date | date: 'dd/MM/yyyy'}}</h3>
-        <p *ngIf="lesson?.is_next_lesson">
+        <p *ngIf="lesson?.is_next_lesson" style="font-weight: bold;">
           <ion-text color="primary">Próxima lição</ion-text>
         </p>
         <ng-container *ngIf="!lesson?.is_next_lesson && (authService?.$user | async)?.fullAccess">

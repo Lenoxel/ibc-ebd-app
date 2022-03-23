@@ -1,5 +1,5 @@
-<ion-tabs>
-  <ion-tab-bar slot="bottom" color="primary">
+<ion-tabs >
+  <ion-tab-bar *ngIf="(authService?.$user | async)?.fullAccess" slot="bottom" color="primary">
     <ion-tab-button tab="lessons">
       <ion-icon name="book-outline"></ion-icon>
       <ion-label>Lições</ion-label>
