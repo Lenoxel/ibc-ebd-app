@@ -37,8 +37,8 @@
               <span *ngIf="presenceRegister?.attended">Chegou às {{(presenceRegister['register_on'] || presenceRegister['tempRegisterOn']) | date: 'HH:mm'}}</span>
               <span *ngIf="!presenceRegister?.attended">Recebeu falta em {{(presenceRegister['register_on'] || presenceRegister['tempRegisterOn']) | date: 'dd/MM/yyyy HH:mm'}}</span>
             </h5>
-            <ion-text *ngIf="presenceRegister?.tempRegisterOn && !presenceRegister?.register_on" color="warning">
-              <h6>Falta Salvar</h6>
+            <ion-text *ngIf="presenceRegister?.tempRegisterOn && !presenceRegister?.register_on" color="primary" style="font-weight: bold; text-shadow: 2px 2px 5px var(--ion-color-warning);">
+              <h5>Falta Salvar</h5>
             </ion-text>
           </ion-label>
           <ion-button style="margin-right: 5px;" color="success" size="default" [fill]="presenceRegister?.attended && (presenceRegister?.register_on || presenceRegister?.tempRegisterOn) ? 'solid' : 'clear'" (click)="givePresence(presenceRegister); $event.stopPropagation()" [disabled]="presenceRegister?.underAction">

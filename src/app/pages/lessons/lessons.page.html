@@ -34,10 +34,11 @@
   <ion-list *ngIf="ebdLessons$ | async as ebdLessons; else loadingTemplate">
     <ion-item *ngFor="let lesson of ebdLessons; let first = first" button lines="full" (click)="lesson?.is_next_lesson ? showLessonNotAcessibleYet() : handleLessonClick(lesson)">
       <ion-label class="ion-text-wrap">
+        <h4 *ngIf="lesson?.magazine_title">{{lesson?.magazine_title}}</h4>
         <h2>{{lesson?.title}}</h2>
         <h3 class="lesson-date">{{lesson?.date | date: 'dd/MM/yyyy'}}</h3>
         <p *ngIf="lesson?.is_next_lesson">
-          <ion-text color="success">Próxima lição</ion-text>
+          <ion-text color="primary">Próxima lição</ion-text>
         </p>
         <ng-container *ngIf="!lesson?.is_next_lesson && (authService?.$user | async)?.fullAccess">
           <!-- <p *ngIf="lesson?.presence_records?.pending_calls?.length">

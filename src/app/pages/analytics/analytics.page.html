@@ -189,7 +189,18 @@
         <ion-col *ngFor="let class of classes" size-lg="3" size-md="6" size-sm="12">
           <ion-card>
             <ion-item-group>
-              <ion-item-divider>{{class?.name}}</ion-item-divider>
+              <ion-item-divider>
+                <span style="position: absolute; left: 16px;">{{class?.name}}</span>
+                <span style="position: absolute; right: 8px;">
+                  <span>{{class?.presentsPercentual | percent:'1.0-1'}}</span>
+                  <span *ngIf="class?.bestFrequency" style="border: 3px solid var(--ion-color-success); margin-left: 8px">
+                    <ion-icon name="star-outline" color="success"></ion-icon>
+                  </span>
+                  <span *ngIf="class?.worstFrequency" style="border: 3px solid var(--ion-color-danger); margin-left: 8px">
+                    <ion-icon name="sad-outline" color="danger"></ion-icon>
+                  </span>
+                </span>
+              </ion-item-divider>
             
               <ion-item lines="none">
                 <ion-label>Matriculados</ion-label>

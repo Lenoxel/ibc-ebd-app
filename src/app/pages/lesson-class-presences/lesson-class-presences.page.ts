@@ -64,6 +64,7 @@ export class LessonClassPresencesPage implements OnInit {
 
       presenceRegister.attended = true;
       presenceRegister.tempRegisterOn = new Date();
+      presenceRegister.register_on = null;
 
       this.expandAccordion(`accordion-${presenceRegister?.id}`);
     }
@@ -74,12 +75,18 @@ export class LessonClassPresencesPage implements OnInit {
 
       presenceRegister.attended = false;
       presenceRegister.tempRegisterOn = new Date();
+      presenceRegister.register_on = null;
 
       this.expandAccordion(`accordion-${presenceRegister?.id}`);
     }
   }
 
   giveCharacteristic(partialPresenceRegister: IPresenceRegister, label: IEbdLabel) {
+    if (partialPresenceRegister.register_on) {
+      partialPresenceRegister.tempRegisterOn = new Date(partialPresenceRegister.register_on);
+      partialPresenceRegister.register_on = null;
+    }
+
     let choosedLabel = partialPresenceRegister.labels.find(
       uniqueLabel => uniqueLabel.id ? uniqueLabel.id === label?.id : uniqueLabel.label_id === label?.id
     );
@@ -215,10 +222,10 @@ export class LessonClassPresencesPage implements OnInit {
 
       this.utilService.showToastController(
         `${presenceRegister.attended ? 'Presença' : 'Falta'} de ${presenceRegister.student_name} salva com sucesso!`,
-        'success',
+        'primary',
         'top',
         2500,
-        'checkmark-circle-outline',
+        presenceRegister.attended ? 'checkmark-circle-outline' : 'close-circle-outline',
       );
 
       presenceRegister.underAction = false;
@@ -228,7 +235,6 @@ export class LessonClassPresencesPage implements OnInit {
         'danger',
         'top',
         2500,
-        'close-circle-outline',
       );
 
       presenceRegister.underAction = false;
