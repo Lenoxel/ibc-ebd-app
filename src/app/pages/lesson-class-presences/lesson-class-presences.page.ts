@@ -23,6 +23,8 @@ export class LessonClassPresencesPage implements OnInit {
   lessonTitle = '';
   lessonDate: Date = null;
 
+  minVisitorsQuantity = 0;
+
   constructor(
     private lessonService: LessonService,
     private activatedRoute: ActivatedRoute,
@@ -61,7 +63,6 @@ export class LessonClassPresencesPage implements OnInit {
 
   givePresence(presenceRegister: IPresenceRegister) {
     if (!presenceRegister.attended || !presenceRegister.tempRegisterOn) {
-
       presenceRegister.attended = true;
       presenceRegister.tempRegisterOn = new Date();
       presenceRegister.register_on = null;
