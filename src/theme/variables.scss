@@ -75,7 +75,24 @@
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
 
+  /** highlight **/
+  --ion-color-highlight: #5260ff;
+	--ion-color-highlight-rgb: 82,96,255;
+	--ion-color-highlight-contrast: #ffffff;
+	--ion-color-highlight-contrast-rgb: 255,255,255;
+	--ion-color-highlight-shade: #4854e0;
+	--ion-color-highlight-tint: #6370ff;
+
   --ion-font-family: 'Open Sans';
+}
+
+.ion-color-highlight {
+	--ion-color-base: var(--ion-color-highlight);
+	--ion-color-base-rgb: var(--ion-color-highlight-rgb);
+	--ion-color-contrast: var(--ion-color-highlight-contrast);
+	--ion-color-contrast-rgb: var(--ion-color-highlight-contrast-rgb);
+	--ion-color-shade: var(--ion-color-highlight-shade);
+	--ion-color-tint: var(--ion-color-highlight-tint);
 }
 
 @font-face {

@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { LessonClassPresencesPageRoutingModule } from './lesson-class-presences-routing.module';
 
 import { LessonClassPresencesPage } from './lesson-class-presences.page';
+import { PipesModule } from 'src/app/pipes/pipes.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    LessonClassPresencesPageRoutingModule
+    LessonClassPresencesPageRoutingModule,
+    PipesModule,
   ],
   declarations: [LessonClassPresencesPage]
 })

@@ -23,7 +23,7 @@ export class LessonClassPresencesPage implements OnInit {
   lessonTitle = '';
   lessonDate: Date = null;
 
-  minVisitorsQuantity = 0;
+  visitorsQuantity = 0;
 
   constructor(
     private lessonService: LessonService,
@@ -127,7 +127,7 @@ export class LessonClassPresencesPage implements OnInit {
     const minutes = presenceRegister?.tempRegisterOn?.getMinutes();
 
     const alert = await this.alertController.create({
-      header: `Confirme o horário de chegada de ${presenceRegister?.student_name}`,
+      header: `Confirme o horário de chegada de ${presenceRegister?.person_name}`,
       inputs: [
         {
           name: 'arrivalTime',
@@ -222,7 +222,7 @@ export class LessonClassPresencesPage implements OnInit {
       this.collapseAccordion();
 
       this.utilService.showToastController(
-        `${presenceRegister.attended ? 'Presença' : 'Falta'} de ${presenceRegister.student_name} salva com sucesso!`,
+        `${presenceRegister.attended ? 'Presença' : 'Falta'} de ${presenceRegister.person_name} salva com sucesso!`,
         'primary',
         'top',
         2500,
@@ -232,7 +232,7 @@ export class LessonClassPresencesPage implements OnInit {
       presenceRegister.underAction = false;
     }, err => {
       this.utilService.showToastController(
-        `Ocorreu um erro ao dar ${presenceRegister.attended ? 'presença' : 'falta'} para ${presenceRegister.student_name}.`,
+        `Ocorreu um erro ao dar ${presenceRegister.attended ? 'presença' : 'falta'} para ${presenceRegister.person_name}.`,
         'danger',
         'top',
         2500,
