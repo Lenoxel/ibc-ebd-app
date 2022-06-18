@@ -25,17 +25,22 @@
       <ion-item lines="full">
         <ion-label class="ion-text-wrap" style="margin-bottom: 0px;">
           <h2><strong>Classe {{className}}</strong></h2>
+
           <h3 style="font-weight: 400;">{{lessonTitle}}</h3>
+
           <h3>{{values?.ebdPresencesRegister | studentsCount}} alunos nessa chamada</h3>
+
           <div style="display: flex; align-items: center;">
             <h3 style="margin-right: 8px;">{{visitorsQuantity}} {{visitorsQuantity === 1 ? 'visitante' : 'visitantes'}}</h3>
-            <ion-button size="small" color="dark" fill="clear" (click)="visitorsQuantity = visitorsQuantity + 1">
+            <ion-button size="small" color="dark" fill="clear" (click)="increaseVisitorsQuantity()">
               <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
             </ion-button>
-            <ion-button size="small" color="dark" fill="clear" (click)="visitorsQuantity = visitorsQuantity - 1" [disabled]="!visitorsQuantity">
+            <ion-button size="small" color="dark" fill="clear" (click)="decreaseVisitorsQuantity()" [disabled]="!visitorsQuantity">
               <ion-icon slot="icon-only" name="remove-circle-outline"></ion-icon>
             </ion-button>
           </div>
+
+          <!-- <ion-input type="number" [(ngModel)]="moneyRaised" (keyup)="moneyRaisedCheck()"></ion-input> -->
         </ion-label>
       </ion-item>
 

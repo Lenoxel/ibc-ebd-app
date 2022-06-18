@@ -42,10 +42,15 @@ export class LessonClassesPage implements OnInit {
     this.ebdClasses$ = this.lessonService.getEbdClassesByLesson(lessonId);
   }
 
-  handleClassCick({ class_id: classId, class_name: className }: IEbdClass) {
+  handleClassCick({ class_id: classId, class_name: className, details }: IEbdClass) {
     this.router.navigateByUrl(
       `lesson/${this.lessonId}/classes/${classId}/presences`,
-      { state: { className, lessonTitle: this.lessonTitle, lessonDate: this.lessonDate } }
+      { state: {
+        className,
+        lessonTitle: this.lessonTitle,
+        lessonDate: this.lessonDate,
+        details,
+      } }
     );
   }
 
