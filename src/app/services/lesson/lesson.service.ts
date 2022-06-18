@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { API_ENDPOINT } from 'config';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { IEbdClassLessonDetails } from 'src/app/interfaces';
 import { IPresenceRegister } from 'src/app/interfaces/presenceRegister';
 
 @Injectable({
@@ -32,6 +33,17 @@ export class LessonService {
 
   getEbdPresencesRegister(lessonId: number, classId: number): Observable<any> {
     return this.httpClient.get(`${API_ENDPOINT}/ebd/lessons/${lessonId}/classes/${classId}/presences`);
+  }
+
+  saveEbdClassLessonDetails(
+    lessonId: number,
+    classId: number,
+    classLessonDetails: IEbdClassLessonDetails
+  ): Observable<any> {
+    return this.httpClient.put(
+      `${API_ENDPOINT}/ebd/lessons/${lessonId}/classes/${classId}/details/`,
+      classLessonDetails
+    );
   }
 
   saveUniqueEbdPresenceRegister(

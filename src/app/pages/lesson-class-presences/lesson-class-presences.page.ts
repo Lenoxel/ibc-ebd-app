@@ -94,18 +94,27 @@ export class LessonClassPresencesPage implements OnInit {
 
     if (choosedLabel) {
       choosedLabel = null;
+
       partialPresenceRegister.labels = partialPresenceRegister.labels.filter(
-        uniqueLabel => uniqueLabel?.id !== label?.id && uniqueLabel?.label_id !== label?.label_id
+        uniqueLabel => uniqueLabel?.id ? uniqueLabel?.id !== label?.id : uniqueLabel?.label_id !== label?.label_id
       );
+
       partialPresenceRegister.labelIds = partialPresenceRegister.labelIds.filter(
-        labelId => labelId !== label?.id && labelId !== label?.label_id
+        labelId => label?.id ? labelId !== label?.id : labelId !== label?.label_id
       );
+
       partialPresenceRegister.labels_to_remove.push(label);
+
+      // if (!partialPresenceRegister.labels_to_remove.find(
+      //   labelToRemove => labelToRemove?.id ? labelToRemove.id === label?.id : labelToRemove?.label_id === label?.id
+      // )) {
+      //   partialPresenceRegister.labels_to_remove.push(label);
+      // }
     } else {
       partialPresenceRegister.labels.push(label);
       partialPresenceRegister.labelIds.push(label?.id);
       partialPresenceRegister.labels_to_remove = partialPresenceRegister.labels_to_remove.filter(
-        uniqueLabel => uniqueLabel?.id !== label?.id
+        uniqueLabel => uniqueLabel?.id ? uniqueLabel?.id !== label?.id : uniqueLabel?.label_id !== label?.id
       );
     }
   }
