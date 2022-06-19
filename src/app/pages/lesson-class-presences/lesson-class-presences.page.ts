@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, IonAccordionGroup } from '@ionic/angular';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { IEbdLabel } from 'src/app/interfaces';
+import { IEbdClassLessonDetails, IEbdLabel } from 'src/app/interfaces';
 import { IPresenceRegister } from 'src/app/interfaces/presenceRegister';
 import { LessonService } from 'src/app/services/lesson/lesson.service';
 import { UtilService } from 'src/app/services/util/util.service';
@@ -66,17 +66,35 @@ export class LessonClassPresencesPage implements OnInit {
         lessonTitle,
         lessonDate,
         className,
-        details: {
-          visitors_quantity: visitorsQuantity,
-          money_raised: moneyRaised,
-        }
+        details,
       } = this.router.getCurrentNavigation().extras.state;
       this.className = className;
       this.lessonTitle = lessonTitle;
       this.lessonDate = lessonDate;
-      this.visitorsQuantity = visitorsQuantity || 0;
-      this.moneyRaised = moneyRaised || 0;
-      this.oldMoneyRaised = moneyRaised || 0;
+
+      if (details) {
+        const {
+          visitors_quantity: visitorsQuantity,
+          money_raised: moneyRaised,
+        } = details;
+
+        this.visitorsQuantity = visitorsQuantity || 0;
+        this.moneyRaised = moneyRaised || 0;
+        this.oldMoneyRaised = moneyRaised || 0;
+        return;
+      }
+
+      this.lessonService.getEbdClassLessonDetails(this.lessonId, this.classId).subscribe((ebdClassLessonDetails: any) => {
+        const {
+          visitors_quantity: visitorsQuantity,
+          money_raised: moneyRaised,
+        } = ebdClassLessonDetails;
+
+        this.visitorsQuantity = visitorsQuantity || 0;
+        this.moneyRaised = moneyRaised || 0;
+        this.oldMoneyRaised = moneyRaised || 0;
+        return;
+      });
     }
   }
 

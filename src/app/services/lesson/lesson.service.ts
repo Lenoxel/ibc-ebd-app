@@ -35,6 +35,12 @@ export class LessonService {
     return this.httpClient.get(`${API_ENDPOINT}/ebd/lessons/${lessonId}/classes/${classId}/presences`);
   }
 
+  getEbdClassLessonDetails(lessonId: number, classId: number): Observable<any> {
+    return this.httpClient.get(
+      `${API_ENDPOINT}/ebd/lessons/${lessonId}/classes/${classId}/details`
+    );
+  }
+
   saveEbdClassLessonDetails(
     lessonId: number,
     classId: number,
