@@ -48,18 +48,22 @@ export class LessonsPage implements OnInit, ViewDidEnter {
         `lesson/${lessonId}/classes/${userEbdClass?.id}/presences`,
         { state: { lessonTitle: title, lessonDate: date, className: userEbdClass?.name } }
       );
-    } else if (classesAsATeacher?.length) {
+      return;
+    }
+
+    if (classesAsATeacher?.length) {
       const userEbdClass = classesAsATeacher[0];
       this.router.navigateByUrl(
         `lesson/${lessonId}/classes/${userEbdClass?.id}/presences`,
         { state: { lessonTitle: title, lessonDate: date, className: userEbdClass?.name} }
       );
-    } else {
-      this.router.navigateByUrl(
-        `lesson/${lessonId}/classes`,
-        { state: { lessonTitle: title, lessonDate: date } }
-      );
+      return;
     }
+
+    this.router.navigateByUrl(
+      `lesson/${lessonId}/classes`,
+      { state: { lessonTitle: title, lessonDate: date } }
+    );
   }
 
   showPresenceRecordsInfo(type: 'presents' | 'absents' | 'pending', quantity: number) {
@@ -91,9 +95,9 @@ export class LessonsPage implements OnInit, ViewDidEnter {
     return lookUpTable[type](quantity);
   }
 
-  showLessonNotAcessibleYet() {
+  showLessonNotAcessibleYet(lessonDate: string) {
     this.utilService.showToastController(
-      `Essa lição não está acessível pois ainda não aconteceu.`,
+      `Essa lição não está acessível, pois irá acontecer em ${this.utilService.datePipe.transform(lessonDate, 'dd/MM/yyyy')}`,
       'light',
       'top'
     );

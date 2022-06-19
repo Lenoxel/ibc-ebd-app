@@ -32,7 +32,7 @@
   </ion-header>
 
   <ion-list *ngIf="ebdLessons$ | async as ebdLessons; else loadingTemplate">
-    <ion-item *ngFor="let lesson of ebdLessons; let first = first" button lines="full" (click)="lesson?.is_next_lesson ? showLessonNotAcessibleYet() : handleLessonClick(lesson)">
+    <ion-item *ngFor="let lesson of ebdLessons; let first = first" button lines="full" (click)="lesson?.is_next_lesson ? showLessonNotAcessibleYet(lesson?.date) : handleLessonClick(lesson)">
       <ion-label class="ion-text-wrap">
         <h4 *ngIf="lesson?.magazine_title">{{lesson?.magazine_title}}</h4>
         <h2>{{lesson?.title}}</h2>

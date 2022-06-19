@@ -25,21 +25,20 @@
       <ion-item lines="full">
         <ion-label class="ion-text-wrap" style="margin-bottom: 0px;">
           <h2><strong>Classe {{className}}</strong></h2>
-
-          <h3 style="font-weight: 400;">{{lessonTitle}}</h3>
-
+          <h3 style="font-weight: 400;">
+            <span>{{lessonTitle}}</span>
+            <span *ngIf="hasLessonEnded"> - Essa lição já terminou</span>
+          </h3>
           <h3>{{values?.ebdPresencesRegister | studentsCount}} alunos nessa chamada</h3>
-
           <div style="display: flex; align-items: center;">
             <h3 style="margin-right: 8px;">{{visitorsQuantity}} {{visitorsQuantity === 1 ? 'visitante' : 'visitantes'}}</h3>
-            <ion-button size="small" color="dark" fill="clear" (click)="increaseVisitorsQuantity()">
+            <ion-button size="small" color="dark" fill="clear" (click)="increaseVisitorsQuantity()" [disabled]="hasLessonEnded">
               <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
             </ion-button>
-            <ion-button size="small" color="dark" fill="clear" (click)="decreaseVisitorsQuantity()" [disabled]="!visitorsQuantity">
+            <ion-button size="small" color="dark" fill="clear" (click)="decreaseVisitorsQuantity()" [disabled]="!visitorsQuantity || hasLessonEnded">
               <ion-icon slot="icon-only" name="remove-circle-outline"></ion-icon>
             </ion-button>
           </div>
-
           <!-- <ion-input type="number" [(ngModel)]="moneyRaised" (keyup)="moneyRaisedCheck()"></ion-input> -->
         </ion-label>
       </ion-item>
@@ -65,17 +64,20 @@
                 <h2>{{presenceRegister['person_name']}}</h2>
                 <h5 *ngIf="!presenceRegister?.underAction && (presenceRegister['register_on'] || presenceRegister['tempRegisterOn'])">
                   <span *ngIf="presenceRegister?.attended">Chegou às {{(presenceRegister['register_on'] || presenceRegister['tempRegisterOn']) | date: 'HH:mm'}}</span>
-                  <span *ngIf="!presenceRegister?.attended">Recebeu falta em {{(presenceRegister['register_on'] || presenceRegister['tempRegisterOn']) | date: 'dd/MM/yyyy HH:mm'}}</span>
+                  <div *ngIf="!presenceRegister?.attended">
+                    <div>Recebeu falta em {{(presenceRegister['register_on'] || presenceRegister['tempRegisterOn']) | date: 'dd/MM/yyyy HH:mm'}}</div>
+                    <div>{{presenceRegister?.justification || 'Não justificada'}}</div>
+                  </div>
                 </h5>
                 <div *ngIf="presenceRegister?.tempRegisterOn && !presenceRegister?.register_on" style="display: flex; align-items: center; text-shadow: 2px 2px 5px var(--ion-color-warning);">
                   <!-- <ion-icon name="warning-outline" color="warning"></ion-icon> -->
                   <ion-label>Não esqueça de Salvar</ion-label>
                 </div>
               </ion-label>
-              <ion-button class="button-large" style="margin-right: 5px;" color="success" size="default" [fill]="presenceRegister?.attended && (presenceRegister?.register_on || presenceRegister?.tempRegisterOn) ? 'solid' : 'clear'" (click)="givePresence(presenceRegister); $event.stopPropagation()" [disabled]="presenceRegister?.underAction">
+              <ion-button class="button-large" style="margin-right: 5px;" color="success" size="default" [fill]="presenceRegister?.attended && (presenceRegister?.register_on || presenceRegister?.tempRegisterOn) ? 'solid' : 'clear'" (click)="givePresence(presenceRegister); $event.stopPropagation()" [disabled]="presenceRegister?.underAction || hasLessonEnded">
                 <ion-icon slot="icon-only" name="checkmark-circle-outline"></ion-icon>
               </ion-button>
-              <ion-button class="button-large" style="margin-left: 5px;" color="danger" size="default" [fill]="!presenceRegister?.attended && (presenceRegister?.register_on || presenceRegister?.tempRegisterOn) ? 'solid' : 'clear'" (click)="giveAbsence(presenceRegister); $event.stopPropagation()" [disabled]="presenceRegister?.underAction">
+              <ion-button class="button-large" style="margin-left: 5px;" color="danger" size="default" [fill]="!presenceRegister?.attended && (presenceRegister?.register_on || presenceRegister?.tempRegisterOn) ? 'solid' : 'clear'" (click)="giveAbsence(presenceRegister); $event.stopPropagation()" [disabled]="presenceRegister?.underAction || hasLessonEnded">
                 <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
               </ion-button>
             </ion-item>
@@ -83,14 +85,14 @@
             <ion-list slot="content" lines="full">
               <ion-item lines="none" [disabled]="presenceRegister['is_teacher'] || presenceRegister['is_secretary']">
                 <ion-label class="ion-text-wrap">
-                  <ion-chip *ngFor="let label of values?.ebdLabels" style="height: auto;" [color]="label?.type === 'positive' ? 'success' : 'danger'" [outline]="!presenceRegister?.labelIds?.includes(label?.id)" [style]="label?.type === 'positive' ? (presenceRegister?.labelIds?.includes(label?.id) ? 'background: var(--ion-color-success); color: var(--ion-color-light)' : '') : (presenceRegister?.labelIds?.includes(label?.id) ? 'background: var(--ion-color-danger); color: var(--ion-color-light)' : '')" (click)="giveCharacteristic(presenceRegister, label)" [disabled]="presenceRegister?.underAction">
+                  <ion-chip *ngFor="let label of values?.ebdLabels" style="height: auto;" [color]="label?.type === 'positive' ? 'success' : 'danger'" [outline]="!presenceRegister?.labelIds?.includes(label?.id)" [style]="label?.type === 'positive' ? (presenceRegister?.labelIds?.includes(label?.id) ? 'background: var(--ion-color-success); color: var(--ion-color-light)' : '') : (presenceRegister?.labelIds?.includes(label?.id) ? 'background: var(--ion-color-danger); color: var(--ion-color-light)' : '')" (click)="giveCharacteristic(presenceRegister, label)" [disabled]="presenceRegister?.underAction || hasLessonEnded">
                     <ion-icon [name]="label?.type === 'positive' ? 'thumbs-up-outline' : 'thumbs-down-outline'"></ion-icon>
                     <ion-label>{{label?.title}}</ion-label>
                   </ion-chip>
                 </ion-label>
               </ion-item>
     
-              <ion-button class="button-large" (click)="handleSavePresenceRegister(presenceRegister)" expand="full" fill="solid" [disabled]="presenceRegister?.underAction || (!presenceRegister?.register_on && !presenceRegister?.tempRegisterOn)">
+              <ion-button class="button-large" (click)="handleSavePresenceRegister(presenceRegister)" expand="full" fill="solid" [disabled]="presenceRegister?.underAction || (!presenceRegister?.register_on && !presenceRegister?.tempRegisterOn) || hasLessonEnded">
                 Salvar
               </ion-button>
             </ion-list>

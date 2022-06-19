@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { ToastController } from '@ionic/angular';
 
@@ -5,6 +6,8 @@ import { ToastController } from '@ionic/angular';
   providedIn: 'root'
 })
 export class UtilService {
+  datePipe = new DatePipe('pt-BR');
+
   years = [
     '2021',
     '2022',
