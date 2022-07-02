@@ -1,36 +1,14 @@
-<ion-header #header [translucent]="true" [ngStyle]="{'top': headerMarginTop}">
-  <ion-toolbar>
-    <ion-title>
-      <h5>
-        Olá, {{ (authService?.$user | async)?.name }}
-      </h5>
-      <h2>
-        Lições
-      </h2>
-    </ion-title>
-    <ion-buttons slot="primary">
-      <ion-button fill="clear" slot="icon-only" color="light" (click)="getEbdLessons()" size="large">
-        <ion-icon name="refresh-outline"></ion-icon>
-      </ion-button>
-
-      <ion-button fill="clear" slot="icon-only" color="light" (click)="logout()" size="large">
-        <ion-icon name="log-out-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<app-header
+  [headerTitle]="'Lições'"
+  [headerMarginTop]="headerMarginTop"
+  (refreshAction)="getEbdLessons()"
+></app-header>
 
 <ion-content
   [fullscreen]="true"
   [scrollEvents]="true"
   (ionScroll)="onContentScroll($event)"
 >
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Lições</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
   <ion-list *ngIf="ebdLessons$ | async as ebdLessons; else loadingTemplate">
     <ion-item *ngFor="let lesson of ebdLessons; let first = first" button lines="full" (click)="lesson?.is_next_lesson ? showLessonNotAcessibleYet(lesson?.date) : handleLessonClick(lesson)">
       <ion-label class="ion-text-wrap">

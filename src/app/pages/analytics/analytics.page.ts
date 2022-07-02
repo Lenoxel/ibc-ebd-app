@@ -296,6 +296,8 @@ export class AnalyticsPage implements OnInit, AfterViewInit {
     // this.doughnutChartMethod();
   }
 
+  getAnalytics() {}
+
   calculateClassesFrequency(): void {
     this.classes = this.classes.map(ebdClass => ({
       ...ebdClass,
@@ -328,7 +330,7 @@ export class AnalyticsPage implements OnInit, AfterViewInit {
     this.lineChartPresences = new Chart(this.lineCanvasPresences.nativeElement, {
       type: 'line',
       data: {
-        labels: ['12/12', '19/12', '26/12', '02/01', '09/01', '16/01', '23/01'],
+        labels: ['08/05', '15/05', '22/05', '29/05', '05/06', '12/06', '19/06', '26/06'],
         datasets: [
           {
             label: 'Presentes',
@@ -349,7 +351,7 @@ export class AnalyticsPage implements OnInit, AfterViewInit {
             pointHoverBorderWidth: 2,
             pointRadius: 1,
             pointHitRadius: 10,
-            data: [199, 208, 212, 271, 252, 287, 249],
+            data: [199, 208, 212, 271, 252, 287, 249, 216],
             spanGaps: false,
           },
           {
@@ -371,7 +373,7 @@ export class AnalyticsPage implements OnInit, AfterViewInit {
             pointHoverBorderWidth: 2,
             pointRadius: 1,
             pointHitRadius: 10,
-            data: [116, 97, 98, 32, 55, 17, 74],
+            data: [116, 97, 98, 32, 55, 17, 74, 95],
             spanGaps: false,
           }
         ]

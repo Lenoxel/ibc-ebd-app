@@ -28,3 +28,15 @@ ion-avatar {
 :host ::ng-deep .swiper-wrapper {
     align-items: center !important;
 }
+
+.card-content {
+    font-size: 32px;
+    font-weight: bolder;
+}
+
+@media screen and (max-width: 540px) {
+    .card-content {
+        font-size: 20px;
+        font-weight: bolder;
+    }
+}

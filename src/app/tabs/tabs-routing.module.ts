@@ -13,6 +13,10 @@ const routes: Routes = [
         loadChildren: () => import('../pages/lessons/lessons.module').then(m => m.LessonsPageModule)
       },
       {
+        path: 'students',
+        loadChildren: () => import('../pages/students/students.module').then(m => m.StudentsPageModule),
+      },
+      {
         path: 'analytics',
         loadChildren: () => import('../pages/analytics/analytics.module').then(m => m.AnalyticsPageModule),
         canLoad: [FullAccessGuard],

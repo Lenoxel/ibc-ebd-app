@@ -1,0 +1,21 @@
+<ion-header #header [translucent]="true" [ngStyle]="{'top': headerMarginTop}">
+  <ion-toolbar>
+    <ion-title>
+      <h5>
+        Olá, {{ (authService?.$user | async)?.name }}
+      </h5>
+      <h2>
+        {{headerTitle}}
+      </h2>
+    </ion-title>
+    <ion-buttons slot="primary">
+      <ion-button fill="clear" slot="icon-only" color="light" (click)="refreshAction.emit()" size="large">
+        <ion-icon name="refresh-outline"></ion-icon>
+      </ion-button>
+
+      <ion-button fill="clear" slot="icon-only" color="light" (click)="confirmLogout()" size="large">
+        <ion-icon name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>

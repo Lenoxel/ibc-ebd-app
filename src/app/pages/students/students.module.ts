@@ -4,10 +4,9 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { AnalyticsPageRoutingModule } from './analytics-routing.module';
+import { StudentsPageRoutingModule } from './students-routing.module';
 
-import { AnalyticsPage } from './analytics.page';
-import { SwiperModule } from 'swiper/angular';
+import { StudentsPage } from './students.page';
 import { ComponentsModule } from 'src/app/components/components.module';
 
 @NgModule({
@@ -15,10 +14,9 @@ import { ComponentsModule } from 'src/app/components/components.module';
     CommonModule,
     FormsModule,
     IonicModule,
-    AnalyticsPageRoutingModule,
-    SwiperModule,
+    StudentsPageRoutingModule,
     ComponentsModule,
   ],
-  declarations: [AnalyticsPage]
+  declarations: [StudentsPage]
 })
-export class AnalyticsPageModule {}
+export class StudentsPageModule {}

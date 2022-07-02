@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NavController, ViewDidEnter } from '@ionic/angular';
+import { ViewDidEnter } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { ILesson } from 'src/app/interfaces';
 import { AuthService } from 'src/app/services/auth/auth.service';
@@ -18,7 +18,6 @@ export class LessonsPage implements OnInit, ViewDidEnter {
 
   constructor(
     public authService: AuthService,
-    private navController: NavController,
     private lessonService: LessonService,
     private utilService: UtilService,
     private router: Router,
@@ -101,11 +100,6 @@ export class LessonsPage implements OnInit, ViewDidEnter {
       'light',
       'top'
     );
-  }
-
-  async logout() {
-    await this.authService.logout();
-    this.navController.navigateRoot('login', { replaceUrl: true });
   }
 
 }
