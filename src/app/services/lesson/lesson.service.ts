@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { API_ENDPOINT } from 'config';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { IEbdClassLessonDetails } from 'src/app/interfaces';
 import { IPresenceRegister } from 'src/app/interfaces/presenceRegister';
 

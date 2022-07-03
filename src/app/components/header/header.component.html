@@ -17,5 +17,12 @@
         <ion-icon name="log-out-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
+
+    <ion-searchbar
+      *ngIf="searchbarOptions"
+      [placeholder]="searchbarOptions?.placeholder || 'Pesquise aqui'"
+      [showCancelButton]="searchbarOptions?.showCancelButton || 'focus'"
+      [debounce]="searchbarOptions?.debounce || 500"
+    ></ion-searchbar>
   </ion-toolbar>
 </ion-header>

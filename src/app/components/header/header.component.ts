@@ -1,6 +1,7 @@
  import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AlertController, NavController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { SearchbarOptions } from 'src/app/types';
 
 @Component({
   selector: 'app-header',
@@ -10,6 +11,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 export class HeaderComponent implements OnInit {
   @Input() headerTitle = '';
   @Input() headerMarginTop = '0px';
+  @Input() searchbarOptions: SearchbarOptions | null = null;
   @Output() refreshAction = new EventEmitter<void>();
 
   constructor(

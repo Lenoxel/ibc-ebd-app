@@ -1,50 +1,27 @@
 <app-header
   [headerTitle]="'Alunos'"
   [headerMarginTop]="headerMarginTop"
-  (refreshAction)="getStudents()"
+  [searchbarOptions]="searchbarOptions"
+  (refreshAction)="getEbdStudents()"
 ></app-header>
 
-<ion-toolbar>
-  <ion-row>
-    <ion-col size="12">
-      <ion-searchbar
-        placeholder="Pesquise por um aluno"
-        showCancelButton="focus"
-        debounce="500"
-      ></ion-searchbar>
-    </ion-col>
-
-    <ion-col size-xs="12" size-md="6">
-      <ion-input type="date" placeholder="Data de início"></ion-input>
-    </ion-col>
-
-    <ion-col size-xs="12" size-md="6">
-      <ion-input type="date" placeholder="Data de fim"></ion-input>
-    </ion-col>
-  </ion-row>
-</ion-toolbar>
-
-<ion-content>
-  <ng-container *ngIf="selectedStudent; else noStudentTemplate">
-    
-  </ng-container>
-
-  <ng-template #noStudentTemplate>
-    <ion-item class="ion-margin-top" lines="full">
-      <ion-thumbnail slot="start">
-        <ion-skeleton-text></ion-skeleton-text>
-      </ion-thumbnail>
+<ion-content
+  [fullscreen]="true"
+  [scrollEvents]="true"
+  (ionScroll)="onContentScroll($event)"
+>
+  <ion-list *ngIf="ebdStudents$ | async as ebdStudents; else loadingTemplate">
+    <ion-item *ngFor="let student of ebdStudents; let first = first" button lines="full">
+      <ion-avatar slot="start">
+        <img [src]="student?.picture || '/assets/img/person.png'" />
+      </ion-avatar>
       <ion-label>
-        <h3>
-          <ion-skeleton-text style="width: 80%"></ion-skeleton-text>
-        </h3>
-        <p>
-          <ion-skeleton-text style="width: 60%"></ion-skeleton-text>
-        </p>
-        <p>
-          <ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
-        </p>
+        {{student?.name}}
       </ion-label>
     </ion-item>
+  </ion-list>
+
+  <ng-template #loadingTemplate>
+    <ion-progress-bar type="indeterminate"></ion-progress-bar>
   </ng-template>
 </ion-content>
