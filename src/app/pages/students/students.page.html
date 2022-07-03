@@ -16,7 +16,8 @@
         <img [src]="student?.picture || '/assets/img/person.png'" />
       </ion-avatar>
       <ion-label>
-        {{student?.name}}
+        <h3>{{student?.name}}</h3>
+        <p>Classe {{student?.ebd_class}}</p>
       </ion-label>
     </ion-item>
   </ion-list>
