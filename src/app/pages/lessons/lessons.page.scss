@@ -1,12 +1,12 @@
 @media screen and (max-width: 540px) {
-    .lesson-date {
+    .lesson-date-on-top {
         position: absolute;
         right: 10px;
         top: 5px;
     }
 
-    .lesson-number {
+    .lesson-number-on-top {
         align-self: center;
-        margin-top: 20px;
+        margin-top: 1rem;
     }
 }

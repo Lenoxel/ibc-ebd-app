@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { IStudent } from 'src/app/interfaces';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { StudentService } from 'src/app/services/student/student.service';
 import { SearchbarOptions } from 'src/app/types';
@@ -10,14 +11,15 @@ import { SearchbarOptions } from 'src/app/types';
   styleUrls: ['./students.page.scss'],
 })
 export class StudentsPage implements OnInit {
-  ebdStudents$: Observable<any>;
+  ebdStudents$: Observable<IStudent[]>;
+  filteredName = '';
   headerMarginTop = '0px';
-  selectedStudent: any = null;
   searchbarOptions: SearchbarOptions = {
-    placeholder: 'Pesquise por um aluno',
+    placeholder: 'Pesquise pelo nome',
     showCancelButton: 'focus',
     debounce: 500
   };
+  selectedStudent: IStudent | null;
 
   constructor(
     public authService: AuthService,
@@ -34,6 +36,10 @@ export class StudentsPage implements OnInit {
 
   getEbdStudents() {
     this.ebdStudents$ = this.studentService.getEbdStudents();
+  }
+
+  onFilterStudents(value: string) {
+    this.filteredName = value;
   }
 
 }

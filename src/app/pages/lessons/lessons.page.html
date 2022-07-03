@@ -1,7 +1,7 @@
 <app-header
   [headerTitle]="'Lições'"
   [headerMarginTop]="headerMarginTop"
-  (refreshAction)="getEbdLessons()"
+  (refreshEvent)="getEbdLessons()"
 ></app-header>
 
 <ion-content
@@ -14,7 +14,7 @@
       <ion-label class="ion-text-wrap">
         <h4 *ngIf="lesson?.magazine_title">{{lesson?.magazine_title}}</h4>
         <h2>{{lesson?.title}}</h2>
-        <h3 class="lesson-date">{{lesson?.date | date: 'dd/MM/yyyy'}}</h3>
+        <h3 [ngClass]="{'lesson-date-on-top': (authService?.$user | async)?.fullAccess}">{{lesson?.date | date: 'dd/MM/yyyy'}}</h3>
         <p *ngIf="lesson?.is_next_lesson" style="font-weight: bold;">
           <ion-text color="primary">Próxima lição</ion-text>
         </p>
@@ -39,7 +39,7 @@
           </ion-chip>
         </ng-container>
       </ion-label>
-      <ion-badge *ngIf="lesson?.number" class="lesson-number" slot="end" color="primary">Lição nº {{lesson?.number}}</ion-badge>
+      <ion-badge *ngIf="lesson?.number" class="lesson-number-on-top" slot="end" color="primary">Lição nº {{lesson?.number}}</ion-badge>
     </ion-item>
   </ion-list>
 

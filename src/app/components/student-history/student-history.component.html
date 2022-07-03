@@ -1,0 +1,26 @@
+<ion-modal (willDismiss)="dismissModalEvent.emit()">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button (click)="hideModal()">
+            <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+        <ion-title>Histórico do aluno</ion-title>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="ion-padding">
+      <ion-item class="ion-text-center ion-align-items-center" lines="none">
+        <ion-label class="ion-text-wrap">
+          <ion-avatar>
+            <img [src]="student?.picture || '/assets/img/person.png'">
+          </ion-avatar>
+          <h2>{{student?.name}}</h2>
+          <h3>{{student?.ebd_class ? 'Classe ' + student?.ebd_class : 'Sem Classe'}}</h3>
+        </ion-label>
+      </ion-item>
+    </ion-content>
+  </ng-template>
+</ion-modal>

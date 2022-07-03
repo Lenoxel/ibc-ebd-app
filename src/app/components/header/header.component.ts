@@ -12,7 +12,8 @@ export class HeaderComponent implements OnInit {
   @Input() headerTitle = '';
   @Input() headerMarginTop = '0px';
   @Input() searchbarOptions: SearchbarOptions | null = null;
-  @Output() refreshAction = new EventEmitter<void>();
+  @Output() refreshEvent = new EventEmitter<void>();
+  @Output() searchEvent = new EventEmitter<string>();
 
   constructor(
     public authService: AuthService,
@@ -24,6 +25,10 @@ export class HeaderComponent implements OnInit {
 
   onContentScroll(event) {
     this.headerMarginTop = `-${event?.detail?.scrollTop * 0.75}px`;
+  }
+
+  doSearch(event: { target: HTMLInputElement }) {
+    this.searchEvent.emit(event?.target?.value || '');
   }
 
   async confirmLogout() {
