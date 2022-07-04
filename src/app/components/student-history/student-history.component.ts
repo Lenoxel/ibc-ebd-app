@@ -13,6 +13,7 @@ export class StudentHistoryComponent implements OnInit {
   @ViewChild(IonModal, { static: false }) modal: IonModal;
   @Output() dismissModalEvent = new EventEmitter<void>();
 
+  loading = true;
   presencesCount = 0;
   absencesCount = 0;
   startDate: Date | null = null;
@@ -45,14 +46,17 @@ export class StudentHistoryComponent implements OnInit {
   }
 
   @Input() set studentHistoryList(studentHistoryList: IStudentHistory[] | null) {
+    this.loading = true;
     this._studentHistoryList = studentHistoryList;
 
     if (studentHistoryList?.length) {
       this.presencesCount = studentHistoryList.filter(studentHistory => studentHistory?.attended)?.length;
       this.absencesCount = studentHistoryList.filter(studentHistory => !studentHistory?.attended)?.length;
+      this.loading = false;
     } else {
       this.presencesCount = 0;
       this.absencesCount = 0;
+      this.loading = false;
     }
   }
 
