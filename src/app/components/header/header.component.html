@@ -19,7 +19,7 @@
     </ion-buttons>
   </ion-toolbar>
 
-  <ion-toolbar>
+  <ion-toolbar *ngIf="selectOptions || searchbarOptions">
     <ion-item *ngIf="selectOptions" lines="none" style="margin: .5rem; border-radius: .1rem;">
       <ion-select
         cancelText="Cancelar"
