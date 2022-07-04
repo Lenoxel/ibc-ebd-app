@@ -4,3 +4,4 @@ export * from './ebdClass';
 export * from './ebdLabel';
 export * from './classLessonDetails';
 export * from './student';
+export * from './studentHistory';

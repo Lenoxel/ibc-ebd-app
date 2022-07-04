@@ -13,12 +13,13 @@
 >
   <app-student-history
     [student]="selectedStudent"
+    [studentHistoryList]="ebdStudentHistoryList$ | async"
     (dismissModalEvent)="selectedStudent=null"
   ></app-student-history>
 
   <ion-list *ngIf="ebdStudents$ | async as ebdStudents; else loadingTemplate">
-    <ng-container *ngFor="let student of ebdStudents; let first = first">
-      <ion-item *ngIf="!filteredName || student?.name?.toLowerCase()?.includes(filteredName?.toLowerCase())" button lines="full" (click)="selectedStudent = student">
+    <ng-container *ngFor="let student of ebdStudents">
+      <ion-item *ngIf="!filteredName || student?.name?.toLowerCase()?.includes(filteredName?.toLowerCase())" button lines="full" (click)="selectedStudent = student; getEbdStudentHistory(student.id)">
         <ion-avatar slot="start">
           <img [src]="student?.picture || '/assets/img/person.png'" />
         </ion-avatar>

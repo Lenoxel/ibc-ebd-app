@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IStudent } from 'src/app/interfaces';
+import { IStudent, IStudentHistory } from 'src/app/interfaces';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { StudentService } from 'src/app/services/student/student.service';
 import { SearchbarOptions } from 'src/app/types';
@@ -20,6 +20,7 @@ export class StudentsPage implements OnInit {
     debounce: 500
   };
   selectedStudent: IStudent | null;
+  ebdStudentHistoryList$: Observable<IStudentHistory[] | null> = null;
 
   constructor(
     public authService: AuthService,
@@ -36,6 +37,10 @@ export class StudentsPage implements OnInit {
 
   getEbdStudents() {
     this.ebdStudents$ = this.studentService.getEbdStudents();
+  }
+
+  getEbdStudentHistory(studentId: number) {
+    this.ebdStudentHistoryList$ = this.studentService.getEbdStudentHistory(studentId);
   }
 
   onFilterStudents(value: string) {

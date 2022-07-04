@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { API_ENDPOINT } from 'config';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { IStudentHistory } from 'src/app/interfaces';
 import { IStudent } from 'src/app/interfaces/student';
 
 @Injectable({
@@ -19,7 +20,7 @@ export class StudentService {
     );
   }
 
-  getEbdStudentHistory(studentId: number): Observable<any> {
-    return this.httpClient.get(`${API_ENDPOINT}/ebd/students/${studentId}/history`);
+  getEbdStudentHistory(studentId: number): Observable<IStudentHistory[]> {
+    return this.httpClient.get<IStudentHistory[]>(`${API_ENDPOINT}/ebd/students/${studentId}/history`);
   }
 }
