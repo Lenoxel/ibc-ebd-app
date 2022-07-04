@@ -1,11 +1,11 @@
 <app-header
-  [headerTitle]="'Alunos'"
-  [headerMarginTop]="headerMarginTop"
-  [searchbarOptions]="searchbarOptions"
-  [selectOptions]="{ placeholder: 'Selecione uma classe', items: (ebdClasses$ | async), defaultAll: 'Todas as classes', choosedItem: loggedUserPreferredClass }"
+  headerTitle="Alunos"
+  headerMarginTop="{{headerMarginTop}}"
   (refreshEvent)="getEbdStudents()"
-  (selectEvent)="onSelectClass($event)"
+  (selectEvent)="loggedUserHasFullAccess ? onSelectClass($event) : null"
+  [selectOptions]="loggedUserHasFullAccess ? { placeholder: 'Selecione uma classe', items: (ebdClasses$ | async), defaultAll: 'Todas as classes', choosedItem: loggedUserPreferredClass } : null"
   (searchEvent)="onFilterStudents($event)"
+  [searchbarOptions]="searchbarOptions"
 ></app-header>
 
 <ion-content

@@ -13,6 +13,7 @@ import { EntityBasic, SearchbarOptions } from 'src/app/types';
 })
 export class StudentsPage implements OnInit {
   loggedUserPreferredClass: EntityBasic | null = null;
+  loggedUserHasFullAccess: boolean | null = false;
   ebdClasses$: Observable<EntityBasic[]>;
   ebdStudents$: Observable<IStudent[]>;
   filteredName = '';
@@ -41,7 +42,7 @@ export class StudentsPage implements OnInit {
   }
 
   getLoggedUser() {
-    const { classesAsASecretary, classesAsATeacher } = this.authService.$user.getValue();
+    const { classesAsASecretary, classesAsATeacher, fullAccess } = this.authService.$user.getValue();
 
     if (classesAsASecretary?.length) {
       this.loggedUserPreferredClass = classesAsASecretary[0];
@@ -55,7 +56,11 @@ export class StudentsPage implements OnInit {
       return;
     }
 
-    this.getEbdStudents();
+    if (fullAccess) {
+      this.loggedUserHasFullAccess = true;
+      this.getEbdStudents();
+      return;
+    }
   }
 
   getEbdClasses() {
