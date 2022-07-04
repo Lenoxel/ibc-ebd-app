@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { API_ENDPOINT } from 'config';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { IEbdClass } from 'src/app/interfaces';
+import { EntityBasic } from 'src/app/types';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +14,12 @@ export class EbdService {
   constructor(
     private httpClient: HttpClient,
   ) { }
+
+  getEbdClasses(): Observable<EntityBasic[]> {
+    return this.httpClient.get(`${API_ENDPOINT}/ebd/classes`).pipe(
+      map((classes: EntityBasic[]) => classes),
+    );
+  }
 
   getEbdPresencesByClass(classId: number): Observable<any> {
     return this.httpClient.get(`${API_ENDPOINT}/ebd/classes/${classId}/presences/`).pipe(

@@ -2,7 +2,9 @@
   [headerTitle]="'Alunos'"
   [headerMarginTop]="headerMarginTop"
   [searchbarOptions]="searchbarOptions"
+  [selectOptions]="{ placeholder: 'Selecione uma classe', items: (ebdClasses$ | async), defaultAll: 'Todas as classes', choosedItem: loggedUserPreferredClass }"
   (refreshEvent)="getEbdStudents()"
+  (selectEvent)="onSelectClass($event)"
   (searchEvent)="onFilterStudents($event)"
 ></app-header>
 
@@ -16,6 +18,22 @@
     [studentHistoryList]="ebdStudentHistoryList$ | async"
     (dismissModalEvent)="selectedStudent=null"
   ></app-student-history>
+
+  <!-- <ng-container *ngIf="ebdStudents$ | async as ebdStudents; else loadingTemplate">
+    <ion-virtual-scroll [items]="ebdStudents" approxItemHeight="69px">
+      <div *virtualItem="let item; let itemBounds = bounds;">
+        <ion-item *ngIf="!filteredName || item?.name?.toLowerCase()?.includes(filteredName?.toLowerCase())" button lines="full" (click)="selectedStudent = item; getEbdStudentHistory(item.id)">
+          <ion-avatar slot="start">
+            <img [src]="item?.picture || '/assets/img/person.png'" />
+          </ion-avatar>
+          <ion-label>
+            <h3>{{item?.name}}</h3>
+            <p>{{item?.ebd_class ? 'Classe ' + item?.ebd_class : 'Sem Classe'}}</p>
+          </ion-label>
+        </ion-item>
+      </div>
+    </ion-virtual-scroll>
+  </ng-container> -->
 
   <ion-list *ngIf="ebdStudents$ | async as ebdStudents; else loadingTemplate">
     <ng-container *ngFor="let student of ebdStudents">

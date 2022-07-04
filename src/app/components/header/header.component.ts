@@ -1,7 +1,7 @@
  import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AlertController, NavController } from '@ionic/angular';
+import { AlertController, NavController, SelectChangeEventDetail, SelectCustomEvent } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { SearchbarOptions } from 'src/app/types';
+import { EntityBasic, SearchbarOptions, SelectOptions } from 'src/app/types';
 
 @Component({
   selector: 'app-header',
@@ -12,7 +12,9 @@ export class HeaderComponent implements OnInit {
   @Input() headerTitle = '';
   @Input() headerMarginTop = '0px';
   @Input() searchbarOptions: SearchbarOptions | null = null;
+  @Input() selectOptions: SelectOptions<EntityBasic> | null = null;
   @Output() refreshEvent = new EventEmitter<void>();
+  @Output() selectEvent = new EventEmitter<EntityBasic>();
   @Output() searchEvent = new EventEmitter<string>();
 
   constructor(
@@ -25,6 +27,11 @@ export class HeaderComponent implements OnInit {
 
   onContentScroll(event) {
     this.headerMarginTop = `-${event?.detail?.scrollTop * 0.75}px`;
+  }
+
+  doSelect(event: SelectCustomEvent) {
+    this.selectOptions.choosedItem = event?.detail?.value;
+    this.selectEvent.emit(event?.detail?.value || null);
   }
 
   doSearch(event: { target: HTMLInputElement }) {

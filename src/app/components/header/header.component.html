@@ -17,9 +17,25 @@
         <ion-icon name="log-out-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
+  </ion-toolbar>
+
+  <ion-toolbar>
+    <ion-item *ngIf="selectOptions" lines="none" style="margin: .5rem; border-radius: .1rem;">
+      <ion-select
+        cancelText="Cancelar"
+        interface="action-sheet"
+        [placeholder]="selectOptions?.placeholder || 'Selecione uma opção'"
+        (ionChange)="doSelect($any($event))"
+        [value]="selectOptions?.choosedItem"
+      >
+          <ion-select-option *ngIf="selectOptions?.defaultAll" [value]="null">{{selectOptions?.defaultAll}}</ion-select-option>
+        <ion-select-option *ngFor="let item of selectOptions?.items" [value]="item">{{item?.name}}</ion-select-option>
+      </ion-select>
+    </ion-item>
 
     <ion-searchbar
       *ngIf="searchbarOptions"
+      style="margin-bottom: .5rem;"
       [placeholder]="searchbarOptions?.placeholder || 'Pesquise aqui'"
       [showCancelButton]="searchbarOptions?.showCancelButton || 'focus'"
       [debounce]="searchbarOptions?.debounce || 500"

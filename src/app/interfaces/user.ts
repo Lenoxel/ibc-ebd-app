@@ -1,9 +1,11 @@
+import { EntityBasic } from '../types';
+
 export interface IUser {
     email: string;
     exp: number;
-    groups: { id: number; name: string }[];
-    classesAsATeacher: { id: number; name: string }[];
-    classesAsASecretary: { id: number; name: string }[];
+    groups: EntityBasic[];
+    classesAsATeacher: EntityBasic[];
+    classesAsASecretary: EntityBasic[];
     iat: number;
     isSuperuser: boolean;
     jti: string;
