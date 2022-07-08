@@ -1,13 +1,13 @@
 <app-header
-  [headerTitle]="'Indicadores'"
-  [headerMarginTop]="headerMarginTop"
+  headerTitle="Indicadores"
+  [hideHeader]="hideHeader"
   (refreshEvent)="getAnalytics()"
 ></app-header>
 
 <ion-content
   [fullscreen]="true"
   [scrollEvents]="true"
-  (ionScroll)="onContentScroll($event)"
+  (ionScroll)="onContentScroll($any($event))"
 >
   <ion-grid>
     <div class="ion-padding">

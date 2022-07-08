@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { IStudent, IStudentHistory } from 'src/app/interfaces';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { EbdService } from 'src/app/services/ebd/ebd.service';
@@ -17,7 +18,8 @@ export class StudentsPage implements OnInit {
   ebdClasses$: Observable<EntityBasic[]>;
   ebdStudents$: Observable<IStudent[]>;
   filteredName = '';
-  headerMarginTop = '0px';
+  hideHeader$ = new Subject<boolean>();
+  hideHeader = false;
   searchbarOptions: SearchbarOptions = {
     placeholder: 'Pesquise pelo aluno',
     showCancelButton: 'focus',
@@ -30,15 +32,20 @@ export class StudentsPage implements OnInit {
     public authService: AuthService,
     private ebdService: EbdService,
     private studentService: StudentService,
-  ) { }
+  ) {
+    this.hideHeader$.pipe(
+      debounceTime(50),
+      distinctUntilChanged(),
+    ).subscribe((hideHeader: boolean) => this.hideHeader = hideHeader);
+  }
 
   ngOnInit() {
     this.getEbdClasses();
     this.getLoggedUser();
   }
 
-  onContentScroll(event) {
-    this.headerMarginTop = `-${event?.detail?.scrollTop * 0.75}px`;
+  onContentScroll(event: CustomEvent) {
+    this.hideHeader$.next(event?.detail?.deltaY > 0 ? true : false);
   }
 
   getLoggedUser() {

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ViewDidEnter } from '@ionic/angular';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { ILesson } from 'src/app/interfaces';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { LessonService } from 'src/app/services/lesson/lesson.service';
@@ -14,7 +14,8 @@ import { UtilService } from 'src/app/services/util/util.service';
 })
 export class LessonsPage implements OnInit, ViewDidEnter {
   ebdLessons$: Observable<any>;
-  headerMarginTop = '0px';
+  hideHeader$ = new Subject<boolean>();
+  hideHeader = false;
 
   constructor(
     public authService: AuthService,
@@ -30,8 +31,8 @@ export class LessonsPage implements OnInit, ViewDidEnter {
     this.getEbdLessons();
   }
 
-  onContentScroll(event) {
-    this.headerMarginTop = `-${event?.detail?.scrollTop * 0.75}px`;
+  onContentScroll(event: CustomEvent) {
+    this.hideHeader$.next(event?.detail?.deltaY > 0 ? true : false);
   }
 
   getEbdLessons() {

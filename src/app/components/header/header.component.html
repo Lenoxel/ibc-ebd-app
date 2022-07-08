@@ -1,4 +1,8 @@
-<ion-header #header [translucent]="true" [ngStyle]="{'top': headerMarginTop}">
+<ion-header
+  #header
+  [translucent]="true"
+  [ngClass]="{'hide': hideHeader}"
+>
   <ion-toolbar>
     <ion-title>
       <h5>

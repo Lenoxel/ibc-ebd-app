@@ -1,4 +1,4 @@
- import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+ import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { AlertController, NavController, SelectChangeEventDetail, SelectCustomEvent } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { EntityBasic, SearchbarOptions, SelectOptions } from 'src/app/types';
@@ -10,7 +10,7 @@ import { EntityBasic, SearchbarOptions, SelectOptions } from 'src/app/types';
 })
 export class HeaderComponent implements OnInit {
   @Input() headerTitle = '';
-  @Input() headerMarginTop = '0px';
+  @Input() hideHeader = false;
   @Input() searchbarOptions: SearchbarOptions | null = null;
   @Input() selectOptions: SelectOptions<EntityBasic> | null = null;
   @Output() refreshEvent = new EventEmitter<void>();
@@ -21,13 +21,9 @@ export class HeaderComponent implements OnInit {
     public authService: AuthService,
     private alertController: AlertController,
     private navController: NavController,
-  ) { }
+  ) {}
 
   ngOnInit() {}
-
-  onContentScroll(event) {
-    this.headerMarginTop = `-${event?.detail?.scrollTop * 0.75}px`;
-  }
 
   doSelect(event: SelectCustomEvent) {
     this.selectOptions.choosedItem = event?.detail?.value;

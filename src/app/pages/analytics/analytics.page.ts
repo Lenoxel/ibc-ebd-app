@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { NavController } from '@ionic/angular';
 import { SwiperComponent } from 'swiper/angular';
 import SwiperCore, { Autoplay, Keyboard, Pagination, SwiperOptions } from 'swiper';
+import { Subject } from 'rxjs';
 
 SwiperCore.use([Autoplay, Keyboard, Pagination]);
 Chart.register(...registerables);
@@ -24,7 +25,8 @@ export class AnalyticsPage implements OnInit, AfterViewInit {
   @ViewChild('swiperExemplaryStudents', { static: true }) private swiperExemplaryStudents: SwiperComponent;
   @ViewChild('swiperWorryingStudents', { static: true }) private swiperWorryingStudents: SwiperComponent;
 
-  headerMarginTop = '0px';
+  hideHeader$ = new Subject<boolean>();
+  hideHeader = false;
 
   lineChartPresences: Chart;
   lineChartAbsences: Chart;
@@ -305,8 +307,8 @@ export class AnalyticsPage implements OnInit, AfterViewInit {
     }));
   }
 
-  onContentScroll(event) {
-    this.headerMarginTop = `-${event?.detail?.scrollTop * 0.75}px`;
+  onContentScroll(event: CustomEvent) {
+    this.hideHeader$.next(event?.detail?.deltaY > 0 ? true : false);
   }
 
   async logout() {

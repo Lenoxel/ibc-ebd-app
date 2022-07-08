@@ -1,6 +1,6 @@
 <app-header
   headerTitle="Alunos"
-  headerMarginTop="{{headerMarginTop}}"
+  [hideHeader]="hideHeader"
   (refreshEvent)="getEbdStudents()"
   [selectOptions]="loggedUserHasFullAccess ? { placeholder: 'Selecione uma classe', items: (ebdClasses$ | async), defaultAll: 'Todas as classes', choosedItem: loggedUserPreferredClass } : null"
   (selectEvent)="loggedUserHasFullAccess ? onSelectClass($event) : null"
@@ -11,7 +11,7 @@
 <ion-content
   [fullscreen]="true"
   [scrollEvents]="true"
-  (ionScroll)="onContentScroll($event)"
+  (ionScroll)="onContentScroll($any($event))"
 >
   <app-student-history
     [student]="selectedStudent"
