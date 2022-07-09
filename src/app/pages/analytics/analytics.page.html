@@ -10,8 +10,22 @@
   (ionScroll)="onContentScroll($any($event))"
 >
   <ion-grid>
-    <div class="ion-padding">
+    <div class="ion-padding ion-margin">
       <ion-row>
+        <ion-col size-lg="12" class="ion-text-center ion-align-self-center">
+          <app-analytics-overall-card
+            [analyticsPresenceCounts]="analyticsPresenceCounts$ | async"
+          ></app-analytics-overall-card>
+        </ion-col>
+
+        <ion-col size-lg="12">
+          <app-analytics-history-card
+            [analyticsPresenceHistory]="analyticsPresenceHistory$ | async"
+          ></app-analytics-history-card>
+        </ion-col>
+      </ion-row>
+      
+      <!-- <ion-row>
         <ion-col size-lg="6">
           <ion-row>
             <ion-col size-lg="12" class="ion-text-center ion-align-self-center">
@@ -228,7 +242,7 @@
             </ion-item-group>
           </ion-card>
         </ion-col>
-      </ion-row>
+      </ion-row> -->
 
       <!-- <ion-card>
         <ion-card-header>

@@ -5,3 +5,5 @@ export * from './ebdLabel';
 export * from './classLessonDetails';
 export * from './student';
 export * from './studentHistory';
+export * from './analyticsPresenceCounts';
+export * from './analyticsPresenceHistory';

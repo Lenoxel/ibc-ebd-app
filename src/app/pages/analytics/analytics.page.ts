@@ -6,8 +6,10 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { NavController } from '@ionic/angular';
 import { SwiperComponent } from 'swiper/angular';
 import SwiperCore, { Autoplay, Keyboard, Pagination, SwiperOptions } from 'swiper';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { AnalyticsService } from 'src/app/services/analytics/analytics.service';
+import { IAnalyticsPresenceCounts, IAnalyticsPresenceHistory } from 'src/app/interfaces';
 
 SwiperCore.use([Autoplay, Keyboard, Pagination]);
 Chart.register(...registerables);
@@ -18,7 +20,6 @@ Chart.register(...registerables);
   styleUrls: ['./analytics.page.scss'],
 })
 export class AnalyticsPage implements OnInit, AfterViewInit {
-  @ViewChild('lineCanvasPresences') private lineCanvasPresences: ElementRef;
   @ViewChild('doubleLineCanvas') private doubleLineCanvas: ElementRef;
   // @ViewChild('barCanvas') private barCanvas: ElementRef;
   // @ViewChild('doughnutCanvas') private doughnutCanvas: ElementRef;
@@ -26,12 +27,13 @@ export class AnalyticsPage implements OnInit, AfterViewInit {
   @ViewChild('swiperExemplaryStudents', { static: true }) private swiperExemplaryStudents: SwiperComponent;
   @ViewChild('swiperWorryingStudents', { static: true }) private swiperWorryingStudents: SwiperComponent;
 
+  analyticsPresenceCounts$: Observable<IAnalyticsPresenceCounts>;
+  analyticsPresenceHistory$: Observable<IAnalyticsPresenceHistory[]>;
+
   hideHeader$ = new Subject<boolean>();
   hideHeader = false;
 
-  lineChartPresences: Chart;
-  lineChartAbsences: Chart;
-  doubleLineChart: any;
+  doubleLineChart: Chart;
   // barChart: Chart;
   // doughnutChart: Chart;
 
@@ -285,6 +287,7 @@ export class AnalyticsPage implements OnInit, AfterViewInit {
   constructor(
     public utilService: UtilService,
     public authService: AuthService,
+    private analyticsService: AnalyticsService,
     private navController: NavController,
   ) {
     this.hideHeader$.pipe(
@@ -294,14 +297,22 @@ export class AnalyticsPage implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.calculateClassesFrequency();
+    this.getAnalyticsPresenceCounts();
+    this.getAnalyticsPresenceHistory();
   }
 
   ngAfterViewInit() {
-    this.lineChartPresencesMethod();
     this.doubleLineChartMethod();
     // this.barChartMethod();
     // this.doughnutChartMethod();
+  }
+
+  getAnalyticsPresenceCounts() {
+    this.analyticsPresenceCounts$ = this.analyticsService.getAnalyticsPresenceCounts();
+  }
+
+  getAnalyticsPresenceHistory() {
+    this.analyticsPresenceHistory$ = this.analyticsService.getAnalyticsPresenceHistory();
   }
 
   getAnalytics() {}
@@ -322,161 +333,71 @@ export class AnalyticsPage implements OnInit, AfterViewInit {
     this.navController.navigateRoot('login', { replaceUrl: true });
   }
 
-  lineChartPresencesMethod() {
-    const greenColor = randomColor({
-      hue: 'green',
-      format: 'rgba',
-      alpha: 0.4,
-    });
-
-    const redColor = randomColor({
-      hue: 'red',
-      format: 'rgba',
-      alpha: 0.4,
-    });
-
-    this.lineChartPresences = new Chart(this.lineCanvasPresences.nativeElement, {
-      type: 'line',
-      data: {
-        labels: ['08/05', '15/05', '22/05', '29/05', '05/06', '12/06', '19/06', '26/06'],
-        datasets: [
-          {
-            label: 'Presentes',
-            fill: true,
-            tension: 0.5,
-            backgroundColor: greenColor,
-            borderColor: greenColor.replace('0.4', '1.0'),
-            borderCapStyle: 'butt',
-            borderDash: [],
-            borderDashOffset: 0.0,
-            borderJoinStyle: 'miter',
-            pointBorderColor: greenColor.replace('0.4', '1.0'),
-            pointBackgroundColor: '#fff',
-            pointBorderWidth: 1,
-            pointHoverRadius: 5,
-            pointHoverBackgroundColor: greenColor.replace('0.4', '1.0'),
-            pointHoverBorderColor: 'rgba(50, 37, 20, 1)',
-            pointHoverBorderWidth: 2,
-            pointRadius: 1,
-            pointHitRadius: 10,
-            data: [199, 208, 212, 271, 252, 287, 249, 216],
-            spanGaps: false,
-          },
-          {
-            label: 'Ausentes',
-            fill: true,
-            tension: 0.5,
-            backgroundColor: redColor,
-            borderColor: redColor.replace('0.4', '1.0'),
-            borderCapStyle: 'butt',
-            borderDash: [],
-            borderDashOffset: 0.0,
-            borderJoinStyle: 'miter',
-            pointBorderColor: redColor.replace('0.4', '1.0'),
-            pointBackgroundColor: '#fff',
-            pointBorderWidth: 1,
-            pointHoverRadius: 5,
-            pointHoverBackgroundColor: redColor.replace('0.4', '1.0'),
-            pointHoverBorderColor: 'rgba(50, 37, 20, 1)',
-            pointHoverBorderWidth: 2,
-            pointRadius: 1,
-            pointHitRadius: 10,
-            data: [116, 97, 98, 32, 55, 17, 74, 95],
-            spanGaps: false,
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        aspectRatio: 1.89,
-        scales: {
-          y: {
-            ticks: {
-              font: {
-                size: 14,
-              },
-            }
-          },
-          x: {
-            ticks: {
-              font: {
-                size: 14,
-              },
-            }
-          },
-        },
-        plugins: {
-          legend: {
-            labels: {
-              font: {
-                size: 14,
-              }
-            }
-          }
-        },
-      }
-    });
-  }
-
   doubleLineChartMethod() {
-    const randomColorsList = randomColor({
-      count: this.classes.length,
-      // hue: '#be1558',
-      // hue: 'blue',
-      // luminosity: 'light',
-      format: 'rgba',
-      alpha: 0.7,
-    });
+    if (this.doubleLineCanvas?.nativeElement) {
+      if (this.doubleLineChart) {
+        this.doubleLineChart.clear();
+      }
 
-    this.doubleLineChart = new Chart(this.doubleLineCanvas.nativeElement, {
-      type: 'bar',
-      data: {
-        labels: ['02/01', '09/01', '16/01', '23/01'],
-        datasets: this.classes.map(({ name: label }, index) => ({
-          label,
-          data: [
-            Math.round((Math.random() * 30)),
-            Math.round((Math.random() * 30)),
-            Math.round((Math.random() * 30)),
-            Math.round((Math.random() * 30))
-          ],
-          backgroundColor: randomColorsList[index],
-          borderColor: randomColorsList[index].replace('0.7', '1.0'),
-          fill: false,
-          tension: 0.3,
-          pointRadius: 5,
-        })),
-      },
-      options: {
-        responsive: true,
-        aspectRatio: 2.75,
-        scales: {
-          y: {
-            ticks: {
-              font: {
-                size: 14,
-              },
-            }
-          },
-          x: {
-            ticks: {
-              font: {
-                size: 14,
-              },
-            }
-          },
+      const randomColorsList = randomColor({
+        count: this.classes.length,
+        // hue: '#be1558',
+        // hue: 'blue',
+        // luminosity: 'light',
+        format: 'rgba',
+        alpha: 0.7,
+      });
+
+      this.doubleLineChart = new Chart(this.doubleLineCanvas.nativeElement, {
+        type: 'bar',
+        data: {
+          labels: ['02/01', '09/01', '16/01', '23/01'],
+          datasets: this.classes.map(({ name: label }, index) => ({
+            label,
+            data: [
+              Math.round((Math.random() * 30)),
+              Math.round((Math.random() * 30)),
+              Math.round((Math.random() * 30)),
+              Math.round((Math.random() * 30))
+            ],
+            backgroundColor: randomColorsList[index],
+            borderColor: randomColorsList[index].replace('0.7', '1.0'),
+            fill: false,
+            tension: 0.3,
+            pointRadius: 5,
+          })),
         },
-        plugins: {
-          legend: {
-            labels: {
-              font: {
-                size: 16,
+        options: {
+          responsive: true,
+          aspectRatio: 2.75,
+          scales: {
+            y: {
+              ticks: {
+                font: {
+                  size: 14,
+                },
+              }
+            },
+            x: {
+              ticks: {
+                font: {
+                  size: 14,
+                },
+              }
+            },
+          },
+          plugins: {
+            legend: {
+              labels: {
+                font: {
+                  size: 16,
+                }
               }
             }
-          }
-        },
-      }
-    });
+          },
+        }
+      });
+    }
   }
 
   barChartMethod() {

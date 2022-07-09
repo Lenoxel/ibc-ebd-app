@@ -1,0 +1,34 @@
+<ion-card>
+  <ion-card-header class="ion-text-start">
+    Números Gerais
+  </ion-card-header>
+
+  <ion-row>
+    <ion-col size="4">
+      <ion-card-header>
+        Lições
+      </ion-card-header>
+      <ion-card-content class="ion-text-center card-content">
+        <span>{{analyticsPresenceCounts?.lessons_count}}</span>
+      </ion-card-content>
+    </ion-col>
+
+    <ion-col size="4">
+      <ion-card-header>
+        Alunos
+      </ion-card-header>
+      <ion-card-content class="ion-text-center card-content">
+        <span>{{analyticsPresenceCounts?.students_count}}</span>
+      </ion-card-content>
+    </ion-col>
+
+    <ion-col size="4">
+      <ion-card-header>
+        Visitantes
+      </ion-card-header>
+      <ion-card-content class="ion-text-center card-content">
+        <span>{{analyticsPresenceCounts?.visitors_count}}</span>
+      </ion-card-content>
+    </ion-col>
+  </ion-row>
+</ion-card>

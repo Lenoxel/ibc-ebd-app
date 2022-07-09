@@ -1,5 +1,5 @@
- import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { AlertController, NavController, SelectChangeEventDetail, SelectCustomEvent } from '@ionic/angular';
+ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AlertController, NavController, SelectCustomEvent } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { EntityBasic, SearchbarOptions, SelectOptions } from 'src/app/types';
 
