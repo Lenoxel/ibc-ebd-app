@@ -13,11 +13,25 @@
   [scrollEvents]="true"
   (ionScroll)="onContentScroll($any($event))"
 >
-  <app-student-history
+  <app-student-history-modal
     [student]="selectedStudent"
     [studentHistoryList]="ebdStudentHistoryList$ | async"
     (dismissModalEvent)="selectedStudent=null"
-  ></app-student-history>
+  ></app-student-history-modal>
+
+  <ion-list *ngIf="ebdStudents$ | async as ebdStudents; else loadingTemplate">
+    <app-student
+      *ngFor="let student of ebdStudents"
+      [student]="student"
+      [show]="!filteredName || student?.name?.toLowerCase()?.includes(filteredName?.toLowerCase())"
+      (selectStudentEvent)="onSelectStudent($any($event))"
+    >
+    </app-student>
+  </ion-list>
+
+  <ng-template #loadingTemplate>
+    <ion-progress-bar type="indeterminate"></ion-progress-bar>
+  </ng-template>
 
   <!-- <ng-container *ngIf="ebdStudents$ | async as ebdStudents; else loadingTemplate">
     <ion-virtual-scroll [items]="ebdStudents" approxItemHeight="69px">
@@ -34,22 +48,4 @@
       </div>
     </ion-virtual-scroll>
   </ng-container> -->
-
-  <ion-list *ngIf="ebdStudents$ | async as ebdStudents; else loadingTemplate">
-    <ng-container *ngFor="let student of ebdStudents">
-      <ion-item *ngIf="!filteredName || student?.name?.toLowerCase()?.includes(filteredName?.toLowerCase())" button lines="full" (click)="selectedStudent = student; getEbdStudentHistory(student.id)">
-        <ion-avatar slot="start">
-          <img [src]="student?.picture || '/assets/img/person.png'" />
-        </ion-avatar>
-        <ion-label>
-          <h3>{{student?.name}}</h3>
-          <p>{{student?.ebd_class ? 'Classe ' + student?.ebd_class : 'Sem Classe'}}</p>
-        </ion-label>
-      </ion-item>
-    </ng-container>
-  </ion-list>
-
-  <ng-template #loadingTemplate>
-    <ion-progress-bar type="indeterminate"></ion-progress-bar>
-  </ng-template>
 </ion-content>

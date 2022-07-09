@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ViewDidEnter } from '@ionic/angular';
 import { Observable, Subject } from 'rxjs';
@@ -12,6 +12,7 @@ import { UtilService } from 'src/app/services/util/util.service';
   selector: 'app-lessons',
   templateUrl: './lessons.page.html',
   styleUrls: ['./lessons.page.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LessonsPage implements OnInit, ViewDidEnter {
   ebdLessons$: Observable<any>;

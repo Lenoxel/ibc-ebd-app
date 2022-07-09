@@ -297,14 +297,18 @@ export class AnalyticsPage implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.getAnalyticsPresenceCounts();
-    this.getAnalyticsPresenceHistory();
+    this.getAnalytics();
   }
 
   ngAfterViewInit() {
-    this.doubleLineChartMethod();
+    // this.doubleLineChartMethod();
     // this.barChartMethod();
     // this.doughnutChartMethod();
+  }
+
+  getAnalytics() {
+    this.getAnalyticsPresenceCounts();
+    this.getAnalyticsPresenceHistory();
   }
 
   getAnalyticsPresenceCounts() {
@@ -314,8 +318,6 @@ export class AnalyticsPage implements OnInit, AfterViewInit {
   getAnalyticsPresenceHistory() {
     this.analyticsPresenceHistory$ = this.analyticsService.getAnalyticsPresenceHistory();
   }
-
-  getAnalytics() {}
 
   calculateClassesFrequency(): void {
     this.classes = this.classes.map(ebdClass => ({
@@ -336,7 +338,7 @@ export class AnalyticsPage implements OnInit, AfterViewInit {
   doubleLineChartMethod() {
     if (this.doubleLineCanvas?.nativeElement) {
       if (this.doubleLineChart) {
-        this.doubleLineChart.clear();
+        this.doubleLineChart.destroy();
       }
 
       const randomColorsList = randomColor({

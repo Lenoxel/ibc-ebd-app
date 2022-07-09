@@ -36,7 +36,7 @@ export class AnalyticsHistoryCardComponent {
   lineChartPresencesMethod() {
     if (this.lineCanvasPresences?.nativeElement) {
       if (this.chartPresences) {
-        this.chartPresences.clear();
+        this.chartPresences.destroy();
       }
 
       const greenColor = randomColor({

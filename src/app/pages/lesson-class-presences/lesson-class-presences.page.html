@@ -45,58 +45,16 @@
 
       <ng-container *ngIf="values?.ebdPresencesRegister?.length; else loadingTemplate">
         <ion-accordion-group [multiple]="false" animated="true">
-          <ion-accordion *ngFor="let presenceRegister of values?.ebdPresencesRegister; let index = index" class="ion-accordion" id="accordion-{{presenceRegister?.id}}" value="accordion-{{presenceRegister?.id}}">
-            <ion-item slot="header" lines="none">
-              <ion-label class="ion-text-wrap">
-                <ng-container *ngIf="presenceRegister['is_teacher'] || presenceRegister['is_secretary']; else ebdRelationTemplate">
-                  <ion-text *ngIf="presenceRegister['is_teacher']" color="highlight">
-                    <h4>Professor</h4>
-                  </ion-text>
-                  <ion-text *ngIf="presenceRegister['is_secretary']" color="warning">
-                    <h4>Secretário</h4>
-                  </ion-text>
-                </ng-container>
-                <ng-template #ebdRelationTemplate>
-                  <ion-text *ngIf="presenceRegister['person_ebd_relation']" color="{{presenceRegister['person_ebd_relation'] === 'visitante' ? 'secondary' : 'dark'}}">
-                    <h4>{{presenceRegister['person_ebd_relation'] | titlecase}}</h4>
-                  </ion-text>
-                </ng-template>
-                <h2>{{presenceRegister['person_name']}}</h2>
-                <h5 *ngIf="!presenceRegister?.underAction && (presenceRegister['register_on'] || presenceRegister['tempRegisterOn'])">
-                  <span *ngIf="presenceRegister?.attended">Chegou às {{(presenceRegister['register_on'] || presenceRegister['tempRegisterOn']) | date: 'HH:mm'}}</span>
-                  <div *ngIf="!presenceRegister?.attended">
-                    <div>Recebeu falta em {{(presenceRegister['register_on'] || presenceRegister['tempRegisterOn']) | date: 'dd/MM/yyyy HH:mm'}}</div>
-                    <div>{{presenceRegister?.justification || 'Não justificada'}}</div>
-                  </div>
-                </h5>
-                <div *ngIf="presenceRegister?.tempRegisterOn && !presenceRegister?.register_on" style="display: flex; align-items: center; text-shadow: 2px 2px 5px var(--ion-color-warning);">
-                  <!-- <ion-icon name="warning-outline" color="warning"></ion-icon> -->
-                  <ion-label>Não esqueça de Salvar</ion-label>
-                </div>
-              </ion-label>
-              <ion-button class="button-large" style="margin-right: 5px;" color="success" size="default" [fill]="presenceRegister?.attended && (presenceRegister?.register_on || presenceRegister?.tempRegisterOn) ? 'solid' : 'clear'" (click)="givePresence(presenceRegister); $event.stopPropagation()" [disabled]="presenceRegister?.underAction || hasLessonEnded">
-                <ion-icon slot="icon-only" name="checkmark-circle-outline"></ion-icon>
-              </ion-button>
-              <ion-button class="button-large" style="margin-left: 5px;" color="danger" size="default" [fill]="!presenceRegister?.attended && (presenceRegister?.register_on || presenceRegister?.tempRegisterOn) ? 'solid' : 'clear'" (click)="giveAbsence(presenceRegister); $event.stopPropagation()" [disabled]="presenceRegister?.underAction || hasLessonEnded">
-                <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
-              </ion-button>
-            </ion-item>
-    
-            <ion-list slot="content" lines="full">
-              <ion-item lines="none" [disabled]="presenceRegister['is_teacher'] || presenceRegister['is_secretary']">
-                <ion-label class="ion-text-wrap">
-                  <ion-chip *ngFor="let label of values?.ebdLabels" style="height: auto;" [color]="label?.type === 'positive' ? 'success' : 'danger'" [outline]="!presenceRegister?.labelIds?.includes(label?.id)" [style]="label?.type === 'positive' ? (presenceRegister?.labelIds?.includes(label?.id) ? 'background: var(--ion-color-success); color: var(--ion-color-light)' : '') : (presenceRegister?.labelIds?.includes(label?.id) ? 'background: var(--ion-color-danger); color: var(--ion-color-light)' : '')" (click)="giveCharacteristic(presenceRegister, label)" [disabled]="presenceRegister?.underAction || hasLessonEnded">
-                    <ion-icon [name]="label?.type === 'positive' ? 'thumbs-up-outline' : 'thumbs-down-outline'"></ion-icon>
-                    <ion-label>{{label?.title}}</ion-label>
-                  </ion-chip>
-                </ion-label>
-              </ion-item>
-    
-              <ion-button class="button-large" (click)="handleSavePresenceRegister(presenceRegister)" expand="full" fill="solid" [disabled]="presenceRegister?.underAction || (!presenceRegister?.register_on && !presenceRegister?.tempRegisterOn) || hasLessonEnded">
-                Salvar
-              </ion-button>
-            </ion-list>
-          </ion-accordion>
+          <app-student-presence
+            *ngFor="let presenceRegister of values?.ebdPresencesRegister"
+            [presenceRegister]="presenceRegister"
+            [ebdLabels]="values?.ebdLabels"
+            [hasLessonEnded]="hasLessonEnded"
+            [lessonId]="lessonId"
+            [classId]="classId"
+            (expandAccordionEvent)="expandAccordion($any($event))"
+            (collapseAccordionEvent)="collapseAccordion()"
+          ></app-student-presence>
         </ion-accordion-group>
       </ng-container>
 

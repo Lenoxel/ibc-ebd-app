@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { IEbdClass } from 'src/app/interfaces';
@@ -8,6 +8,7 @@ import { LessonService } from 'src/app/services/lesson/lesson.service';
   selector: 'app-lesson-classes',
   templateUrl: './lesson-classes.page.html',
   styleUrls: ['./lesson-classes.page.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LessonClassesPage implements OnInit {
   ebdClasses$: Observable<any>;

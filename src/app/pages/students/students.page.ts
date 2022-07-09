@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { IStudent, IStudentHistory } from 'src/app/interfaces';
@@ -11,6 +11,7 @@ import { EntityBasic, SearchbarOptions } from 'src/app/types';
   selector: 'app-students',
   templateUrl: './students.page.html',
   styleUrls: ['./students.page.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StudentsPage implements OnInit {
   loggedUserPreferredClass: EntityBasic | null = null;
@@ -89,5 +90,12 @@ export class StudentsPage implements OnInit {
 
   onFilterStudents(value: string) {
     this.filteredName = value;
+  }
+
+  onSelectStudent(student: IStudent | null) {
+    if (student) {
+      this.selectedStudent = student;
+      this.getEbdStudentHistory(student.id);
+    }
   }
 }

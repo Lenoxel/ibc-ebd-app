@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/adjacent-overload-signatures */
 /* eslint-disable no-underscore-dangle */
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { IonModal } from '@ionic/angular';
 import { IStudent, IStudentHistory } from 'src/app/interfaces';
 
 @Component({
-  selector: 'app-student-history',
-  templateUrl: './student-history.component.html',
-  styleUrls: ['./student-history.component.scss'],
+  selector: 'app-student-history-modal',
+  templateUrl: './student-history-modal.component.html',
+  styleUrls: ['./student-history-modal.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StudentHistoryComponent implements OnInit {
+export class StudentHistoryModalComponent implements OnInit {
   @ViewChild(IonModal, { static: false }) modal: IonModal;
   @Output() dismissModalEvent = new EventEmitter<void>();
 
