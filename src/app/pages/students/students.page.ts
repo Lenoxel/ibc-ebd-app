@@ -34,7 +34,7 @@ export class StudentsPage implements OnInit {
     private studentService: StudentService,
   ) {
     this.hideHeader$.pipe(
-      debounceTime(50),
+      debounceTime(20),
       distinctUntilChanged(),
     ).subscribe((hideHeader: boolean) => this.hideHeader = hideHeader);
   }

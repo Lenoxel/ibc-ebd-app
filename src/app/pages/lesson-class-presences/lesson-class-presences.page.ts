@@ -72,7 +72,7 @@ export class LessonClassPresencesPage implements OnInit {
 
   subscribeDetails() {
     this.details$.pipe(
-      debounceTime(1000),
+      debounceTime(500),
       distinctUntilChanged(),
     ).subscribe(() => this.saveEbdClassLessonDetails());
   }

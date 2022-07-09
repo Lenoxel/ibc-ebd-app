@@ -7,6 +7,7 @@ import { NavController } from '@ionic/angular';
 import { SwiperComponent } from 'swiper/angular';
 import SwiperCore, { Autoplay, Keyboard, Pagination, SwiperOptions } from 'swiper';
 import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 SwiperCore.use([Autoplay, Keyboard, Pagination]);
 Chart.register(...registerables);
@@ -285,7 +286,12 @@ export class AnalyticsPage implements OnInit, AfterViewInit {
     public utilService: UtilService,
     public authService: AuthService,
     private navController: NavController,
-  ) { }
+  ) {
+    this.hideHeader$.pipe(
+      debounceTime(20),
+      distinctUntilChanged(),
+    ).subscribe((hideHeader: boolean) => this.hideHeader = hideHeader);
+  }
 
   ngOnInit(): void {
     this.calculateClassesFrequency();

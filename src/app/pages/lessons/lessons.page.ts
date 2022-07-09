@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ViewDidEnter } from '@ionic/angular';
 import { Observable, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { ILesson } from 'src/app/interfaces';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { LessonService } from 'src/app/services/lesson/lesson.service';
@@ -22,7 +23,12 @@ export class LessonsPage implements OnInit, ViewDidEnter {
     private lessonService: LessonService,
     private utilService: UtilService,
     private router: Router,
-  ) {}
+  ) {
+    this.hideHeader$.pipe(
+      debounceTime(20),
+      distinctUntilChanged(),
+    ).subscribe((hideHeader: boolean) => this.hideHeader = hideHeader);
+  }
 
   ionViewDidEnter(): void {
   }
