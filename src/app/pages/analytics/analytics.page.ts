@@ -291,7 +291,7 @@ export class AnalyticsPage implements OnInit, AfterViewInit {
     private navController: NavController,
   ) {
     this.hideHeader$.pipe(
-      debounceTime(20),
+      debounceTime(50),
       distinctUntilChanged(),
     ).subscribe((hideHeader: boolean) => this.hideHeader = hideHeader);
   }

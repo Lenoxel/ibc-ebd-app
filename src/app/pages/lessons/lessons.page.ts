@@ -26,7 +26,7 @@ export class LessonsPage implements OnInit, ViewDidEnter {
     private router: Router,
   ) {
     this.hideHeader$.pipe(
-      debounceTime(20),
+      debounceTime(50),
       distinctUntilChanged(),
     ).subscribe((hideHeader: boolean) => this.hideHeader = hideHeader);
   }
