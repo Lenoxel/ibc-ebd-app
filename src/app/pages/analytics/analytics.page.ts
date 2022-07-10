@@ -27,8 +27,10 @@ export class AnalyticsPage implements OnInit, AfterViewInit {
   @ViewChild('swiperExemplaryStudents', { static: true }) private swiperExemplaryStudents: SwiperComponent;
   @ViewChild('swiperWorryingStudents', { static: true }) private swiperWorryingStudents: SwiperComponent;
 
-  analyticsPresenceCounts$: Observable<IAnalyticsPresenceCounts>;
-  analyticsPresenceHistory$: Observable<IAnalyticsPresenceHistory[]>;
+  analyticsPresenceCounts$: Observable<IAnalyticsPresenceCounts> = null;
+  analyticsPresenceHistory$: Observable<IAnalyticsPresenceHistory[]> = null;
+
+  loading = !!(!this.analyticsPresenceCounts$ || !this. analyticsPresenceHistory$);
 
   hideHeader$ = new Subject<boolean>();
   hideHeader = false;
