@@ -6,6 +6,7 @@ import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { IEbdClassLessonDetails } from 'src/app/interfaces';
 import { LessonService } from 'src/app/services/lesson/lesson.service';
+import { UtilService } from 'src/app/services/util/util.service';
 
 @Component({
   selector: 'app-lesson-class-presences',
@@ -30,9 +31,10 @@ export class LessonClassPresencesPage implements OnInit {
   details$ = new Subject<number>();
 
   constructor(
-    private lessonService: LessonService,
     private activatedRoute: ActivatedRoute,
+    private lessonService: LessonService,
     private router: Router,
+    private utilService: UtilService,
   ) {
     this.activatedRoute.paramMap.subscribe(params => {
       this.lessonId = Number(params.get('lessonId'));
@@ -79,13 +81,12 @@ export class LessonClassPresencesPage implements OnInit {
   }
 
   handleHasLessonEnded() {
-    return false;
-    // const formattedLessonDate = new Date(this.utilService.datePipe.transform(this.lessonDate, `yyyy-MM-dd'T'HH:mm:ss.SSS`));
-    // formattedLessonDate.setHours(13, 0, 0, 0);
+    const formattedLessonDate = new Date(this.utilService.datePipe.transform(this.lessonDate, `yyyy-MM-dd'T'HH:mm:ss.SSS`));
+    formattedLessonDate.setHours(13, 0, 0, 0);
 
-    // if (new Date() > formattedLessonDate) {
-    //   this.hasLessonEnded = true;
-    // }
+    if (new Date() > formattedLessonDate) {
+      this.hasLessonEnded = true;
+    }
   }
 
   handleClassLessonDetails(details: IEbdClassLessonDetails | null) {
