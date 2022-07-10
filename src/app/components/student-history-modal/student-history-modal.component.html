@@ -51,7 +51,7 @@
       <ng-container *ngIf="studentHistoryList?.length">
         <ion-card *ngFor="let studentHistory of studentHistoryList" color="light">
           <ion-item lines="none">
-            <ion-label>
+            <ion-label class="ion-text-wrap">
               <h3>{{studentHistory?.lesson_title}}</h3>
               <h4>{{studentHistory?.lesson_date | date: 'dd/MM/yyyy'}}</h4>
               <p>Recebeu {{studentHistory?.attended ? 'presença' : 'falta'}} {{studentHistory?.register_on ? 'de ' + (studentHistory?.register_on | date: 'HH:mm') : 'automaticamente'}}.</p>
