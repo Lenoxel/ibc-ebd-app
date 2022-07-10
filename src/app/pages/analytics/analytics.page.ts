@@ -3,7 +3,7 @@ import { Chart, registerables } from 'chart.js';
 import { UtilService } from 'src/app/services/util/util.service';
 import randomColor from 'randomcolor';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { NavController } from '@ionic/angular';
+import { NavController, ViewDidEnter } from '@ionic/angular';
 import { SwiperComponent } from 'swiper/angular';
 import SwiperCore, { Autoplay, Keyboard, Pagination, SwiperOptions } from 'swiper';
 import { Observable, Subject } from 'rxjs';
@@ -19,7 +19,7 @@ Chart.register(...registerables);
   templateUrl: './analytics.page.html',
   styleUrls: ['./analytics.page.scss'],
 })
-export class AnalyticsPage implements OnInit, AfterViewInit {
+export class AnalyticsPage implements OnInit, ViewDidEnter {
   @ViewChild('doubleLineCanvas') private doubleLineCanvas: ElementRef;
   // @ViewChild('barCanvas') private barCanvas: ElementRef;
   // @ViewChild('doughnutCanvas') private doughnutCanvas: ElementRef;
@@ -298,11 +298,10 @@ export class AnalyticsPage implements OnInit, AfterViewInit {
     ).subscribe((hideHeader: boolean) => this.hideHeader = hideHeader);
   }
 
-  ngOnInit(): void {
-    this.getAnalytics();
-  }
+  ngOnInit(): void {}
 
-  ngAfterViewInit() {
+  ionViewDidEnter(): void {
+    this.getAnalytics();
     // this.doubleLineChartMethod();
     // this.barChartMethod();
     // this.doughnutChartMethod();

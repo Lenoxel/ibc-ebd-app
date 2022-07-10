@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { IStudent, IStudentHistory } from 'src/app/interfaces';
@@ -13,7 +13,7 @@ import { EntityBasic, SearchbarOptions } from 'src/app/types';
   styleUrls: ['./students.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StudentsPage implements OnInit {
+export class StudentsPage implements OnInit, AfterContentInit {
   loggedUserPreferredClass: EntityBasic | null = null;
   loggedUserHasFullAccess: boolean | null = false;
   ebdClasses$: Observable<EntityBasic[]>;
@@ -40,7 +40,9 @@ export class StudentsPage implements OnInit {
     ).subscribe((hideHeader: boolean) => this.hideHeader = hideHeader);
   }
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  ngAfterContentInit(): void {
     this.getEbdClasses();
     this.getLoggedUser();
   }

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { AfterContentInit, AfterViewInit, ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ViewDidEnter } from '@ionic/angular';
 import { Observable, Subject } from 'rxjs';
@@ -14,7 +14,7 @@ import { UtilService } from 'src/app/services/util/util.service';
   styleUrls: ['./lessons.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LessonsPage implements OnInit, ViewDidEnter {
+export class LessonsPage implements OnInit, AfterContentInit {
   ebdLessons$: Observable<any>;
   hideHeader$ = new Subject<boolean>();
   hideHeader = false;
@@ -31,10 +31,9 @@ export class LessonsPage implements OnInit, ViewDidEnter {
     ).subscribe((hideHeader: boolean) => this.hideHeader = hideHeader);
   }
 
-  ionViewDidEnter(): void {
-  }
+  ngOnInit(): void {}
 
-  ngOnInit() {
+  ngAfterContentInit(): void {
     this.getEbdLessons();
   }
 
