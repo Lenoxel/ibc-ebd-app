@@ -17,13 +17,75 @@
             [analyticsPresenceCounts]="analyticsPresenceCounts$ | async"
           ></app-analytics-overall-card>
         </ion-col>
+      </ion-row>
 
+      <ion-row>
         <ion-col size-lg="12">
           <app-analytics-history-card
             [analyticsPresenceHistory]="analyticsPresenceHistory$ | async"
           ></app-analytics-history-card>
         </ion-col>
       </ion-row>
+<!-- 
+      <ion-row>
+        <ion-col *ngFor="let class of classes" size-lg="3" size-md="6" size-sm="12">
+          <ion-card>
+            <ion-item-group>
+              <ion-item-divider [ngStyle]="{'background': class?.bestFrequency ? 'var(--ion-color-success)' : (class?.worstFrequency ? 'var(--ion-color-danger)' : 'var(--ion-color-light)')}">
+                <span style="position: absolute; left: 16px;">
+                  <ion-text color="{{class?.bestFrequency || class?.worstFrequency ? 'light' : 'dark'}}">
+                    {{class?.name}}
+                  </ion-text>
+                </span>
+                <span style="position: absolute; right: 8px;">
+                  <ion-text color="{{class?.bestFrequency || class?.worstFrequency ? 'light' : 'dark'}}">
+                    {{class?.presentsPercentual | percent:'1.0-1'}}
+                  </ion-text>
+                  <span *ngIf="class?.bestFrequency" style="margin-left: 8px">
+                    <ion-icon name="arrow-up-circle-outline" color="light"></ion-icon>
+                  </span>
+                  <span *ngIf="class?.worstFrequency" style="margin-left: 8px">
+                    <ion-icon name="arrow-down-circle-outline" color="light"></ion-icon>
+                  </span>
+                </span>
+              </ion-item-divider>
+            
+              <ion-item lines="none">
+                <ion-label>Matriculados</ion-label>
+                <ion-note slot="end" color="dark">
+                  <ion-text style="font-size: 24px">
+                    {{class?.enrolled}}
+                  </ion-text>
+                </ion-note>
+              </ion-item>
+              <ion-item lines="none">
+                <ion-label>Presentes</ion-label>
+                <ion-note slot="end" color="success">
+                  <ion-text style="font-size: 24px">
+                    {{class?.presents}}
+                  </ion-text>
+                </ion-note>
+              </ion-item>
+              <ion-item lines="none">
+                <ion-label>Ausentes</ion-label>
+                <ion-note slot="end" color="danger">
+                  <ion-text style="font-size: 24px">
+                    {{class?.absents}}
+                  </ion-text>
+                </ion-note>
+              </ion-item>
+              <ion-item lines="none">
+                <ion-label>Visitantes</ion-label>
+                <ion-note slot="end" color="secondary">
+                  <ion-text style="font-size: 24px">
+                    {{class?.visitors || 0}}
+                  </ion-text>
+                </ion-note>
+              </ion-item>
+            </ion-item-group>
+          </ion-card>
+        </ion-col>
+      </ion-row> -->
     </div>
   </ion-grid>
 

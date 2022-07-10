@@ -15,12 +15,12 @@ export class StudentService {
   ) { }
 
   getEbdStudents(classId?: number): Observable<IStudent[]> {
-    return this.httpClient.get<IStudent[]>(`${API_ENDPOINT}/ebd/students${classId ? `?classId=${classId}` : ''}`).pipe(
+    return this.httpClient.get<IStudent[]>(`${API_ENDPOINT}/ebd/people${classId ? `?classId=${classId}` : ''}`).pipe(
       map(ebdStudents => ebdStudents)
     );
   }
 
-  getEbdStudentHistory(studentId: number): Observable<IStudentHistory[]> {
-    return this.httpClient.get<IStudentHistory[]>(`${API_ENDPOINT}/ebd/students/${studentId}/history`);
+  getEbdPersonHistory(studentId: number): Observable<IStudentHistory[]> {
+    return this.httpClient.get<IStudentHistory[]>(`${API_ENDPOINT}/ebd/people/${studentId}/history`);
   }
 }

@@ -82,7 +82,7 @@ export class LessonClassPresencesPage implements OnInit {
 
   handleHasLessonEnded() {
     const formattedLessonDate = new Date(this.utilService.datePipe.transform(this.lessonDate, `yyyy-MM-dd'T'HH:mm:ss.SSS`));
-    formattedLessonDate.setHours(13, 0, 0, 0);
+    formattedLessonDate.setHours(14, 0, 0, 0);
 
     if (new Date() > formattedLessonDate) {
       this.hasLessonEnded = true;

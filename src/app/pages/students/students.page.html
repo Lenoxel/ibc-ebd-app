@@ -1,5 +1,5 @@
 <app-header
-  headerTitle="Alunos"
+  headerTitle="Pessoas"
   [hideHeader]="hideHeader"
   (refreshEvent)="getEbdStudents()"
   [selectOptions]="loggedUserHasFullAccess ? { placeholder: 'Selecione uma classe', items: (ebdClasses$ | async), defaultAll: 'Todas as classes', choosedItem: loggedUserPreferredClass } : null"
@@ -36,7 +36,7 @@
   <!-- <ng-container *ngIf="ebdStudents$ | async as ebdStudents; else loadingTemplate">
     <ion-virtual-scroll [items]="ebdStudents" approxItemHeight="69px">
       <div *virtualItem="let item; let itemBounds = bounds;">
-        <ion-item *ngIf="!filteredName || item?.name?.toLowerCase()?.includes(filteredName?.toLowerCase())" button lines="full" (click)="selectedStudent = item; getEbdStudentHistory(item.id)">
+        <ion-item *ngIf="!filteredName || item?.name?.toLowerCase()?.includes(filteredName?.toLowerCase())" button lines="full" (click)="selectedStudent = item; getEbdPersonHistory(item.id)">
           <ion-avatar slot="start">
             <img [src]="item?.picture || '/assets/img/person.png'" />
           </ion-avatar>

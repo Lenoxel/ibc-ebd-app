@@ -79,8 +79,8 @@ export class StudentsPage implements OnInit {
     this.ebdStudents$ = this.studentService.getEbdStudents(classId || this.loggedUserPreferredClass?.id);
   }
 
-  getEbdStudentHistory(studentId: number) {
-    this.ebdStudentHistoryList$ = this.studentService.getEbdStudentHistory(studentId);
+  getEbdPersonHistory(personId: number) {
+    this.ebdStudentHistoryList$ = this.studentService.getEbdPersonHistory(personId);
   }
 
   onSelectClass(value: EntityBasic) {
@@ -95,7 +95,7 @@ export class StudentsPage implements OnInit {
   onSelectStudent(student: IStudent | null) {
     if (student) {
       this.selectedStudent = student;
-      this.getEbdStudentHistory(student.id);
+      this.getEbdPersonHistory(student.id);
     }
   }
 }

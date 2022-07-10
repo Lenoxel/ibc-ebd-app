@@ -311,6 +311,7 @@ export class AnalyticsPage implements OnInit, AfterViewInit {
   getAnalytics() {
     this.getAnalyticsPresenceCounts();
     this.getAnalyticsPresenceHistory();
+    this.calculateClassesFrequency();
   }
 
   getAnalyticsPresenceCounts() {
