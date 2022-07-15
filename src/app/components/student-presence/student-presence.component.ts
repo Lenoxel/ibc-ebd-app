@@ -201,7 +201,7 @@ export class StudentPresenceComponent implements OnInit {
         `${presenceRegister.attended ? 'Presença' : 'Falta'} de ${presenceRegister.person_name} salva com sucesso!`,
         'primary',
         'top',
-        2500,
+        3500,
         presenceRegister.attended ? 'checkmark-circle-outline' : 'close-circle-outline',
       );
 
@@ -211,7 +211,7 @@ export class StudentPresenceComponent implements OnInit {
         `Ocorreu um erro ao dar ${presenceRegister.attended ? 'presença' : 'falta'} para ${presenceRegister.person_name}.`,
         'danger',
         'top',
-        2500,
+        3500,
       );
 
       presenceRegister.underAction = false;

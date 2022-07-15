@@ -1,19 +1,19 @@
 import { AfterContentInit, ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { IStudent, IStudentHistory } from 'src/app/interfaces';
+import { IStudent } from 'src/app/interfaces';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { EbdService } from 'src/app/services/ebd/ebd.service';
 import { StudentService } from 'src/app/services/student/student.service';
 import { EntityBasic, SearchbarOptions } from 'src/app/types';
 
 @Component({
-  selector: 'app-students',
-  templateUrl: './students.page.html',
-  styleUrls: ['./students.page.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'app-people',
+  templateUrl: './people.page.html',
+  styleUrls: ['./people.page.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class StudentsPage implements OnInit, AfterContentInit {
+export class PeoplePage implements OnInit, AfterContentInit {
   loggedUserPreferredClass: EntityBasic | null = null;
   loggedUserHasFullAccess: boolean | null = false;
   ebdClasses$: Observable<EntityBasic[]>;
@@ -26,8 +26,6 @@ export class StudentsPage implements OnInit, AfterContentInit {
     showCancelButton: 'focus',
     debounce: 500
   };
-  selectedStudent: IStudent | null;
-  ebdStudentHistoryList$: Observable<IStudentHistory[] | null> = null;
 
   constructor(
     public authService: AuthService,
@@ -81,10 +79,6 @@ export class StudentsPage implements OnInit, AfterContentInit {
     this.ebdStudents$ = this.studentService.getEbdStudents(classId || this.loggedUserPreferredClass?.id);
   }
 
-  getEbdPersonHistory(personId: number) {
-    this.ebdStudentHistoryList$ = this.studentService.getEbdPersonHistory(personId);
-  }
-
   onSelectClass(value: EntityBasic) {
     this.loggedUserPreferredClass = value;
     this.getEbdStudents();
@@ -92,12 +86,10 @@ export class StudentsPage implements OnInit, AfterContentInit {
 
   onFilterStudents(value: string) {
     this.filteredName = value;
-  }
-
-  onSelectStudent(student: IStudent | null) {
-    if (student) {
-      this.selectedStudent = student;
-      this.getEbdPersonHistory(student.id);
-    }
+    // const tempEbdStudents = this.ebdStudents$;
+    // this.ebdStudents$ = null;
+    // setTimeout(() => {
+    //   this.ebdStudents$ = tempEbdStudents;
+    // }, 100);
   }
 }

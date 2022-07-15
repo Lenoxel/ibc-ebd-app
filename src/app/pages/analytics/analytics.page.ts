@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
 import { UtilService } from 'src/app/services/util/util.service';
 import randomColor from 'randomcolor';
@@ -29,8 +29,6 @@ export class AnalyticsPage implements OnInit, ViewDidEnter {
 
   analyticsPresenceCounts$: Observable<IAnalyticsPresenceCounts> = null;
   analyticsPresenceHistory$: Observable<IAnalyticsPresenceHistory[]> = null;
-
-  loading = !!(!this.analyticsPresenceCounts$ || !this. analyticsPresenceHistory$);
 
   hideHeader$ = new Subject<boolean>();
   hideHeader = false;

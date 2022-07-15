@@ -1,0 +1,26 @@
+<app-header
+  headerTitle="Pessoas"
+  [hideHeader]="hideHeader"
+  (refreshEvent)="getEbdStudents()"
+  [selectOptions]="loggedUserHasFullAccess ? { placeholder: 'Selecione uma classe', items: (ebdClasses$ | async), defaultAll: 'Todas as classes', choosedItem: loggedUserPreferredClass } : null"
+  (selectEvent)="loggedUserHasFullAccess ? onSelectClass($event) : null"
+  [searchbarOptions]="searchbarOptions"
+  (searchEvent)="onFilterStudents($event)"
+></app-header>
+
+<ion-content
+  [fullscreen]="true"
+  [scrollEvents]="true"
+  (ionScroll)="onContentScroll($any($event))"
+>
+  <app-people-list
+    *ngIf="ebdStudents$ | async as ebdStudents; else loadingTemplate"
+    [ebdStudents]="ebdStudents"
+    [filteredName]="filteredName"
+  >
+  </app-people-list>
+
+  <ng-template #loadingTemplate>
+    <ion-progress-bar type="indeterminate"></ion-progress-bar>
+  </ng-template>
+</ion-content>

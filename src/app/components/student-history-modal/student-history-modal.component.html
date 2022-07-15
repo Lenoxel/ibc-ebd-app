@@ -47,8 +47,8 @@
         </ion-row>
       </ion-grid> -->
 
-      <!-- <ng-container *ngIf="studentHistoryList?.length; else noDataTemplate"> -->
-      <ng-container *ngIf="studentHistoryList?.length">
+      <ng-container *ngIf="studentHistoryList?.length; else noDataTemplate">
+      <!-- <ng-container *ngIf="studentHistoryList?.length"> -->
         <ion-card *ngFor="let studentHistory of studentHistoryList" color="light">
           <ion-item lines="none">
             <ion-label class="ion-text-wrap">
@@ -63,13 +63,11 @@
       </ng-container>
 
       <ng-template #noDataTemplate>
-        <ng-container *ngIf="loading; else noReallyDataTemplate">
+        <!-- <ng-container *ngIf="loading; else noReallyDataTemplate">
           <ion-progress-bar type="indeterminate"></ion-progress-bar>
-        </ng-container>
+        </ng-container> -->
 
-        <ng-template #noReallyDataTemplate>
-          <h2 class="ion-text-center ion-text-wrap">Sem histórico de chamada</h2>
-        </ng-template>
+        <h2 class="ion-text-center ion-text-wrap">Sem histórico de chamada</h2>
       </ng-template>
     </ion-content>
   </ng-template>

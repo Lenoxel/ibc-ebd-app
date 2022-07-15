@@ -1,0 +1,27 @@
+<app-student-history-modal
+  [student]="selectedStudent"
+  [studentHistoryList]="ebdStudentHistoryList$ | async"
+  (dismissModalEvent)="selectedStudent=null"
+></app-student-history-modal>
+
+<ng-container *ngIf="ebdStudents?.length">
+  <ion-virtual-scroll [items]="filteredName ? filteredEbdStudents : ebdStudents" approxItemHeight="69px">
+    <div *virtualItem="let item; let itemBounds = bounds;">
+      <app-student
+        [student]="item"
+        (selectStudentEvent)="onSelectStudent($any($event))"
+      >
+      </app-student>
+    </div>
+  </ion-virtual-scroll>
+</ng-container>
+
+<!-- <ion-list *ngIf="ebdStudents?.length">
+  <app-student
+    *ngFor="let student of ebdStudents"
+    [student]="student"
+    [show]="!filteredName || student?.name?.toLowerCase()?.includes(filteredName?.toLowerCase())"
+    (selectStudentEvent)="onSelectStudent($any($event))"
+  >
+  </app-student>
+</ion-list> -->

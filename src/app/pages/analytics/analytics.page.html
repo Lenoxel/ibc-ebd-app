@@ -9,24 +9,14 @@
   [scrollEvents]="true"
   (ionScroll)="onContentScroll($any($event))"
 >
-  <ion-grid *ngIf="loading; else loadingTemplate">
-    <div class="ion-padding">
-      <ion-row>
-        <ion-col size-lg="12" class="ion-text-center ion-align-self-center">
-          <app-analytics-overall-card
-            [analyticsPresenceCounts]="analyticsPresenceCounts$ | async"
-          ></app-analytics-overall-card>
-        </ion-col>
-      </ion-row>
+  <app-analytics-container
+    [analyticsPresenceCounts]="analyticsPresenceCounts$ | async"
+    [analyticsPresenceHistory]="analyticsPresenceHistory$ | async"
+  >
+  </app-analytics-container>
 
-      <ion-row>
-        <ion-col size-lg="12">
-          <app-analytics-history-card
-            [analyticsPresenceHistory]="analyticsPresenceHistory$ | async"
-          ></app-analytics-history-card>
-        </ion-col>
-      </ion-row>
-<!-- 
+  <!-- <ion-grid *ngIf="!loading; else loadingTemplate">
+    <div class="ion-padding"> 
       <ion-row>
         <ion-col *ngFor="let class of classes" size-lg="3" size-md="6" size-sm="12">
           <ion-card>
@@ -85,13 +75,9 @@
             </ion-item-group>
           </ion-card>
         </ion-col>
-      </ion-row> -->
+      </ion-row>
     </div>
-  </ion-grid>
-
-  <ng-template #loadingTemplate>
-    <ion-progress-bar type="indeterminate"></ion-progress-bar>
-  </ng-template>
+  </ion-grid> -->
 
   <!-- <ion-grid>
     <div class="ion-padding ion-margin">
