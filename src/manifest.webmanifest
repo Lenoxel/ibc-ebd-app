@@ -1,6 +1,6 @@
 {
-  "name": "app",
-  "short_name": "app",
+  "name": "App da EBD da IBC",
+  "short_name": "Minha EBD",
   "theme_color": "#322514",
   "background_color": "#fafafa",
   "display": "standalone",
