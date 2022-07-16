@@ -44,7 +44,7 @@
       </ion-item>
 
       <ng-container *ngIf="values?.ebdPresencesRegister?.length; else loadingTemplate">
-        <ion-accordion-group [multiple]="false" animated="true">
+        <ion-accordion-group [multiple]="false" animated="true" expand="compact">
           <app-student-presence
             *ngFor="let presenceRegister of values?.ebdPresencesRegister"
             [presenceRegister]="presenceRegister"

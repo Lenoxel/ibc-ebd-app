@@ -81,12 +81,13 @@ export class LessonClassPresencesPage implements OnInit {
   }
 
   handleHasLessonEnded() {
-    const formattedLessonDate = new Date(this.utilService.datePipe.transform(this.lessonDate, `yyyy-MM-dd'T'HH:mm:ss.SSS`));
-    formattedLessonDate.setHours(14, 0, 0, 0);
+    return false;
+    // const formattedLessonDate = new Date(this.utilService.datePipe.transform(this.lessonDate, `yyyy-MM-dd'T'HH:mm:ss.SSS`));
+    // formattedLessonDate.setHours(14, 0, 0, 0);
 
-    if (new Date() > formattedLessonDate) {
-      this.hasLessonEnded = true;
-    }
+    // if (new Date() > formattedLessonDate) {
+    //   this.hasLessonEnded = true;
+    // }
   }
 
   handleClassLessonDetails(details: IEbdClassLessonDetails | null) {
