@@ -18,6 +18,7 @@ export class LessonsPage implements OnInit, AfterContentInit {
   ebdLessons$: Observable<any>;
   hideHeader$ = new Subject<boolean>();
   hideHeader = false;
+  headerMarginTop = '0px';
 
   constructor(
     public authService: AuthService,
@@ -38,7 +39,8 @@ export class LessonsPage implements OnInit, AfterContentInit {
   }
 
   onContentScroll(event: CustomEvent) {
-    this.hideHeader$.next(event?.detail?.deltaY > 0 ? true : false);
+    // this.hideHeader$.next(event?.detail?.deltaY > 0 ? true : false);
+    this.headerMarginTop = `-${event?.detail?.scrollTop * 0.75}px`;
   }
 
   getEbdLessons() {

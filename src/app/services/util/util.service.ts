@@ -9,7 +9,6 @@ export class UtilService {
   datePipe = new DatePipe('pt-BR');
 
   years = [
-    '2021',
     '2022',
   ];
 
@@ -70,9 +69,9 @@ export class UtilService {
     private toastController: ToastController,
   ) { }
 
-  setSundaysOnMonth(month: number = new Date().getMonth() + 1, year: number = new Date().getFullYear()) {
-    const days = new Date(year, month, 0).getDate();
-    const sundays = [8 - (new Date(`${month}/01/${year}`).getDay())];
+  setSundaysOnMonth(month: number = new Date().getMonth(), year: number = new Date().getFullYear()) {
+    const days = new Date(year, month + 1, 0).getDate();
+    const sundays = [8 - (new Date(`${month + 1}/01/${year}`).getDay())];
 
     for (let sunday = sundays[0] + 7; sunday < days; sunday += 7 ) {
       sundays.push(sunday);

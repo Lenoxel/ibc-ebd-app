@@ -1,6 +1,7 @@
 <app-header
   headerTitle="Pessoas"
   [hideHeader]="hideHeader"
+  [marginTop]="headerMarginTop"
   (refreshEvent)="getEbdStudents()"
   [selectOptions]="loggedUserHasFullAccess ? { placeholder: 'Selecione uma classe', items: (ebdClasses$ | async), defaultAll: 'Todas as classes', choosedItem: loggedUserPreferredClass } : null"
   (selectEvent)="loggedUserHasFullAccess ? onSelectClass($event) : null"

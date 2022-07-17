@@ -11,6 +11,7 @@ import { EntityBasic, SearchbarOptions, SelectOptions } from 'src/app/types';
 export class HeaderComponent implements OnInit {
   @Input() headerTitle = '';
   @Input() hideHeader = false;
+  @Input() marginTop = '0px';
   @Input() searchbarOptions: SearchbarOptions | null = null;
   @Input() selectOptions: SelectOptions<EntityBasic> | null = null;
   @Output() refreshEvent = new EventEmitter<void>();

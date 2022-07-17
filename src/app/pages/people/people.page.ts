@@ -21,6 +21,7 @@ export class PeoplePage implements OnInit, AfterContentInit {
   filteredName = '';
   hideHeader$ = new Subject<boolean>();
   hideHeader = false;
+  headerMarginTop = '0px';
   searchbarOptions: SearchbarOptions = {
     placeholder: 'Pesquise pelo aluno',
     showCancelButton: 'focus',
@@ -46,7 +47,8 @@ export class PeoplePage implements OnInit, AfterContentInit {
   }
 
   onContentScroll(event: CustomEvent) {
-    this.hideHeader$.next(event?.detail?.deltaY > 0 ? true : false);
+    // this.hideHeader$.next(event?.detail?.deltaY > 0 ? true : false);
+    this.headerMarginTop = `-${event?.detail?.scrollTop * 0.75}px`;
   }
 
   getLoggedUser() {

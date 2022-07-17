@@ -9,7 +9,7 @@
 
   <ion-col size-lg="6">
     <ion-item>
-      <ion-select [(ngModel)]="selectedMonth" interface="action-sheet" placeholder="Selecione um mês" cancel-text="Cancelar">
+      <ion-select [(ngModel)]="selectedMonth" (ngModelChange)="onChangeMonth()" interface="action-sheet" placeholder="Selecione um mês" cancel-text="Cancelar">
         <ion-select-option *ngFor="let month of utilService?.months" [value]="month?.value">{{month?.text}}</ion-select-option>
       </ion-select>
     </ion-item>

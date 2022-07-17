@@ -2,6 +2,7 @@
 
 export interface IAnalyticsPresenceClass {
     class_name: string;
+    class_id: number;
     lesson_name: string;
     lesson_date: string;
     registered: number;
@@ -9,6 +10,10 @@ export interface IAnalyticsPresenceClass {
     absences: number;
     visitors: number;
     frequency: number;
-    bestFrequency?: boolean;
-    worstFrequency?: boolean;
+}
+
+export interface IAnalyticsPresenceClassInfos {
+    best_frequency_class: number;
+    worst_frequency_class: number;
+    classes: IAnalyticsPresenceClass[];
 }

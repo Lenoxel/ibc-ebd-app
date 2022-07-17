@@ -8,6 +8,8 @@ import { IAnalyticsPresenceClass } from 'src/app/interfaces';
 })
 export class AnalyticsClassComponent implements OnInit {
   @Input() presenceClass: IAnalyticsPresenceClass = null;
+  @Input() isBestFrequency = false;
+  @Input() isWorstFrequency = false;
 
   constructor() { }
 

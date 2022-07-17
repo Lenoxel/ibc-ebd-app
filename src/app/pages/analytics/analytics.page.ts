@@ -9,7 +9,7 @@ import SwiperCore, { Autoplay, Keyboard, Pagination, SwiperOptions } from 'swipe
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { AnalyticsService } from 'src/app/services/analytics/analytics.service';
-import { IAnalyticsPresenceClass, IAnalyticsPresenceCounts, IAnalyticsPresenceHistory } from 'src/app/interfaces';
+import { IAnalyticsPresenceClassInfos, IAnalyticsPresenceCounts, IAnalyticsPresenceHistory } from 'src/app/interfaces';
 
 SwiperCore.use([Autoplay, Keyboard, Pagination]);
 Chart.register(...registerables);
@@ -29,10 +29,11 @@ export class AnalyticsPage implements OnInit, ViewDidEnter {
 
   analyticsPresenceCounts$: Observable<IAnalyticsPresenceCounts> = null;
   analyticsPresenceHistory$: Observable<IAnalyticsPresenceHistory[]> = null;
-  analyticsPresenceClasses$: Observable<IAnalyticsPresenceClass[]> = null;
+  analyticsPresenceClassInfos$: Observable<IAnalyticsPresenceClassInfos> = null;
 
   hideHeader$ = new Subject<boolean>();
   hideHeader = false;
+  headerMarginTop = '0px';
 
   doubleLineChart: Chart;
   // barChart: Chart;
@@ -51,152 +52,6 @@ export class AnalyticsPage implements OnInit, ViewDidEnter {
     keyboard: true,
     autoplay: true,
   };
-
-  classes = [
-    {
-      name: 'Novo Viver',
-      enrolled: 27,
-      absents: 8,
-      visitors: 4,
-      presents: 19,
-      presentsPercentual: null,
-      bestFrequency: null,
-      worstFrequency: null,
-    },
-    {
-      name: 'Gideão',
-      enrolled: 21,
-      absents: 10,
-      visitors: 1,
-      presents: 11,
-      presentsPercentual: null,
-      bestFrequency: null,
-      worstFrequency: true,
-    },
-    {
-      name: 'Adriel',
-      enrolled: 17,
-      absents: 4,
-      presents: 13,
-      presentsPercentual: null,
-      bestFrequency: null,
-      worstFrequency: null,
-    },
-    {
-      name: 'Ouro de Ofir',
-      enrolled: 18,
-      absents: 8,
-      visitors: 1,
-      presents: 10,
-      presentsPercentual: null,
-      bestFrequency: null,
-      worstFrequency: null,
-    },
-    {
-      name: 'El Shaday',
-      enrolled: 24,
-      absents: 5,
-      presents: 19,
-      presentsPercentual: null,
-      bestFrequency: true,
-      worstFrequency: null,
-    },
-    {
-      name: 'Sabaot',
-      enrolled: 22,
-      absents: 6,
-      presents: 16,
-      presentsPercentual: null,
-      bestFrequency: null,
-      worstFrequency: null,
-    },
-    {
-      name: 'Emanuel',
-      enrolled: 18,
-      absents: 8,
-      visitors: 2,
-      presents: 10,
-      presentsPercentual: null,
-      bestFrequency: null,
-      worstFrequency: null,
-    },
-    {
-      name: 'Ágape',
-      enrolled: 28,
-      absents: 7,
-      presents: 21,
-      presentsPercentual: null,
-      bestFrequency: null,
-      worstFrequency: null,
-    },
-    {
-      name: 'Peniel',
-      enrolled: 30,
-      absents: 11,
-      presents: 19,
-      visitors: 2,
-      presentsPercentual: null,
-      bestFrequency: null,
-      worstFrequency: null,
-    },
-    {
-      name: 'Judá',
-      enrolled: 32,
-      absents: 10,
-      presents: 22,
-      presentsPercentual: null,
-      bestFrequency: null,
-      worstFrequency: null,
-    },
-    {
-      name: 'Doxa',
-      enrolled: 35,
-      absents: 8,
-      visitors: 1,
-      presents: 27,
-      presentsPercentual: null,
-      bestFrequency: null,
-      worstFrequency: null,
-    },
-    {
-      name: 'Maternal',
-      enrolled: 12,
-      absents: 3,
-      presents: 9,
-      presentsPercentual: null,
-      bestFrequency: null,
-      worstFrequency: null,
-    },
-    {
-      name: 'Jardim',
-      enrolled: 16,
-      absents: 5,
-      presents: 11,
-      presentsPercentual: null,
-      bestFrequency: null,
-      worstFrequency: null,
-    },
-    {
-      name: 'Primários',
-      enrolled: 20,
-      absents: 7,
-      presents: 13,
-      presentsPercentual: null,
-      bestFrequency: null,
-      worstFrequency: null,
-    },
-    {
-      name: 'Juniores',
-      enrolled: 8,
-      absents: 3,
-      presents: 5,
-      presentsPercentual: null,
-      bestFrequency: null,
-      worstFrequency: null,
-    },
-  ];
-
-  sundaysOfMonth = ['27 de Março', '20 de Março', '13 de Março', '06 de Março', 'Todos os domingos de Março (média)'];
 
   selectedYear: string = null;
   selectedMonth: string = null;
@@ -335,11 +190,12 @@ export class AnalyticsPage implements OnInit, ViewDidEnter {
   }
 
   getAnalyticsPresenceClasses() {
-    this.analyticsPresenceClasses$ = this.analyticsService.getAnalyticsPresenceClasses(this.selectedSunday, this.selectedMonth);
+    this.analyticsPresenceClassInfos$ = this.analyticsService.getAnalyticsPresenceClassInfos(this.selectedSunday, this.selectedMonth);
   }
 
   onContentScroll(event: CustomEvent) {
-    this.hideHeader$.next(event?.detail?.deltaY > 0 ? true : false);
+    // this.hideHeader$.next(event?.detail?.deltaY > 0 ? true : false);
+    this.headerMarginTop = `-${event?.detail?.scrollTop * 0.75}px`;
   }
 
   async logout() {
@@ -348,70 +204,70 @@ export class AnalyticsPage implements OnInit, ViewDidEnter {
   }
 
   doubleLineChartMethod() {
-    if (this.doubleLineCanvas?.nativeElement) {
-      if (this.doubleLineChart) {
-        this.doubleLineChart.destroy();
-      }
+    // if (this.doubleLineCanvas?.nativeElement) {
+    //   if (this.doubleLineChart) {
+    //     this.doubleLineChart.destroy();
+    //   }
 
-      const randomColorsList = randomColor({
-        count: this.classes.length,
-        // hue: '#be1558',
-        // hue: 'blue',
-        // luminosity: 'light',
-        format: 'rgba',
-        alpha: 0.7,
-      });
+    //   const randomColorsList = randomColor({
+    //     count: this.classes.length,
+    //     // hue: '#be1558',
+    //     // hue: 'blue',
+    //     // luminosity: 'light',
+    //     format: 'rgba',
+    //     alpha: 0.7,
+    //   });
 
-      this.doubleLineChart = new Chart(this.doubleLineCanvas.nativeElement, {
-        type: 'bar',
-        data: {
-          labels: ['02/01', '09/01', '16/01', '23/01'],
-          datasets: this.classes.map(({ name: label }, index) => ({
-            label,
-            data: [
-              Math.round((Math.random() * 30)),
-              Math.round((Math.random() * 30)),
-              Math.round((Math.random() * 30)),
-              Math.round((Math.random() * 30))
-            ],
-            backgroundColor: randomColorsList[index],
-            borderColor: randomColorsList[index].replace('0.7', '1.0'),
-            fill: false,
-            tension: 0.3,
-            pointRadius: 5,
-          })),
-        },
-        options: {
-          responsive: true,
-          aspectRatio: 2.75,
-          scales: {
-            y: {
-              ticks: {
-                font: {
-                  size: 14,
-                },
-              }
-            },
-            x: {
-              ticks: {
-                font: {
-                  size: 14,
-                },
-              }
-            },
-          },
-          plugins: {
-            legend: {
-              labels: {
-                font: {
-                  size: 16,
-                }
-              }
-            }
-          },
-        }
-      });
-    }
+    //   this.doubleLineChart = new Chart(this.doubleLineCanvas.nativeElement, {
+    //     type: 'bar',
+    //     data: {
+    //       labels: ['02/01', '09/01', '16/01', '23/01'],
+    //       datasets: this.classes.map(({ name: label }, index) => ({
+    //         label,
+    //         data: [
+    //           Math.round((Math.random() * 30)),
+    //           Math.round((Math.random() * 30)),
+    //           Math.round((Math.random() * 30)),
+    //           Math.round((Math.random() * 30))
+    //         ],
+    //         backgroundColor: randomColorsList[index],
+    //         borderColor: randomColorsList[index].replace('0.7', '1.0'),
+    //         fill: false,
+    //         tension: 0.3,
+    //         pointRadius: 5,
+    //       })),
+    //     },
+    //     options: {
+    //       responsive: true,
+    //       aspectRatio: 2.75,
+    //       scales: {
+    //         y: {
+    //           ticks: {
+    //             font: {
+    //               size: 14,
+    //             },
+    //           }
+    //         },
+    //         x: {
+    //           ticks: {
+    //             font: {
+    //               size: 14,
+    //             },
+    //           }
+    //         },
+    //       },
+    //       plugins: {
+    //         legend: {
+    //           labels: {
+    //             font: {
+    //               size: 16,
+    //             }
+    //           }
+    //         }
+    //       },
+    //     }
+    //   });
+    // }
   }
 
   barChartMethod() {

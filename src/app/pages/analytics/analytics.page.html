@@ -2,6 +2,7 @@
   headerTitle="Indicadores"
   [hideHeader]="hideHeader"
   (refreshEvent)="getAnalytics()"
+  [marginTop]="headerMarginTop"
 ></app-header>
 
 <ion-content
@@ -12,7 +13,7 @@
   <app-analytics-container
     [analyticsPresenceCounts]="analyticsPresenceCounts$ | async"
     [analyticsPresenceHistory]="analyticsPresenceHistory$ | async"
-    [analyticsPresenceClasses]="analyticsPresenceClasses$ | async"
+    [analyticsPresenceClassInfos]="analyticsPresenceClassInfos$ | async"
     (updatePresenceClassesEvent)="updatePresenceClasses($any($event))"
   >
   </app-analytics-container>

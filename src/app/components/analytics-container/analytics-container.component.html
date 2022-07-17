@@ -23,10 +23,12 @@
     </app-date-selector>
 
     <ion-row class="ion-justify-content-center">
-      <ng-container *ngIf="analyticsPresenceClasses?.length; else noPresenceClassesTemplate">
-        <ion-col *ngFor="let presenceClass of analyticsPresenceClasses" size-lg="3" size-md="6" size-sm="12">
+      <ng-container *ngIf="analyticsPresenceClassInfos?.classes?.length; else noPresenceClassesTemplate">
+        <ion-col *ngFor="let presenceClass of analyticsPresenceClassInfos.classes" size-lg="3" size-md="6" size-sm="12">
           <app-analytics-class
             [presenceClass]="presenceClass"
+            [isBestFrequency]="presenceClass?.class_id === analyticsPresenceClassInfos?.best_frequency_class"
+            [isWorstFrequency]="presenceClass?.class_id === analyticsPresenceClassInfos?.worst_frequency_class"
           >
           </app-analytics-class>
         </ion-col>

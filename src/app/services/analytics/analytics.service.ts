@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { API_ENDPOINT } from 'config';
-import { IAnalyticsPresenceClass, IAnalyticsPresenceCounts, IAnalyticsPresenceHistory } from 'src/app/interfaces';
+import { IAnalyticsPresenceClassInfos, IAnalyticsPresenceCounts, IAnalyticsPresenceHistory } from 'src/app/interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -20,12 +20,12 @@ export class AnalyticsService {
     return this.httpClient.get<IAnalyticsPresenceHistory[]>(`${API_ENDPOINT}/ebd/analytics/presences/history`);
   }
 
-  getAnalyticsPresenceClasses(day: string, month: string) {
+  getAnalyticsPresenceClassInfos(day: string, month: string) {
     const params: HttpParams = new HttpParams().appendAll({
       day,
       month
     });
 
-    return this.httpClient.get<IAnalyticsPresenceClass[]>(`${API_ENDPOINT}/ebd/analytics/presences/classes`, { params });
+    return this.httpClient.get<IAnalyticsPresenceClassInfos>(`${API_ENDPOINT}/ebd/analytics/presences/classes`, { params });
   }
 }

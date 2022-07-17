@@ -25,6 +25,11 @@ export class DateSelectorComponent implements OnInit {
 
   ngOnInit() {}
 
+  onChangeMonth() {
+    this.selectedDay = null;
+    this.utilService.setSundaysOnMonth(this.selectedMonth);
+  }
+
   onChangeDay() {
     this.changeDateEvent.emit({
       year: this.selectedYear,
