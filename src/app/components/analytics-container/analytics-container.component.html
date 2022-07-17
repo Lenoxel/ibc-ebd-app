@@ -24,15 +24,18 @@
 
     <ion-row class="ion-justify-content-center">
       <ng-container *ngIf="analyticsPresenceClasses?.length; else noPresenceClassesTemplate">
-        <app-analytics-class
-          *ngFor="let presenceClass of analyticsPresenceClasses"
-          [presenceClass]="presenceClass"
-        >
-        </app-analytics-class>
+        <ion-col *ngFor="let presenceClass of analyticsPresenceClasses" size-lg="3" size-md="6" size-sm="12">
+          <app-analytics-class
+            [presenceClass]="presenceClass"
+          >
+          </app-analytics-class>
+        </ion-col>
       </ng-container>
 
       <ng-template #noPresenceClassesTemplate>
-        Não há registros para essa data
+        <div class="ion-padding-top">
+          Não há registros para essa data
+        </div>
       </ng-template>
     </ion-row>
   </div>
