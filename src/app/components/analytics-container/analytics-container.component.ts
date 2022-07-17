@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { IAnalyticsPresenceCounts, IAnalyticsPresenceHistory } from 'src/app/interfaces';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { IAnalyticsPresenceClass, IAnalyticsPresenceCounts, IAnalyticsPresenceHistory } from 'src/app/interfaces';
 
 @Component({
   selector: 'app-analytics-container',
@@ -10,6 +10,12 @@ import { IAnalyticsPresenceCounts, IAnalyticsPresenceHistory } from 'src/app/int
 export class AnalyticsContainerComponent implements OnInit {
   @Input() analyticsPresenceCounts: IAnalyticsPresenceCounts = null;
   @Input() analyticsPresenceHistory: IAnalyticsPresenceHistory[] = null;
+  @Input() analyticsPresenceClasses: IAnalyticsPresenceClass[] = null;
+  @Output() updatePresenceClassesEvent = new EventEmitter<{
+    year: string;
+    month: string;
+    day: string;
+  }>();
 
   constructor() { }
 

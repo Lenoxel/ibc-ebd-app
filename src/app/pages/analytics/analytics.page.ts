@@ -9,7 +9,7 @@ import SwiperCore, { Autoplay, Keyboard, Pagination, SwiperOptions } from 'swipe
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { AnalyticsService } from 'src/app/services/analytics/analytics.service';
-import { IAnalyticsPresenceCounts, IAnalyticsPresenceHistory } from 'src/app/interfaces';
+import { IAnalyticsPresenceClass, IAnalyticsPresenceCounts, IAnalyticsPresenceHistory } from 'src/app/interfaces';
 
 SwiperCore.use([Autoplay, Keyboard, Pagination]);
 Chart.register(...registerables);
@@ -29,6 +29,7 @@ export class AnalyticsPage implements OnInit, ViewDidEnter {
 
   analyticsPresenceCounts$: Observable<IAnalyticsPresenceCounts> = null;
   analyticsPresenceHistory$: Observable<IAnalyticsPresenceHistory[]> = null;
+  analyticsPresenceClasses$: Observable<IAnalyticsPresenceClass[]> = null;
 
   hideHeader$ = new Subject<boolean>();
   hideHeader = false;
@@ -197,9 +198,9 @@ export class AnalyticsPage implements OnInit, ViewDidEnter {
 
   sundaysOfMonth = ['27 de Março', '20 de Março', '13 de Março', '06 de Março', 'Todos os domingos de Março (média)'];
 
-  selectedYear = String(new Date().getFullYear());
-  selectedMonth = new Date().getMonth();
-  selectedSunday = '27 de Março';
+  selectedYear: string = null;
+  selectedMonth: string = null;
+  selectedSunday: string = null;
 
   exemplaryStudents = [
     {
@@ -294,6 +295,11 @@ export class AnalyticsPage implements OnInit, ViewDidEnter {
       debounceTime(50),
       distinctUntilChanged(),
     ).subscribe((hideHeader: boolean) => this.hideHeader = hideHeader);
+
+    const { day, month, year } = this.utilService.geLastEbdDate();
+    this.selectedYear = year;
+    this.selectedMonth = month;
+    this.selectedSunday = day;
   }
 
   ngOnInit(): void {}
@@ -308,7 +314,7 @@ export class AnalyticsPage implements OnInit, ViewDidEnter {
   getAnalytics() {
     this.getAnalyticsPresenceCounts();
     this.getAnalyticsPresenceHistory();
-    this.calculateClassesFrequency();
+    this.getAnalyticsPresenceClasses();
   }
 
   getAnalyticsPresenceCounts() {
@@ -319,11 +325,17 @@ export class AnalyticsPage implements OnInit, ViewDidEnter {
     this.analyticsPresenceHistory$ = this.analyticsService.getAnalyticsPresenceHistory();
   }
 
-  calculateClassesFrequency(): void {
-    this.classes = this.classes.map(ebdClass => ({
-      ...ebdClass,
-      presentsPercentual: ebdClass.presents / ebdClass.enrolled,
-    }));
+  updatePresenceClasses({
+    month,
+    day
+  }) {
+    this.selectedSunday = day;
+    this.selectedMonth = month;
+    this.getAnalyticsPresenceClasses();
+  }
+
+  getAnalyticsPresenceClasses() {
+    this.analyticsPresenceClasses$ = this.analyticsService.getAnalyticsPresenceClasses(this.selectedSunday, this.selectedMonth);
   }
 
   onContentScroll(event: CustomEvent) {

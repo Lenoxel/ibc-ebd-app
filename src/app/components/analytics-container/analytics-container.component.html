@@ -17,5 +17,23 @@
         ></app-analytics-history-card>
       </ion-col>
     </ion-row>
+
+    <app-date-selector
+      (changeDateEvent)="updatePresenceClassesEvent.emit($any($event))">
+    </app-date-selector>
+
+    <ion-row class="ion-justify-content-center">
+      <ng-container *ngIf="analyticsPresenceClasses?.length; else noPresenceClassesTemplate">
+        <app-analytics-class
+          *ngFor="let presenceClass of analyticsPresenceClasses"
+          [presenceClass]="presenceClass"
+        >
+        </app-analytics-class>
+      </ng-container>
+
+      <ng-template #noPresenceClassesTemplate>
+        Não há registros para essa data
+      </ng-template>
+    </ion-row>
   </div>
 </ion-grid>

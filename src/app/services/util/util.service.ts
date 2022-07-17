@@ -64,9 +64,34 @@ export class UtilService {
     },
   ];
 
+  sundaysOfMonth: number[] = [];
+
   constructor(
     private toastController: ToastController,
   ) { }
+
+  setSundaysOnMonth(month: number = new Date().getMonth() + 1, year: number = new Date().getFullYear()) {
+    const days = new Date(year, month, 0).getDate();
+    const sundays = [8 - (new Date(`${month}/01/${year}`).getDay())];
+
+    for (let sunday = sundays[0] + 7; sunday < days; sunday += 7 ) {
+      sundays.push(sunday);
+    }
+
+    this.sundaysOfMonth = [...sundays];
+  }
+
+  geLastEbdDate() {
+    const lastEbdDate = new Date();
+
+    lastEbdDate.setDate(lastEbdDate.getDate() - lastEbdDate.getDay());
+
+    return {
+      day: String(lastEbdDate.getDate()),
+      month: String(lastEbdDate.getMonth() + 1),
+      year: String(lastEbdDate.getFullYear())
+    };
+  }
 
   async showToastController(message: string, color: string, position: 'top' | 'bottom' | 'middle', duration = 2500, icon: string = '') {
     if (await this.toastController.getTop()) {

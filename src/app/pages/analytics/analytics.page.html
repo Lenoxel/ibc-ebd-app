@@ -12,6 +12,8 @@
   <app-analytics-container
     [analyticsPresenceCounts]="analyticsPresenceCounts$ | async"
     [analyticsPresenceHistory]="analyticsPresenceHistory$ | async"
+    [analyticsPresenceClasses]="analyticsPresenceClasses$ | async"
+    (updatePresenceClassesEvent)="updatePresenceClasses($any($event))"
   >
   </app-analytics-container>
 
