@@ -103,7 +103,7 @@ export class LessonsPage implements OnInit, AfterContentInit {
 
   showLessonNotAcessibleYet(lessonDate: string) {
     this.utilService.showToastController(
-      `Essa lição não está acessível, pois irá acontecer em ${this.utilService.datePipe.transform(lessonDate, 'dd/MM/yyyy')}`,
+      `Essa lição ainda não está acessível, pois irá acontecer em ${this.utilService.datePipe.transform(lessonDate, 'dd/MM/yyyy')}`,
       'light',
       'top'
     );
