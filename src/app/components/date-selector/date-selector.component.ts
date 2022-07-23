@@ -13,14 +13,19 @@ export class DateSelectorComponent implements OnInit {
     day: string;
   }>();
 
-  selectedYear = String(new Date().getFullYear());
-  selectedMonth = new Date().getMonth();
-  selectedDay = new Date().getDate();
+  selectedYear: string = null;
+  selectedMonth: number = null;
+  selectedDay: number = null;
 
   constructor(
     public utilService: UtilService,
   ) {
     this.utilService.setSundaysOnMonth();
+
+    const { day, month, year } = this.utilService.geLastEbdDate();
+    this.selectedDay = Number(day);
+    this.selectedMonth = Number(month) - 1;
+    this.selectedYear = year;
   }
 
   ngOnInit() {}

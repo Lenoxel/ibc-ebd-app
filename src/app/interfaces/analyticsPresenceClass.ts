@@ -10,6 +10,7 @@ export interface IAnalyticsPresenceClass {
     absences: number;
     visitors: number;
     frequency: number;
+    magazines: number;
 }
 
 export interface IAnalyticsPresenceClassInfos {

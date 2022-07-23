@@ -22,7 +22,7 @@
   
     <ion-item lines="none">
       <ion-label>Matriculados</ion-label>
-      <ion-note slot="end" color="dark">
+      <ion-note slot="end" color="primary">
         <ion-text style="font-size: 24px">
           {{presenceClass?.registered}}
         </ion-text>
@@ -46,9 +46,17 @@
     </ion-item>
     <ion-item lines="none">
       <ion-label>Visitantes</ion-label>
-      <ion-note slot="end" color="secondary">
+      <ion-note slot="end" color="dark">
         <ion-text style="font-size: 24px">
           {{presenceClass?.visitors || 0}}
+        </ion-text>
+      </ion-note>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-label>Revistas</ion-label>
+      <ion-note slot="end" color="dark">
+        <ion-text style="font-size: 24px">
+          {{presenceClass?.magazines}}
         </ion-text>
       </ion-note>
     </ion-item>
