@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/adjacent-overload-signatures */
 /* eslint-disable no-underscore-dangle */
 import { ChangeDetectionStrategy, Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { IonModal } from '@ionic/angular';
+import { IonModal, Platform } from '@ionic/angular';
 import { IStudent, IStudentHistory } from 'src/app/interfaces';
 
 @Component({
@@ -23,10 +23,16 @@ export class StudentHistoryModalComponent implements OnInit {
   private _student: IStudent | null = null;
   private _studentHistoryList: IStudentHistory[] | null = null;
 
-  constructor() {
+  constructor(
+    private platform: Platform,
+  ) {
     // const now = new Date();
     // this.startDate = new Date(now.getTime() - (1000 * 3600 * 24 * 90));
     // this.endDate = new Date();
+
+    this.platform.backButton.subscribeWithPriority(9999, () => {
+      this.hideModal();
+    });
   }
 
   get student(): IStudent | null {
@@ -59,12 +65,6 @@ export class StudentHistoryModalComponent implements OnInit {
       this.absencesCount = 0;
       this.loading = false;
     }
-  }
-
-  @HostListener('document:ionBackButton', ['$event'])
-  private async overrideHardwareBackAction($event: any) {
-    this.hideModal();
-    await this.dismissModalEvent.emit();
   }
 
   ngOnInit() {}

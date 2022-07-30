@@ -18,7 +18,7 @@
   </ion-label>
 
   <ng-container *ngIf="student?.whatsapp">
-    <ion-icon slot="end" name="logo-whatsapp" color="success"></ion-icon>
-    <ion-icon slot="end" name="call" color="highlight"></ion-icon>
+    <ion-icon slot="end" name="logo-whatsapp" color="success" (click)="$any($event)?.stopPropagation(); redirectToWhatsapp(student?.whatsapp);"></ion-icon>
+    <ion-icon slot="end" name="call" color="highlight" (click)="$any($event)?.stopPropagation(); redirectToCall(student?.whatsapp);"></ion-icon>
   </ng-container>
 </ion-item>
