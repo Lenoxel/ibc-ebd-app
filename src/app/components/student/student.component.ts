@@ -27,17 +27,17 @@ export class StudentComponent implements OnInit {
       formattedNumber = formattedNumber.replace('81', '');
     }
 
-    return `55819${formattedNumber}`;
+    return formattedNumber;
   }
 
   redirectToWhatsapp(whatsApp: string) {
     const formattedNumber = this.handlePhoneNumber(whatsApp);
-    window.location.href = `https://wa.me/${formattedNumber}`;
+    window.location.href = `https://wa.me/55819${formattedNumber}`;
   }
 
   redirectToCall(whatsApp: string) {
     const formattedNumber = this.handlePhoneNumber(whatsApp);
-    window.location.href = `tel:${formattedNumber}`;
+    window.location.href = `tel:819${formattedNumber}`;
   }
 
 }
