@@ -4,4 +4,7 @@ export interface IStudent {
     name: string;
     picture: string;
     ebd_class: string;
+    whatsapp?: string;
+    work_on_sundays?: boolean;
+    absences_in_sequence?: number;
 }

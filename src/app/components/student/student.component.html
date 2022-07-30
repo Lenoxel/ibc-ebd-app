@@ -2,8 +2,23 @@
   <ion-avatar slot="start">
     <img [src]="student?.picture || '/assets/img/person.png'" />
   </ion-avatar>
-  <ion-label>
+  <ion-label class="ion-text-wrap">
     <h3>{{student?.name}}</h3>
     <p>{{student?.ebd_class ? 'Classe ' + student?.ebd_class : 'Sem Classe'}}</p>
+    <ion-text *ngIf="student?.absences_in_sequence" color="danger">
+      <p>
+        <ng-container *ngIf="student?.absences_in_sequence > 1; else oneAbsenceTemplate">
+          {{student?.absences_in_sequence}} faltas seguidas
+        </ng-container>
+        <ng-template #oneAbsenceTemplate>
+          {{student?.absences_in_sequence}} falta seguida
+        </ng-template>
+      </p>
+    </ion-text>
   </ion-label>
+
+  <ng-container *ngIf="student?.whatsapp">
+    <ion-icon slot="end" name="logo-whatsapp" color="success"></ion-icon>
+    <ion-icon slot="end" name="call" color="highlight"></ion-icon>
+  </ng-container>
 </ion-item>

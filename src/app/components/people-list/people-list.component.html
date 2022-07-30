@@ -5,7 +5,7 @@
 ></app-student-history-modal>
 
 <ng-container *ngIf="ebdStudents?.length">
-  <ion-virtual-scroll [items]="filteredName ? filteredEbdStudents : ebdStudents" approxItemHeight="69px">
+  <ion-virtual-scroll [items]="filteredName ? filteredEbdStudents : ebdStudents" approxItemHeight="80px">
     <div *virtualItem="let item; let itemBounds = bounds;">
       <app-student
         [student]="item"
