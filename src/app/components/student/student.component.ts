@@ -17,28 +17,27 @@ export class StudentComponent implements OnInit {
   ngOnInit() {}
 
   handlePhoneNumber(whatsApp: string) {
-    whatsApp = whatsApp.trim().replace(/\s/g, '');
-    if (whatsApp.startsWith('819') && whatsApp.length === 11) {
-      whatsApp = whatsApp.replace('819', '');
+    let formattedNumber = whatsApp.trim().replace(/\s/g, '');
+
+    if (formattedNumber.startsWith('819') && formattedNumber.length === 11) {
+      formattedNumber = formattedNumber.replace('819', '');
     }
 
-    if (whatsApp.startsWith('81') && whatsApp.length === 10) {
-      whatsApp = whatsApp.replace('81', '');
+    if (formattedNumber.startsWith('81') && formattedNumber.length === 10) {
+      formattedNumber = formattedNumber.replace('81', '');
     }
 
-    whatsApp = `55819${whatsApp}`;
+    return `55819${formattedNumber}`;
   }
 
   redirectToWhatsapp(whatsApp: string) {
-    this.handlePhoneNumber(whatsApp);
-
-    window.location.href = `https://wa.me/${whatsApp}`;
+    const formattedNumber = this.handlePhoneNumber(whatsApp);
+    window.location.href = `https://wa.me/${formattedNumber}`;
   }
 
   redirectToCall(whatsApp: string) {
-    this.handlePhoneNumber(whatsApp);
-
-    window.location.href = `tel:${whatsApp}`;
+    const formattedNumber = this.handlePhoneNumber(whatsApp);
+    window.location.href = `tel:${formattedNumber}`;
   }
 
 }
