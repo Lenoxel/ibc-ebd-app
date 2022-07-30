@@ -2,21 +2,24 @@
   <ion-avatar slot="start">
     <img [src]="student?.picture || '/assets/img/person.png'" />
   </ion-avatar>
-  <ion-label class="ion-text-wrap">
+  <ion-label>
     <h3>{{student?.name}}</h3>
     <p>{{student?.ebd_class ? 'Classe ' + student?.ebd_class : 'Sem Classe'}}</p>
-    <ion-text [color]="student?.absences_in_sequence ? 'danger' : 'highlight'">
-      <p *ngIf="student?.absences_in_sequence; else noAbsencesTemplate">
-        <ng-container *ngIf="student?.absences_in_sequence > 1; else oneAbsenceTemplate">
-          {{student?.absences_in_sequence}} faltas seguidas
+    <ion-text [color]="student?.frequency?.absences_in_sequence ? 'danger' : 'success'">
+      <p>
+        <ng-container *ngIf="student?.frequency?.absences_in_sequence > 1">
+          {{student?.frequency?.absences_in_sequence}} faltas seguidas
         </ng-container>
-        <ng-template #oneAbsenceTemplate>
-          {{student?.absences_in_sequence}} falta seguida
-        </ng-template>
+        <ng-container *ngIf="student?.frequency?.absences_in_sequence === 1">
+          Faltou à última lição
+        </ng-container>
+        <ng-container *ngIf="student?.frequency?.presences_in_sequence === 1">
+          Veio à última lição
+        </ng-container>
+        <ng-container *ngIf="student?.frequency?.presences_in_sequence > 1">
+          {{student?.frequency?.presences_in_sequence}} presenças seguidas
+        </ng-container>
       </p>
-      <ng-template #noAbsencesTemplate>
-        <p>Veio na última lição</p>
-      </ng-template>
     </ion-text>
   </ion-label>
 

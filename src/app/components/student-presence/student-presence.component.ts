@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
 import { AlertController } from '@ionic/angular';
 import { IEbdLabel } from 'src/app/interfaces';
 import { IPresenceRegister } from 'src/app/interfaces/presenceRegister';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { LessonService } from 'src/app/services/lesson/lesson.service';
 import { UtilService } from 'src/app/services/util/util.service';
 
@@ -17,6 +18,7 @@ export class StudentPresenceComponent implements OnInit {
   @Input() hasLessonEnded = false;
   @Input() classId: number | null = null;
   @Input() lessonId: number | null = null;
+  @Input() loggedUserIsTeacher = false;
   @Output() expandAccordionEvent = new EventEmitter<string>();
   @Output() collapseAccordionEvent = new EventEmitter<void>();
 
@@ -24,6 +26,7 @@ export class StudentPresenceComponent implements OnInit {
     private alertController: AlertController,
     private lessonService: LessonService,
     private utilService: UtilService,
+    public authService: AuthService,
   ) { }
 
   ngOnInit() {}

@@ -5,6 +5,7 @@ import { IonAccordionGroup } from '@ionic/angular';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { IEbdClassLessonDetails } from 'src/app/interfaces';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { LessonService } from 'src/app/services/lesson/lesson.service';
 import { UtilService } from 'src/app/services/util/util.service';
 
@@ -28,10 +29,12 @@ export class LessonClassPresencesPage implements OnInit {
   visitorsQuantity = 0;
   moneyRaised = 0;
   oldMoneyRaised = 0;
+  loggedUserIsTeacher = false;
   details$ = new Subject<number>();
 
   constructor(
     private activatedRoute: ActivatedRoute,
+    private authService: AuthService,
     private lessonService: LessonService,
     private router: Router,
     private utilService: UtilService,
@@ -40,6 +43,7 @@ export class LessonClassPresencesPage implements OnInit {
       this.lessonId = Number(params.get('lessonId'));
       this.classId = Number(params.get('classId'));
       this.getEbdPresencesRegister(this.lessonId, this.classId);
+      this.handleLoggedUserIsTeacher();
     });
   }
 
@@ -117,6 +121,11 @@ export class LessonClassPresencesPage implements OnInit {
 
   getEbdPresencesRegister(lessonId: number, classId: number) {
     this.ebdPresencesRegister$ = this.lessonService.getEbdPresencesRegister(lessonId, classId);
+  }
+
+  handleLoggedUserIsTeacher() {
+    const { classesAsATeacher } = this.authService.$user.getValue();
+    this.loggedUserIsTeacher = !!(classesAsATeacher?.find(({ id }) => id === this.classId));
   }
 
   increaseVisitorsQuantity() {

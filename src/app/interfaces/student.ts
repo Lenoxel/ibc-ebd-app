@@ -6,5 +6,8 @@ export interface IStudent {
     ebd_class: string;
     whatsapp?: string;
     work_on_sundays?: boolean;
-    absences_in_sequence?: number;
+    frequency?: {
+        absences_in_sequence: number;
+        presences_in_sequence: number;
+    };
 }
