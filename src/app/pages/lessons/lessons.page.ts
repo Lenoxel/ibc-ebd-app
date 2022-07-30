@@ -1,6 +1,5 @@
-import { AfterContentInit, AfterViewInit, ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ViewDidEnter } from '@ionic/angular';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { ILesson } from 'src/app/interfaces';

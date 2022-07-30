@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import { NavController, Platform } from '@ionic/angular';
-import { AuthService } from './services/auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -9,9 +7,5 @@ import { AuthService } from './services/auth/auth.service';
 })
 export class AppComponent {
   constructor(
-    private platform: Platform,
-    private navController: NavController,
-    private authService: AuthService,
   ) {}
-
 }
