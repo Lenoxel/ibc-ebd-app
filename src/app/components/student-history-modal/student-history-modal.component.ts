@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/adjacent-overload-signatures */
 /* eslint-disable no-underscore-dangle */
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { IonModal } from '@ionic/angular';
 import { IStudent, IStudentHistory } from 'src/app/interfaces';
 
@@ -59,6 +59,12 @@ export class StudentHistoryModalComponent implements OnInit {
       this.absencesCount = 0;
       this.loading = false;
     }
+  }
+
+  @HostListener('document:ionBackButton', ['$event'])
+  private async overrideHardwareBackAction($event: any) {
+    this.hideModal();
+    await this.dismissModalEvent.emit();
   }
 
   ngOnInit() {}
