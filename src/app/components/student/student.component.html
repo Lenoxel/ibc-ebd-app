@@ -5,7 +5,10 @@
   <ion-label>
     <h3>{{student?.name}}</h3>
     <p>{{student?.ebd_class ? 'Classe ' + student?.ebd_class : 'Sem Classe'}}</p>
-    <ion-text [color]="student?.frequency?.absences_in_sequence ? 'danger' : 'success'">
+    <ion-text
+      *ngIf="student?.frequency?.absences_in_sequence || student?.frequency?.presences_in_sequence; else noEbdHistoryTemplate"
+      [color]="student?.frequency?.absences_in_sequence ? 'danger' : 'success'"
+    >
       <p>
         <ng-container *ngIf="student?.frequency?.absences_in_sequence > 1">
           {{student?.frequency?.absences_in_sequence}} faltas seguidas
@@ -21,6 +24,9 @@
         </ng-container>
       </p>
     </ion-text>
+    <ng-template #noEbdHistoryTemplate>
+      <p>Sem histórico de chamada</p>
+    </ng-template>
   </ion-label>
 
   <ng-container *ngIf="student?.whatsapp">
