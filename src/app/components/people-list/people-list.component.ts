@@ -39,11 +39,15 @@ export class PeopleListComponent implements OnInit {
 
   ngOnInit() {}
 
-  onSelectStudent(student: IStudent | null) {
+  onSelectPerson(student: IStudent | null) {
     if (student) {
       this.selectedStudent = student;
       this.getEbdPersonHistory(student.id);
     }
+  }
+
+  personTrackBy(index, person) {
+    return person.id;
   }
 
   getEbdPersonHistory(personId: number) {

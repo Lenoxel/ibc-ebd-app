@@ -6,10 +6,10 @@
 
 <ng-container *ngIf="ebdStudents?.length">
   <ion-virtual-scroll [items]="filteredName ? filteredEbdStudents : ebdStudents" approxItemHeight="91px">
-    <div *virtualItem="let item; let itemBounds = bounds;">
+    <div *virtualItem="let item; let itemBounds = bounds; trackBy: personTrackBy">
       <app-student
         [student]="item"
-        (selectStudentEvent)="onSelectStudent($any($event))"
+        (selectStudentEvent)="onSelectPerson($any($event))"
       >
       </app-student>
     </div>
@@ -21,7 +21,7 @@
     *ngFor="let student of ebdStudents"
     [student]="student"
     [show]="!filteredName || student?.name?.toLowerCase()?.includes(filteredName?.toLowerCase())"
-    (selectStudentEvent)="onSelectStudent($any($event))"
+    (selectStudentEvent)="onSelectPerson($any($event))"
   >
   </app-student>
 </ion-list> -->
