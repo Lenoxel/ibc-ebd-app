@@ -1,6 +1,9 @@
-<ion-item *ngIf="show" button lines="full" (click)="selectStudentEvent.emit(student)">
+<ion-item *ngIf="show" style="height: 91px !important;" button lines="full" (click)="selectStudentEvent.emit(student)" wid>
   <ion-avatar slot="start">
-    <img [src]="student?.picture || '/assets/img/person.png'" />
+    <ion-img
+      [src]="student?.picture || '/assets/img/person.png'"
+      [alt]="student?.name"
+    ></ion-img>
   </ion-avatar>
   <ion-label>
     <h3>{{student?.name}}</h3>
