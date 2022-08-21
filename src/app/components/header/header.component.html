@@ -13,7 +13,7 @@
         {{headerTitle}}
       </h2>
     </ion-title>
-    <ion-buttons slot="primary">
+    <ion-buttons slot="end">
       <ion-button fill="clear" slot="icon-only" color="light" (click)="refreshEvent.emit()" size="large">
         <ion-icon name="refresh-outline"></ion-icon>
       </ion-button>
@@ -47,5 +47,16 @@
       [type]="searchbarOptions?.type || 'search'"
       (ionChange)="doSearch($any($event))"
     ></ion-searchbar>
+  </ion-toolbar>
+
+  <ion-toolbar
+    *ngIf="buttonOptions"
+    style="padding-left: 1rem;"
+  >
+    <ion-buttons [slot]="buttonOptions?.slot || 'start'">
+      <ion-button [fill]="buttonOptions?.fill || 'outline'" [color]="buttonOptions?.color || 'light'" (click)="doButtonAction()" [size]="buttonOptions?.size || 'large'">
+        <ion-text>{{buttonOptions?.title}}</ion-text>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>

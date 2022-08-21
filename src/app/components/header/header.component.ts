@@ -1,7 +1,7 @@
  import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AlertController, NavController, SelectCustomEvent } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { EntityBasic, SearchbarOptions, SelectOptions } from 'src/app/types';
+import { ButtonOptions, EntityBasic, SearchbarOptions, SelectOptions } from 'src/app/types';
 
 @Component({
   selector: 'app-header',
@@ -14,9 +14,11 @@ export class HeaderComponent implements OnInit {
   @Input() marginTop = '0px';
   @Input() searchbarOptions: SearchbarOptions | null = null;
   @Input() selectOptions: SelectOptions<EntityBasic> | null = null;
+  @Input() buttonOptions: ButtonOptions | null = null;
   @Output() refreshEvent = new EventEmitter<void>();
   @Output() selectEvent = new EventEmitter<EntityBasic>();
   @Output() searchEvent = new EventEmitter<string>();
+  @Output() buttonClickEvent = new EventEmitter<void>();
 
   constructor(
     public authService: AuthService,
@@ -33,6 +35,10 @@ export class HeaderComponent implements OnInit {
 
   doSearch(event: { target: HTMLInputElement }) {
     this.searchEvent.emit(event?.target?.value || '');
+  }
+
+  doButtonAction() {
+    this.buttonClickEvent.emit();
   }
 
   async confirmLogout() {
