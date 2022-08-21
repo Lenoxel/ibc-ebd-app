@@ -6,6 +6,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start:pwa": "http-server -p 8080 -c-1 www/",
     "build": "ng build",
     "build:prod": "ng build --configuration production",
     "docker:start": "docker run --name ibcebd_container --network host ibcebd:v1",
