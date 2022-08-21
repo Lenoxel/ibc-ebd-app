@@ -3,14 +3,13 @@ import { Chart, registerables } from 'chart.js';
 import { UtilService } from 'src/app/services/util/util.service';
 // import randomColor from 'randomcolor';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { IonContent, NavController, ViewDidEnter } from '@ionic/angular';
+import { NavController, ViewDidEnter } from '@ionic/angular';
 import { SwiperComponent } from 'swiper/angular';
 import SwiperCore, { Autoplay, Keyboard, Pagination, SwiperOptions } from 'swiper';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { AnalyticsService } from 'src/app/services/analytics/analytics.service';
 import { IAnalyticsPresenceClassInfos, IAnalyticsPresenceCounts, IAnalyticsPresenceHistory } from 'src/app/interfaces';
-import { jsPDF } from 'jspdf';
 
 SwiperCore.use([Autoplay, Keyboard, Pagination]);
 Chart.register(...registerables);
