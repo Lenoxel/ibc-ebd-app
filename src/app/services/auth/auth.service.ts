@@ -59,7 +59,11 @@ export class AuthService {
     user.fullAccess = !!(
       user.isSuperuser
       ||
-      user.groups?.find(group => group?.name?.toLowerCase() === 'admin' || group?.name?.toLowerCase() === 'secretaria da igreja')
+      user.groups?.find(group =>
+        group?.name?.toLowerCase() === 'admin'
+        || group?.name?.toLowerCase() === 'secretaria da igreja'
+        || group?.name?.toLowerCase() === 'superintendência'
+      )
     );
 
     this.$user.next(user);
