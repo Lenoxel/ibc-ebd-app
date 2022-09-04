@@ -27,7 +27,8 @@ export class StudentPresenceComponent implements OnInit {
     private lessonService: LessonService,
     private utilService: UtilService,
     public authService: AuthService,
-  ) { }
+  ) {
+  }
 
   ngOnInit() {}
 
