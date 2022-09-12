@@ -19,7 +19,8 @@
     </ion-row>
 
     <app-date-selector
-      (changeDateEvent)="updatePresenceClassesEvent.emit($any($event))">
+      (changeDateEvent)="handleChangeDateEvent($event)"
+    >
     </app-date-selector>
 
     <ion-row class="ion-justify-content-center">
@@ -29,6 +30,7 @@
             [presenceClass]="presenceClass"
             [isBestFrequency]="presenceClass?.class_id === analyticsPresenceClassInfos?.best_frequency_class"
             [isWorstFrequency]="presenceClass?.class_id === analyticsPresenceClassInfos?.worst_frequency_class"
+            [filterByPeriod]="filterByPeriod"
           >
           </app-analytics-class>
         </ion-col>

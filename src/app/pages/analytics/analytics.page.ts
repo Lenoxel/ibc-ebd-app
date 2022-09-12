@@ -10,6 +10,7 @@ import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { AnalyticsService } from 'src/app/services/analytics/analytics.service';
 import { IAnalyticsPresenceClassInfos, IAnalyticsPresenceCounts, IAnalyticsPresenceHistory } from 'src/app/interfaces';
+import { DateFilter } from 'src/app/types';
 
 SwiperCore.use([Autoplay, Keyboard, Pagination]);
 Chart.register(...registerables);
@@ -53,9 +54,11 @@ export class AnalyticsPage implements OnInit, ViewDidEnter {
     autoplay: true,
   };
 
-  selectedYear: string = null;
-  selectedMonth: string = null;
-  selectedSunday: string = null;
+  selectedYear = '';
+  selectedMonth = '';
+  selectedDay = '';
+  selectedStartDate = '';
+  selectedEndDate = '';
 
   exemplaryStudents = [
     {
@@ -154,7 +157,7 @@ export class AnalyticsPage implements OnInit, ViewDidEnter {
     const { day, month, year } = this.utilService.geLastEbdDate();
     this.selectedYear = year;
     this.selectedMonth = month;
-    this.selectedSunday = day;
+    this.selectedDay = day;
   }
 
   ngOnInit(): void {}
@@ -181,16 +184,28 @@ export class AnalyticsPage implements OnInit, ViewDidEnter {
   }
 
   updatePresenceClasses({
+    startDate,
+    endDate,
+    year,
     month,
-    day
-  }) {
-    this.selectedSunday = day;
-    this.selectedMonth = month;
+    day,
+  }: DateFilter) {
+    this.selectedStartDate = startDate ?? '';
+    this.selectedEndDate = endDate ?? '';
+    this.selectedDay = day ?? '';
+    this.selectedMonth = month ?? '';
+    this.selectedYear = year ?? '';
     this.getAnalyticsPresenceClasses();
   }
 
   getAnalyticsPresenceClasses() {
-    this.analyticsPresenceClassInfos$ = this.analyticsService.getAnalyticsPresenceClassInfos(this.selectedSunday, this.selectedMonth);
+    this.analyticsPresenceClassInfos$ = this.analyticsService.getAnalyticsPresenceClassInfos(
+      this.selectedStartDate,
+      this.selectedEndDate,
+      this.selectedDay,
+      this.selectedMonth,
+      this.selectedYear,
+    );
   }
 
   onContentScroll(event: CustomEvent) {

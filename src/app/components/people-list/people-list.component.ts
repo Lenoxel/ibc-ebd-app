@@ -47,7 +47,7 @@ export class PeopleListComponent implements OnInit {
   }
 
   personTrackBy(index, person) {
-    return person.id;
+    return person?.id ?? index;
   }
 
   getEbdPersonHistory(personId: number) {

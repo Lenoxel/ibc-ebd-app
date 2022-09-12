@@ -124,8 +124,10 @@ export class LessonClassPresencesPage implements OnInit {
   }
 
   handleLoggedUserIsTeacher() {
-    const { classesAsATeacher } = this.authService.$user.getValue();
-    this.loggedUserIsTeacher = !!(classesAsATeacher?.find(({ id }) => id === this.classId));
+    if (this.authService.$user?.getValue()) {
+      const { classesAsATeacher } = this.authService.$user.getValue();
+      this.loggedUserIsTeacher = !!(classesAsATeacher?.find(({ id }) => id === this.classId));
+    }
   }
 
   increaseVisitorsQuantity() {

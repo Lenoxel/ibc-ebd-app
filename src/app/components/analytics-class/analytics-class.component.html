@@ -44,7 +44,7 @@
         </ion-text>
       </ion-note>
     </ion-item>
-    <ion-item lines="none">
+    <ion-item *ngIf="!filterByPeriod" lines="none">
       <ion-label>Visitantes</ion-label>
       <ion-note slot="end" color="dark">
         <ion-text style="font-size: 24px">
@@ -52,11 +52,11 @@
         </ion-text>
       </ion-note>
     </ion-item>
-    <ion-item lines="none">
+    <ion-item *ngIf="!filterByPeriod" lines="none">
       <ion-label>Revistas</ion-label>
       <ion-note slot="end" color="dark">
         <ion-text style="font-size: 24px">
-          {{presenceClass?.magazines}}
+          {{presenceClass?.magazines || 0}}
         </ion-text>
       </ion-note>
     </ion-item>

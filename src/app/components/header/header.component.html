@@ -33,7 +33,7 @@
         (ionChange)="doSelect($any($event))"
         [value]="selectOptions?.choosedItem"
       >
-          <ion-select-option *ngIf="selectOptions?.defaultAll" [value]="null">{{selectOptions?.defaultAll}}</ion-select-option>
+        <ion-select-option *ngIf="selectOptions?.defaultAll" [value]="null">{{selectOptions?.defaultAll}}</ion-select-option>
         <ion-select-option *ngFor="let item of selectOptions?.items" [value]="item">{{item?.name}}</ion-select-option>
       </ion-select>
     </ion-item>

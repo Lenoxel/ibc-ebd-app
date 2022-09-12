@@ -99,9 +99,8 @@ export class StudentPresenceComponent implements OnInit {
   }
 
   async handleGivePresence(presenceRegister: IPresenceRegister) {
-    if (!presenceRegister?.tempRegisterOn && presenceRegister.register_on) {
-      presenceRegister.tempRegisterOn = new Date(presenceRegister.register_on);
-    }
+    presenceRegister.tempRegisterOn = presenceRegister.register_on ? new Date(presenceRegister.register_on) : new Date();
+    presenceRegister.register_on = null;
 
     const hours = presenceRegister?.tempRegisterOn?.getHours();
     const minutes = presenceRegister?.tempRegisterOn?.getMinutes();
@@ -125,7 +124,13 @@ export class StudentPresenceComponent implements OnInit {
             if (arrivalTime) {
               const hoursAndMinutes = (arrivalTime as string)?.split(':');
 
-              presenceRegister.tempRegisterOn.setHours(Number(hoursAndMinutes[0]), Number(hoursAndMinutes[1]));
+              presenceRegister.tempRegisterOn = new Date(
+                presenceRegister.tempRegisterOn.getFullYear(),
+                presenceRegister.tempRegisterOn.getMonth(),
+                presenceRegister.tempRegisterOn.getDate(),
+                Number(hoursAndMinutes[0]),
+                Number(hoursAndMinutes[1]),
+              );
 
               this.savePresenceRegister(presenceRegister);
             } else {

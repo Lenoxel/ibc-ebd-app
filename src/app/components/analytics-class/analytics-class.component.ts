@@ -10,6 +10,7 @@ export class AnalyticsClassComponent implements OnInit {
   @Input() presenceClass: IAnalyticsPresenceClass = null;
   @Input() isBestFrequency = false;
   @Input() isWorstFrequency = false;
+  @Input() filterByPeriod = false;
 
   constructor() { }
 

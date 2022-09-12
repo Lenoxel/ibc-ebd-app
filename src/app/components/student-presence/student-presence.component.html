@@ -15,10 +15,10 @@
         </ion-text>
       </ng-template>
       <h3>{{presenceRegister['person_name']}}</h3>
-      <h5 *ngIf="!presenceRegister?.underAction && (presenceRegister['register_on'] || presenceRegister['tempRegisterOn'])">
-        <span *ngIf="presenceRegister?.attended">Chegou às {{(presenceRegister['register_on'] || presenceRegister['tempRegisterOn']) | date: 'HH:mm'}}</span>
+      <h5 *ngIf="!presenceRegister?.underAction && (presenceRegister['tempRegisterOn'] || presenceRegister['register_on'])">
+        <span *ngIf="presenceRegister?.attended">Chegou às {{(presenceRegister['tempRegisterOn'] || presenceRegister['register_on']) | date: 'HH:mm'}}</span>
         <div *ngIf="!presenceRegister?.attended">
-          <div>Recebeu falta em {{(presenceRegister['register_on'] || presenceRegister['tempRegisterOn']) | date: 'dd/MM/yyyy HH:mm'}}</div>
+          <div>Recebeu falta em {{(presenceRegister['tempRegisterOn'] || presenceRegister['register_on']) | date: 'dd/MM/yyyy HH:mm'}}</div>
           <div>{{presenceRegister?.justification || 'Não justificada'}}</div>
         </div>
       </h5>

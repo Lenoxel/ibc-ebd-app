@@ -92,6 +92,14 @@ export class UtilService {
     };
   }
 
+  dateToString(date: Date) {
+    const day = date.getDate() > 9 ? date.getDate() : `0${date.getDate()}`;
+    const month = date.getMonth() + 1 > 9 ? date.getMonth() + 1 : `0${date.getMonth() + 1}`;
+    const year = date.getFullYear();
+
+    return `${day}/${month}/${year}`;
+  }
+
   async showToastController(message: string, color: string, position: 'top' | 'bottom' | 'middle', duration = 2500, icon: string = '') {
     if (await this.toastController.getTop()) {
       this.toastController.dismiss();

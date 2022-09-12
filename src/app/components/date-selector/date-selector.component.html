@@ -1,27 +1,54 @@
 <ion-row>
-  <ion-col size-lg="6">
-    <ion-item>
-      <ion-select [(ngModel)]="selectedYear" interface="action-sheet" placeholder="Selecione um ano" cancel-text="Cancelar">
-        <ion-select-option *ngFor="let year of utilService?.years" [value]="year">{{year}}</ion-select-option>
-      </ion-select>
-    </ion-item>
-  </ion-col>
-
-  <ion-col size-lg="6">
-    <ion-item>
-      <ion-select [(ngModel)]="selectedMonth" (ngModelChange)="onChangeMonth()" interface="action-sheet" placeholder="Selecione um mês" cancel-text="Cancelar">
-        <ion-select-option *ngFor="let month of utilService?.months" [value]="month?.value">{{month?.text}}</ion-select-option>
-      </ion-select>
+  <ion-col size="12">
+    <ion-item lines="none">
+      <ion-label class="ion-text-wrap">Filtrar por período</ion-label>
+      <ion-toggle slot="start" [(ngModel)]="filterByPeriod" (ngModelChange)="onChangeFilterToggle()"></ion-toggle>
     </ion-item>
   </ion-col>
 </ion-row>
 
-<ion-row>
-  <ion-col size-lg="12">
+<ion-row *ngIf="filterByPeriod; else filterBySpecificSundayTemplate">
+  <ion-col sizeMd="6" sizeXs="12">
     <ion-item>
-      <ion-select [(ngModel)]="selectedDay" (ngModelChange)="onChangeDay()" interface="action-sheet" placeholder="Selecione um Domingo" cancel-text="Cancelar">
-        <ion-select-option *ngFor="let sunday of utilService?.sundaysOfMonth" [value]="sunday">Dia {{sunday}}</ion-select-option>
-      </ion-select>
+      <ion-label position="fixed">Data Início</ion-label>
+      <ion-input type="date" [(ngModel)]="startDate" (ngModelChange)="onChangeRangeDate()"></ion-input>
+    </ion-item>
+  </ion-col>
+
+  <ion-col sizeMd="6" sizeXs="12">
+    <ion-item>
+      <ion-label position="fixed">Data Fim</ion-label>
+      <ion-input type="date" [(ngModel)]="endDate" (ngModelChange)="onChangeRangeDate()"></ion-input>
     </ion-item>
   </ion-col>
 </ion-row>
+
+<ng-template #filterBySpecificSundayTemplate>
+  <ion-row>
+    <ion-col size-lg="6">
+      <ion-item>
+        <ion-select [(ngModel)]="selectedYear" interface="action-sheet" placeholder="Selecione um ano" cancel-text="Cancelar">
+          <ion-select-option *ngFor="let year of utilService?.years" [value]="year">{{year}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-col>
+  
+    <ion-col size-lg="6">
+      <ion-item>
+        <ion-select [(ngModel)]="selectedMonth" (ngModelChange)="onChangeMonth()" interface="action-sheet" placeholder="Selecione um mês" cancel-text="Cancelar">
+          <ion-select-option *ngFor="let month of utilService?.months" [value]="month?.value">{{month?.text}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  
+  <ion-row>
+    <ion-col size-lg="12">
+      <ion-item>
+        <ion-select [(ngModel)]="selectedDay" (ngModelChange)="onChangeDay()" interface="action-sheet" placeholder="Selecione um Domingo" cancel-text="Cancelar">
+          <ion-select-option *ngFor="let sunday of utilService?.sundaysOfMonth" [value]="sunday">Dia {{sunday}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+</ng-template>

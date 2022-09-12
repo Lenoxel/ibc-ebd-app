@@ -20,10 +20,19 @@ export class AnalyticsService {
     return this.httpClient.get<IAnalyticsPresenceHistory[]>(`${API_ENDPOINT}/ebd/analytics/presences/history`);
   }
 
-  getAnalyticsPresenceClassInfos(day: string, month: string) {
+  getAnalyticsPresenceClassInfos(
+    startDate = '',
+    endDate = '',
+    day = '',
+    month = '',
+    year = '',
+  ) {
     const params: HttpParams = new HttpParams().appendAll({
+      startDate,
+      endDate,
       day,
-      month
+      month,
+      year,
     });
 
     return this.httpClient.get<IAnalyticsPresenceClassInfos>(`${API_ENDPOINT}/ebd/analytics/presences/classes`, { params });

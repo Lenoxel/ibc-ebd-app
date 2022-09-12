@@ -236,7 +236,7 @@
       <ion-row>
         <ion-col size-lg="12">
           <ion-item>
-            <ion-select [(ngModel)]="selectedSunday" interface="action-sheet" placeholder="Selecione um Domingo" cancel-text="Cancelar">
+            <ion-select [(ngModel)]="selectedDay" interface="action-sheet" placeholder="Selecione um Domingo" cancel-text="Cancelar">
               <ion-select-option *ngFor="let sunday of sundaysOfMonth" [value]="sunday">{{sunday}}</ion-select-option>
             </ion-select>
           </ion-item>
