@@ -5,7 +5,7 @@ import { IStudent } from 'src/app/interfaces';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { EbdService } from 'src/app/services/ebd/ebd.service';
 import { StudentService } from 'src/app/services/student/student.service';
-import { EntityBasic, SearchbarOptions } from 'src/app/types';
+import { EntityBasic, SearchbarOptions, SelectOptions } from 'src/app/types';
 
 @Component({
   selector: 'app-people',
@@ -22,8 +22,31 @@ export class PeoplePage implements OnInit, AfterContentInit {
   hideHeader$ = new Subject<boolean>();
   hideHeader = false;
   headerMarginTop = '0px';
+
+  orderByOptionsItems: EntityBasic[] = [
+    {
+      id: 0,
+      name: 'Ordem alfabética'
+    },
+    {
+      id: 1,
+      name: 'Os mais presentes'
+    },
+    {
+      id: 2,
+      name: 'Os mais faltosos'
+    },
+  ];
+  orderBy = this.orderByOptionsItems.find(option => option.id === 0);
+  orderByOptions: SelectOptions<EntityBasic> = {
+    placeholder: 'Ordernar por',
+    items: this.orderByOptionsItems,
+    // defaultAll: 'Ordem alfabética',
+    choosedItem: this.orderBy
+  };
+
   searchbarOptions: SearchbarOptions = {
-    placeholder: 'Pesquise pelo aluno',
+    placeholder: 'Pesquise pelo nome',
     showCancelButton: 'focus',
     debounce: 500
   };
@@ -54,6 +77,12 @@ export class PeoplePage implements OnInit, AfterContentInit {
   getLoggedUser() {
     const { classesAsASecretary, classesAsATeacher, fullAccess } = this.authService.$user.getValue();
 
+    if (fullAccess) {
+      this.loggedUserHasFullAccess = true;
+      this.getEbdStudents();
+      return;
+    }
+
     if (classesAsASecretary?.length) {
       this.loggedUserPreferredClass = classesAsASecretary[0];
       this.getEbdStudents(this.loggedUserPreferredClass?.id);
@@ -63,12 +92,6 @@ export class PeoplePage implements OnInit, AfterContentInit {
     if (classesAsATeacher?.length) {
       this.loggedUserPreferredClass = classesAsATeacher[0];
       this.getEbdStudents(this.loggedUserPreferredClass?.id);
-      return;
-    }
-
-    if (fullAccess) {
-      this.loggedUserHasFullAccess = true;
-      this.getEbdStudents();
       return;
     }
   }
@@ -84,6 +107,10 @@ export class PeoplePage implements OnInit, AfterContentInit {
   onSelectClass(value: EntityBasic) {
     this.loggedUserPreferredClass = value;
     this.getEbdStudents();
+  }
+
+  onChangeOrderBy({ name }: EntityBasic) {
+
   }
 
   onFilterStudents(value: string) {

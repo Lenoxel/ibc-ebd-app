@@ -14,9 +14,11 @@ export class HeaderComponent implements OnInit {
   @Input() marginTop = '0px';
   @Input() searchbarOptions: SearchbarOptions | null = null;
   @Input() selectOptions: SelectOptions<EntityBasic> | null = null;
+  @Input() orderByOptions: SelectOptions<EntityBasic> | null = null;
   @Input() buttonOptions: ButtonOptions | null = null;
   @Output() refreshEvent = new EventEmitter<void>();
   @Output() selectEvent = new EventEmitter<EntityBasic>();
+  @Output() orderByEvent = new EventEmitter<EntityBasic>();
   @Output() searchEvent = new EventEmitter<string>();
   @Output() buttonClickEvent = new EventEmitter<void>();
 
@@ -31,6 +33,11 @@ export class HeaderComponent implements OnInit {
   doSelect(event: SelectCustomEvent) {
     this.selectOptions.choosedItem = event?.detail?.value;
     this.selectEvent.emit(event?.detail?.value || null);
+  }
+
+  doOrderBy(event: SelectCustomEvent) {
+    this.orderByOptions.choosedItem = event?.detail?.value;
+    this.orderByEvent.emit(event?.detail?.value || null);
   }
 
   doSearch(event: { target: HTMLInputElement }) {

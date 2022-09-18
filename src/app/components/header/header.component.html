@@ -24,20 +24,37 @@
     </ion-buttons>
   </ion-toolbar>
 
-  <ion-toolbar *ngIf="selectOptions || searchbarOptions">
-    <ion-item *ngIf="selectOptions" lines="none" style="margin: .5rem; border-radius: .1rem;">
-      <ion-select
-        cancelText="Cancelar"
-        interface="action-sheet"
-        [placeholder]="selectOptions?.placeholder || 'Selecione uma opção'"
-        (ionChange)="doSelect($any($event))"
-        [value]="selectOptions?.choosedItem"
-      >
-        <ion-select-option *ngIf="selectOptions?.defaultAll" [value]="null">{{selectOptions?.defaultAll}}</ion-select-option>
-        <ion-select-option *ngFor="let item of selectOptions?.items" [value]="item">{{item?.name}}</ion-select-option>
-      </ion-select>
-    </ion-item>
-
+  <ion-toolbar *ngIf="selectOptions || orderByOptions || searchbarOptions">
+    <div *ngIf="selectOptions || orderByOptions">
+      <ion-item *ngIf="selectOptions" lines="none" style="margin: .5rem; border-radius: .1rem;">
+        <ion-select
+          cancelText="Cancelar"
+          interface="action-sheet"
+          [placeholder]="selectOptions?.placeholder || 'Selecione uma opção'"
+          (ionChange)="doSelect($any($event))"
+          [value]="selectOptions?.choosedItem"
+        >
+          <ion-select-option *ngIf="selectOptions?.defaultAll" [value]="null">{{selectOptions?.defaultAll}}</ion-select-option>
+          <ion-select-option *ngFor="let item of selectOptions?.items" [value]="item">{{item?.name}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+  
+      <!-- <ion-item *ngIf="orderByOptions" lines="none" style="margin: .5rem; border-radius: .1rem;">
+        <ion-select
+          [interfaceOptions]="{ header: orderByOptions?.placeholder || 'Ordenar por' }"
+          cancelText="Cancelar"
+          interface="action-sheet"
+          [placeholder]="orderByOptions?.placeholder || 'Ordenar por'"
+          (ionChange)="doOrderBy($any($event))"
+          [value]="orderByOptions?.choosedItem"
+        >
+          <ion-select-option *ngIf="orderByOptions?.defaultAll" [value]="null">{{orderByOptions?.defaultAll}}</ion-select-option>
+          <ion-select-option *ngFor="let item of orderByOptions?.items" [value]="item">{{item?.name}}</ion-select-option>
+        </ion-select>
+      </ion-item> -->
+  
+    </div>
+   
     <ion-searchbar
       *ngIf="searchbarOptions"
       style="margin-bottom: .5rem;"
