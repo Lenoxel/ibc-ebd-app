@@ -91,11 +91,19 @@ export class PeopleListComponent implements OnInit {
 
       if (orderById === 1) {
         this.filteredEbdStudents.sort((student1, student2) => {
-          if (student1.frequency.presences_in_sequence > student2.frequency.presences_in_sequence) {
+          if (
+            student1.frequency.presences_in_sequence > student2.frequency.presences_in_sequence
+            ||
+            student1.frequency.absences_in_sequence < student2.frequency.absences_in_sequence
+          ) {
             return -1;
           }
 
-          if (student1.frequency.presences_in_sequence < student2.frequency.presences_in_sequence) {
+          if (
+            student1.frequency.presences_in_sequence < student2.frequency.presences_in_sequence
+            ||
+            student1.frequency.absences_in_sequence > student2.frequency.absences_in_sequence
+          ) {
             return 1;
           }
 
@@ -106,11 +114,23 @@ export class PeopleListComponent implements OnInit {
 
       if (orderById === 2) {
         this.filteredEbdStudents.sort((student1, student2) => {
-          if (student1.frequency.absences_in_sequence > student2.frequency.absences_in_sequence) {
+          if (!student1.ebd_class) {
+            return 1;
+          }
+
+          if (
+            student1.frequency.absences_in_sequence > student2.frequency.absences_in_sequence
+            ||
+            student1.frequency.presences_in_sequence < student2.frequency.presences_in_sequence
+          ) {
             return -1;
           }
 
-          if (student1.frequency.absences_in_sequence < student2.frequency.absences_in_sequence) {
+          if (
+            student1.frequency.absences_in_sequence < student2.frequency.absences_in_sequence
+            ||
+            student1.frequency.presences_in_sequence > student2.frequency.presences_in_sequence
+          ) {
             return 1;
           }
 
