@@ -4,8 +4,8 @@
   (dismissModalEvent)="selectedStudent=null"
 ></app-student-history-modal>
 
-<ng-container *ngIf="ebdStudents?.length">
-  <ion-virtual-scroll [items]="filteredName ? filteredEbdStudents : ebdStudents" approxItemHeight="91px" [trackBy]="personTrackBy">
+<ng-container *ngIf="filteredEbdStudents?.length">
+  <ion-virtual-scroll [items]="filteredEbdStudents" approxItemHeight="91px" [trackBy]="personTrackBy">
     <div *virtualItem="let item;">
       <app-student
         [student]="item"

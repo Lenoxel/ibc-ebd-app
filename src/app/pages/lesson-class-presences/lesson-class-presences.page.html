@@ -29,7 +29,7 @@
             <span>{{lessonTitle}}</span>
             <span *ngIf="hasLessonEnded"> - Essa lição já terminou</span>
           </h3>
-          <h3>{{values?.ebdPresencesRegister | studentsCount}} alunos nessa chamada</h3>
+          <h3>{{values?.ebdPresencesRegister | peopleCount}} pessoas nessa chamada</h3>
           <div style="display: flex; align-items: center;">
             <h3 style="margin-right: 8px;">{{visitorsQuantity}} {{visitorsQuantity === 1 ? 'visitante' : 'visitantes'}}</h3>
             <ion-button size="small" color="dark" fill="clear" (click)="increaseVisitorsQuantity()" [disabled]="hasLessonEnded">

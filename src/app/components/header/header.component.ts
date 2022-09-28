@@ -35,9 +35,9 @@ export class HeaderComponent implements OnInit {
     this.selectEvent.emit(event?.detail?.value || null);
   }
 
-  doOrderBy(event: SelectCustomEvent) {
-    this.orderByOptions.choosedItem = event?.detail?.value;
-    this.orderByEvent.emit(event?.detail?.value || null);
+  doOrderBy(item: EntityBasic) {
+    this.orderByOptions.choosedItem = {...item};
+    this.orderByEvent.emit({...item} || null);
   }
 
   doSearch(event: { target: HTMLInputElement }) {

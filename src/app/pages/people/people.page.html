@@ -25,6 +25,7 @@
     *ngIf="ebdStudents$ | async as ebdStudents; else loadingTemplate"
     [ebdStudents]="ebdStudents"
     [filteredName]="filteredName"
+    [orderById]="orderById"
   >
   </app-people-list>
 

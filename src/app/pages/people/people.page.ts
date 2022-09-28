@@ -22,6 +22,7 @@ export class PeoplePage implements OnInit, AfterContentInit {
   hideHeader$ = new Subject<boolean>();
   hideHeader = false;
   headerMarginTop = '0px';
+  orderById = 0;
 
   orderByOptionsItems: EntityBasic[] = [
     {
@@ -30,18 +31,17 @@ export class PeoplePage implements OnInit, AfterContentInit {
     },
     {
       id: 1,
-      name: 'Os mais presentes'
+      name: 'Os mais exemplares'
     },
     {
       id: 2,
-      name: 'Os mais faltosos'
+      name: 'Os mais preocupantes'
     },
   ];
   orderBy = this.orderByOptionsItems.find(option => option.id === 0);
   orderByOptions: SelectOptions<EntityBasic> = {
     placeholder: 'Ordernar por',
     items: this.orderByOptionsItems,
-    // defaultAll: 'Ordem alfabética',
     choosedItem: this.orderBy
   };
 
@@ -109,8 +109,8 @@ export class PeoplePage implements OnInit, AfterContentInit {
     this.getEbdStudents();
   }
 
-  onChangeOrderBy({ name }: EntityBasic) {
-
+  onChangeOrderBy({ id }: EntityBasic) {
+    this.orderById = id;
   }
 
   onFilterStudents(value: string) {
