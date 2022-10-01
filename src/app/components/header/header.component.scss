@@ -8,3 +8,7 @@ ion-header {
     opacity: 0;
     transition: display 0s, opacity 0s linear;
 }
+
+.ion-chip-active {
+    border: 1px solid var(--ion-color-light);
+}

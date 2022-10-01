@@ -49,7 +49,7 @@
     ></ion-searchbar>
 
     <ng-container *ngIf="orderByOptions?.items?.length">
-      <ion-chip *ngFor="let item of orderByOptions?.items" color="light" [outline]="item?.name !== orderByOptions?.choosedItem?.name" (click)="doOrderBy(item)">
+      <ion-chip *ngFor="let item of orderByOptions?.items" [ngClass]="{'ion-chip-active': item?.name === orderByOptions?.choosedItem?.name}" color="light" (click)="doOrderBy(item)">
         <ion-label color="light">{{item?.name}}</ion-label>
       </ion-chip>
     </ng-container>
