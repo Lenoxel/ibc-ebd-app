@@ -1,12 +1,14 @@
 import { DatePipe } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { ToastController } from '@ionic/angular';
+import { FakeArrayPipe } from 'src/app/pipes/fake-array/fake-array.pipe';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UtilService {
   datePipe = new DatePipe('pt-BR');
+  fakeArrayPipe = new FakeArrayPipe();
 
   years = [
     '2022',

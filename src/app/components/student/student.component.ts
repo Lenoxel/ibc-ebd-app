@@ -17,7 +17,7 @@ export class StudentComponent implements OnInit {
   ngOnInit() {}
 
   handlePhoneNumber(whatsApp: string) {
-    let formattedNumber = whatsApp.trim().replace(/\s/g, '');
+    let formattedNumber = whatsApp.trim().replace(/\s|(-)|(\+)|\(|\)/g, '');
 
     if (formattedNumber.startsWith('819') && formattedNumber.length === 11) {
       formattedNumber = formattedNumber.replace('819', '');

@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IAnalyticsPresenceClassInfos, IAnalyticsPresenceCounts, IAnalyticsPresenceHistory } from 'src/app/interfaces';
+import { UtilService } from 'src/app/services/util/util.service';
 import { DateFilter } from 'src/app/types';
 
 @Component({
@@ -16,7 +17,9 @@ export class AnalyticsContainerComponent implements OnInit {
 
   filterByPeriod = false;
 
-  constructor() { }
+  constructor(
+    public utilService: UtilService,
+  ) { }
 
   ngOnInit() {}
 
