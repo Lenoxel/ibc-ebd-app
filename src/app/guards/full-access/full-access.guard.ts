@@ -19,7 +19,7 @@ export class FullAccessGuard implements CanLoad {
       take(1),
       map(user => {
         if (!user?.fullAccess) {
-          this.router.navigateByUrl('tabs/analytics/class', { replaceUrl: true });
+          this.router.navigateByUrl('tabs/lessons', { replaceUrl: true, });
         } else {
           return true;
         }
