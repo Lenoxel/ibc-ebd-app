@@ -11,7 +11,6 @@ import { ButtonOptions, EntityBasic, SearchbarOptions, SelectOptions } from 'src
 export class HeaderComponent implements OnInit {
   @Input() headerTitle = '';
   @Input() hideHeader = false;
-  @Input() marginTop = '0px';
   @Input() searchbarOptions: SearchbarOptions | null = null;
   @Input() selectOptions: SelectOptions<EntityBasic> | null = null;
   @Input() orderByOptions: SelectOptions<EntityBasic> | null = null;

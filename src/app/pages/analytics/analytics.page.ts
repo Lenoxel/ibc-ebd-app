@@ -34,7 +34,6 @@ export class AnalyticsPage implements OnInit, ViewDidEnter {
 
   hideHeader$ = new Subject<boolean>();
   hideHeader = false;
-  headerMarginTop = '0px';
 
   doubleLineChart: Chart;
   // barChart: Chart;
@@ -206,11 +205,6 @@ export class AnalyticsPage implements OnInit, ViewDidEnter {
       this.selectedMonth,
       this.selectedYear,
     );
-  }
-
-  onContentScroll(event: CustomEvent) {
-    // this.hideHeader$.next(event?.detail?.deltaY > 0 ? true : false);
-    this.headerMarginTop = `-${event?.detail?.scrollTop * 0.75}px`;
   }
 
   async logout() {

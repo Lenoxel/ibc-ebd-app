@@ -8,6 +8,7 @@ import { LessonsPageRoutingModule } from './lessons-routing.module';
 
 import { LessonsPage } from './lessons.page';
 import { ComponentsModule } from 'src/app/components/components.module';
+import { DirectivesModule } from 'src/app/directives/directives.module';
 
 @NgModule({
   imports: [
@@ -16,6 +17,7 @@ import { ComponentsModule } from 'src/app/components/components.module';
     IonicModule,
     LessonsPageRoutingModule,
     ComponentsModule,
+    DirectivesModule,
   ],
   declarations: [LessonsPage]
 })

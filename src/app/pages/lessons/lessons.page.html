@@ -1,14 +1,18 @@
-<app-header
-  [headerTitle]="'Lições'"
-  [hideHeader]="hideHeader"
-  (refreshEvent)="getEbdLessons()"
-  [marginTop]="headerMarginTop"
-></app-header>
+<ion-header
+  [translucent]="true"
+  #header
+>
+  <app-header
+    [headerTitle]="'Lições'"
+    [hideHeader]="hideHeader"
+    (refreshEvent)="getEbdLessons()"
+  ></app-header>
+</ion-header>
 
 <ion-content
   [fullscreen]="true"
   [scrollEvents]="true"
-  (ionScroll)="onContentScroll($any($event))"
+  [appHideHeader]="header"
 >
   <ion-list *ngIf="ebdLessons$ | async as ebdLessons; else loadingTemplate">
     <ion-item *ngFor="let lesson of ebdLessons" button lines="full" (click)="lesson?.is_next_lesson ? showLessonNotAcessibleYet(lesson?.date) : handleLessonClick(lesson)">

@@ -13,6 +13,7 @@ import { PipesModule } from './pipes/pipes.module';
 import { TokenInterceptorService } from './services/token/token-interceptor.service';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { DirectivesModule } from './directives/directives.module';
 
 registerLocaleData(localePt, 'pt');
 
@@ -25,6 +26,7 @@ registerLocaleData(localePt, 'pt');
     AppRoutingModule,
     HttpClientModule,
     PipesModule,
+    DirectivesModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the application is stable

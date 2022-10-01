@@ -1,25 +1,29 @@
-<app-header
-  headerTitle="Pessoas"
-  [hideHeader]="hideHeader"
-  [marginTop]="headerMarginTop"
-  (refreshEvent)="getEbdStudents()"
-  [selectOptions]="loggedUserHasFullAccess ? {
-    placeholder: 'Selecione uma classe',
-    items: (ebdClasses$ | async),
-    defaultAll: 'Todas as classes',
-    choosedItem: loggedUserPreferredClass
-  } : null"
-  (selectEvent)="loggedUserHasFullAccess ? onSelectClass($event) : null"
-  [orderByOptions]="orderByOptions"
-  (orderByEvent)="onChangeOrderBy($event)"
-  [searchbarOptions]="searchbarOptions"
-  (searchEvent)="onFilterStudents($event)"
-></app-header>
+<ion-header
+  [translucent]="true"
+  #header
+>
+  <app-header
+    headerTitle="Pessoas"
+    [hideHeader]="hideHeader"
+    (refreshEvent)="getEbdStudents()"
+    [selectOptions]="loggedUserHasFullAccess ? {
+      placeholder: 'Selecione uma classe',
+      items: (ebdClasses$ | async),
+      defaultAll: 'Todas as classes',
+      choosedItem: loggedUserPreferredClass
+    } : null"
+    (selectEvent)="loggedUserHasFullAccess ? onSelectClass($event) : null"
+    [orderByOptions]="orderByOptions"
+    (orderByEvent)="onChangeOrderBy($event)"
+    [searchbarOptions]="searchbarOptions"
+    (searchEvent)="onFilterStudents($event)"
+  ></app-header>
+</ion-header>
 
 <ion-content
   [fullscreen]="true"
   [scrollEvents]="true"
-  (ionScroll)="onContentScroll($any($event))"
+  [appHideHeader]="header"
 >
   <app-people-list
     *ngIf="ebdStudents$ | async as ebdStudents; else loadingTemplate"

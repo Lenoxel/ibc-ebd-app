@@ -21,7 +21,6 @@ export class PeoplePage implements OnInit, AfterContentInit {
   filteredName = '';
   hideHeader$ = new Subject<boolean>();
   hideHeader = false;
-  headerMarginTop = '0px';
   orderById = 0;
 
   orderByOptionsItems: EntityBasic[] = [
@@ -67,11 +66,6 @@ export class PeoplePage implements OnInit, AfterContentInit {
   ngAfterContentInit(): void {
     this.getEbdClasses();
     this.getLoggedUser();
-  }
-
-  onContentScroll(event: CustomEvent) {
-    // this.hideHeader$.next(event?.detail?.deltaY > 0 ? true : false);
-    this.headerMarginTop = `-${event?.detail?.scrollTop * 0.75}px`;
   }
 
   getLoggedUser() {

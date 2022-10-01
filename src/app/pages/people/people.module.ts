@@ -8,6 +8,7 @@ import { PeoplePageRoutingModule } from './people-routing.module';
 
 import { PeoplePage } from './people.page';
 import { ComponentsModule } from 'src/app/components/components.module';
+import { DirectivesModule } from 'src/app/directives/directives.module';
 
 @NgModule({
   imports: [
@@ -16,6 +17,7 @@ import { ComponentsModule } from 'src/app/components/components.module';
     IonicModule,
     PeoplePageRoutingModule,
     ComponentsModule,
+    DirectivesModule,
   ],
   declarations: [PeoplePage]
 })

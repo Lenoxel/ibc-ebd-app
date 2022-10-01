@@ -1,14 +1,18 @@
-<app-header
-  headerTitle="Indicadores"
-  [hideHeader]="hideHeader"
-  (refreshEvent)="getAnalytics()"
-  [marginTop]="headerMarginTop"
-></app-header>
+<ion-header
+  [translucent]="true"
+  #header
+>
+  <app-header
+    headerTitle="Indicadores"
+    [hideHeader]="hideHeader"
+    (refreshEvent)="getAnalytics()"
+  ></app-header>
+</ion-header>
 
 <ion-content
   [fullscreen]="true"
   [scrollEvents]="true"
-  (ionScroll)="onContentScroll($any($event))"
+  [appHideHeader]="header"
 >
   <app-analytics-container
     [analyticsPresenceCounts]="analyticsPresenceCounts$ | async"
