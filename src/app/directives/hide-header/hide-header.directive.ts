@@ -1,10 +1,10 @@
-import { Directive, HostListener, Input, OnInit, Renderer2 } from '@angular/core';
+import { AfterViewInit, Directive, HostListener, Input, Renderer2 } from '@angular/core';
 import { DomController } from '@ionic/angular';
 
 @Directive({
   selector: '[appHideHeader]'
 })
-export class HideHeaderDirective implements OnInit {
+export class HideHeaderDirective implements AfterViewInit {
   @Input('appHideHeader') header: any;
 
   private headerHeight = 44;
@@ -17,18 +17,18 @@ export class HideHeaderDirective implements OnInit {
   @HostListener('ionScroll', ['$event']) onContentScroll($event: any) {
     if ($event.detail.scrollTop > this.headerHeight) {
       this.domController.write(() => {
-        this.renderer.setStyle(this.header, 'margin-top', `-${ this.header.clientHeight }px`);
+        this.renderer.setStyle(this.header, 'transform', `translateY(-${this.header.clientHeight}px)`);
       });
     } else {
       this.domController.write(() => {
-        this.renderer.setStyle(this.header, 'margin-top', '0');
+        this.renderer.setStyle(this.header, 'transform', `translateY(0)`);
       });
     }
 
     this.headerHeight = $event.detail.scrollTop;
   }
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     this.header = this.header.el;
 
     this.domController.read(() => {
@@ -36,7 +36,8 @@ export class HideHeaderDirective implements OnInit {
     });
 
     this.domController.write(() => {
-      this.renderer.setStyle(this.header, 'transition', 'margin-top 500ms');
+      this.renderer.setStyle(this.header, 'transition', 'transform 500ms');
+      this.renderer.setStyle(this.header, 'will-change', 'transform');
     });
   }
 }
