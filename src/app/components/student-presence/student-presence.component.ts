@@ -208,9 +208,9 @@ export class StudentPresenceComponent implements OnInit {
 
       this.utilService.showToastController(
         `${presenceRegister.attended ? 'Presença' : 'Falta'} de ${presenceRegister.person_name} salva com sucesso!`,
-        'primary',
+        'light',
         'top',
-        3500,
+        4500,
         presenceRegister.attended ? 'checkmark-circle-outline' : 'close-circle-outline',
       );
 
@@ -220,7 +220,7 @@ export class StudentPresenceComponent implements OnInit {
         `Ocorreu um erro ao dar ${presenceRegister.attended ? 'presença' : 'falta'} para ${presenceRegister.person_name}.`,
         'danger',
         'top',
-        3500,
+        4500,
       );
 
       presenceRegister.underAction = false;
