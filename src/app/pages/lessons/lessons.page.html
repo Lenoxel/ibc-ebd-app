@@ -3,7 +3,7 @@
   #header
 >
   <app-header
-    [headerTitle]="'Lições'"
+    headerTitle="'Lições'"
     [hideHeader]="hideHeader"
     (refreshEvent)="getEbdLessons()"
   ></app-header>
@@ -15,7 +15,7 @@
   [appHideHeader]="header"
 >
   <ion-list *ngIf="ebdLessons$ | async as ebdLessons; else loadingTemplate">
-    <ion-item *ngFor="let lesson of ebdLessons" button lines="full" (click)="lesson?.is_next_lesson ? showLessonNotAcessibleYet(lesson?.date) : handleLessonClick(lesson)">
+    <ion-item *ngFor="let lesson of ebdLessons" button lines="full" (click)="lesson?.single_class ? showLessonIsSingleClass() : (lesson?.is_next_lesson ? showLessonNotAcessibleYet(lesson?.date) : handleLessonClick(lesson))">
       <ion-label class="ion-text-wrap">
         <h4 *ngIf="lesson?.magazine_title">{{lesson?.magazine_title}}</h4>
         <h2>{{lesson?.title}}</h2>
@@ -23,7 +23,10 @@
         <p *ngIf="lesson?.is_next_lesson" style="font-weight: bold;">
           <ion-text color="primary">Próxima lição</ion-text>
         </p>
-        <ng-container *ngIf="!lesson?.is_next_lesson && (authService?.$user | async)?.fullAccess">
+        <p *ngIf="lesson?.single_class">
+          <ion-text color="primary">Classe única</ion-text>
+        </p>
+        <ng-container *ngIf="!lesson?.is_next_lesson && !lesson?.single_class && (authService?.$user | async)?.fullAccess">
           <!-- <p *ngIf="lesson?.presence_records?.pending_calls?.length">
             <ion-text color="danger">{{lesson?.presence_records?.pending_calls?.length}} chamadas pendentes</ion-text>
           </p> -->

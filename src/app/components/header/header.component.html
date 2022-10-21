@@ -3,9 +3,9 @@
     <h5>
       Olá, {{ (authService?.$user | async)?.name }}
     </h5>
-    <h2>
+    <!-- <h2>
       {{headerTitle}}
-    </h2>
+    </h2> -->
   </ion-title>
   <ion-buttons slot="end">
     <ion-button fill="clear" slot="icon-only" color="light" (click)="refreshEvent.emit()" size="large">

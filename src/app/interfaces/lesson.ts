@@ -4,6 +4,7 @@ export interface ILesson {
     title: string;
     date: Date;
     is_next_lesson: boolean;
+    single_class: boolean;
     presence_records: {
         presents: number;
         absents: number;

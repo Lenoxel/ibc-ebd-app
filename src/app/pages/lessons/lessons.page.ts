@@ -104,4 +104,12 @@ export class LessonsPage implements OnInit, AfterContentInit {
     );
   }
 
+  showLessonIsSingleClass() {
+    this.utilService.showToastController(
+      `Essa lição é do tipo classe única e não possui chamada`,
+      'light',
+      'top'
+    );
+  }
+
 }
