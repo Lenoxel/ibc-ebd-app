@@ -33,12 +33,9 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {}
 
-  toggleSearch() {
-    this.isSearchActive = !this.isSearchActive;
-
-    if (this.isSearchActive) {
-      this.searchInput.setFocus();
-    }
+  activateSearch() {
+    this.isSearchActive = true;
+    this.searchInput.setFocus();
   }
 
   doSelect(event: SelectCustomEvent) {
