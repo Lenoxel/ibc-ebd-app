@@ -1,25 +1,65 @@
 <ion-toolbar>
   <ion-title>
-    <h5>
-      Olá, {{ (authService?.$user | async)?.name }}
-    </h5>
+    <h5>Olá, {{ (authService?.$user | async)?.name }}</h5>
     <!-- <h2>
       {{headerTitle}}
     </h2> -->
   </ion-title>
   <ion-buttons slot="end">
-    <ion-button fill="clear" slot="icon-only" color="light" (click)="refreshEvent.emit()" size="large">
+    <ion-button
+      *ngIf="searchbarOptions"
+      fill="clear"
+      slot="icon-only"
+      color="light"
+      size="large"
+      (click)="toggleSearch()"
+    >
+      <ion-icon *ngIf="!isSearchActive" name="search-outline"></ion-icon>
+      <ion-icon *ngIf="isSearchActive" name="close-outline"></ion-icon>
+    </ion-button>
+
+    <ion-button
+      fill="clear"
+      slot="icon-only"
+      color="light"
+      (click)="refreshEvent.emit()"
+      size="large"
+    >
       <ion-icon name="refresh-outline"></ion-icon>
     </ion-button>
 
-    <ion-button fill="clear" slot="icon-only" color="light" (click)="confirmLogout()" size="large">
+    <ion-button
+      fill="clear"
+      slot="icon-only"
+      color="light"
+      (click)="confirmLogout()"
+      size="large"
+    >
       <ion-icon name="log-out-outline"></ion-icon>
     </ion-button>
   </ion-buttons>
 </ion-toolbar>
 
 <ion-toolbar *ngIf="selectOptions || orderByOptions || searchbarOptions">
-  <ion-item *ngIf="selectOptions" lines="none" style="margin: .5rem; border-radius: .1rem;">
+  <ion-searchbar
+    *ngIf="searchbarOptions"
+    #searchInput
+    [ngClass]="{ hide: !isSearchActive }"
+    [style]="'margin-bottom: 0.5rem'"
+    [placeholder]="searchbarOptions?.placeholder || 'Pesquise aqui'"
+    [showCancelButton]="searchbarOptions?.showCancelButton || 'focus'"
+    [debounce]="searchbarOptions?.debounce || 500"
+    [type]="searchbarOptions?.type || 'search'"
+    [(ngModel)]="searchInputText"
+    (ionChange)="doSearch($any($event))"
+    (ionBlur)="isSearchActive = false; searchInputText = ''"
+  ></ion-searchbar>
+
+  <ion-item
+    *ngIf="selectOptions"
+    lines="none"
+    style="margin: 0.5rem; border-radius: 0.1rem"
+  >
     <ion-select
       cancelText="Cancelar"
       interface="action-sheet"
@@ -27,35 +67,40 @@
       (ionChange)="doSelect($any($event))"
       [value]="selectOptions?.choosedItem"
     >
-      <ion-select-option *ngIf="selectOptions?.defaultAll" [value]="null">{{selectOptions?.defaultAll}}</ion-select-option>
-      <ion-select-option *ngFor="let item of selectOptions?.items" [value]="item">{{item?.name}}</ion-select-option>
+      <ion-select-option *ngIf="selectOptions?.defaultAll" [value]="null">{{
+        selectOptions?.defaultAll
+      }}</ion-select-option>
+      <ion-select-option
+        *ngFor="let item of selectOptions?.items"
+        [value]="item"
+        >{{ item?.name }}</ion-select-option
+      >
     </ion-select>
   </ion-item>
 
-  <ion-searchbar
-    *ngIf="searchbarOptions"
-    style="margin-bottom: .5rem;"
-    [placeholder]="searchbarOptions?.placeholder || 'Pesquise aqui'"
-    [showCancelButton]="searchbarOptions?.showCancelButton || 'focus'"
-    [debounce]="searchbarOptions?.debounce || 500"
-    [type]="searchbarOptions?.type || 'search'"
-    (ionChange)="doSearch($any($event))"
-  ></ion-searchbar>
-
-  <ng-container *ngIf="orderByOptions?.items?.length">
-    <ion-chip *ngFor="let item of orderByOptions?.items" [ngClass]="{'ion-chip-active': item?.name === orderByOptions?.choosedItem?.name}" color="light" (click)="doOrderBy(item)">
-      <ion-label color="light">{{item?.name}}</ion-label>
+  <section *ngIf="orderByOptions?.items?.length" class="orderby-section">
+    <ion-chip
+      *ngFor="let item of orderByOptions?.items"
+      [ngClass]="{
+        'ion-chip-active': item?.name === orderByOptions?.choosedItem?.name
+      }"
+      color="light"
+      (click)="doOrderBy(item)"
+    >
+      <ion-label color="light">{{ item?.name }}</ion-label>
     </ion-chip>
-  </ng-container>
+  </section>
 </ion-toolbar>
 
-<ion-toolbar
-  *ngIf="buttonOptions"
-  style="padding-left: 1rem;"
->
+<ion-toolbar *ngIf="buttonOptions" style="padding-left: 1rem">
   <ion-buttons [slot]="buttonOptions?.slot || 'start'">
-    <ion-button [fill]="buttonOptions?.fill || 'outline'" [color]="buttonOptions?.color || 'light'" (click)="doButtonAction()" [size]="buttonOptions?.size || 'large'">
-      <ion-text>{{buttonOptions?.title}}</ion-text>
+    <ion-button
+      [fill]="buttonOptions?.fill || 'outline'"
+      [color]="buttonOptions?.color || 'light'"
+      (click)="doButtonAction()"
+      [size]="buttonOptions?.size || 'large'"
+    >
+      <ion-text>{{ buttonOptions?.title }}</ion-text>
     </ion-button>
   </ion-buttons>
 </ion-toolbar>

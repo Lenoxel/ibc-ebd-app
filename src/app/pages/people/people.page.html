@@ -4,7 +4,6 @@
 >
   <app-header
     headerTitle="Pessoas"
-    [hideHeader]="hideHeader"
     (refreshEvent)="getEbdStudents()"
     [selectOptions]="loggedUserHasFullAccess ? {
       placeholder: 'Selecione uma classe',

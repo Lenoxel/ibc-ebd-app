@@ -10,8 +10,8 @@ export class HideHeaderDirective implements AfterViewInit {
   private headerHeight = 44;
 
   constructor(
-    private renderer: Renderer2,
     private domController: DomController,
+    private renderer: Renderer2,
   ) { }
 
   @HostListener('ionScroll', ['$event']) onContentScroll($event: any) {

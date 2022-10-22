@@ -58,7 +58,19 @@ ion-toolbar {
 }
 
 ion-progress-bar {
-    height: 5px;
+    height: 6px;
+}
+
+ion-searchbar {
+    .searchbar-input-container {
+        input{
+            border-radius: 5px !important;
+        }
+    }
+}
+
+ion-item:has(ion-select) {
+    border-radius: 5px !important;
 }
 
 // ion-content {

@@ -1,5 +1,5 @@
- import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AlertController, NavController, SelectCustomEvent } from '@ionic/angular';
+ import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { AlertController, IonSearchbar, NavController, SelectCustomEvent } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { ButtonOptions, EntityBasic, SearchbarOptions, SelectOptions } from 'src/app/types';
 
@@ -10,7 +10,6 @@ import { ButtonOptions, EntityBasic, SearchbarOptions, SelectOptions } from 'src
 })
 export class HeaderComponent implements OnInit {
   @Input() headerTitle = '';
-  @Input() hideHeader = false;
   @Input() searchbarOptions: SearchbarOptions | null = null;
   @Input() selectOptions: SelectOptions<EntityBasic> | null = null;
   @Input() orderByOptions: SelectOptions<EntityBasic> | null = null;
@@ -21,6 +20,11 @@ export class HeaderComponent implements OnInit {
   @Output() searchEvent = new EventEmitter<string>();
   @Output() buttonClickEvent = new EventEmitter<void>();
 
+  @ViewChild('searchInput', {static: false}) searchInput: IonSearchbar;
+
+  isSearchActive = false;
+  searchInputText = '';
+
   constructor(
     public authService: AuthService,
     private alertController: AlertController,
@@ -28,6 +32,14 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   ngOnInit() {}
+
+  toggleSearch() {
+    this.isSearchActive = !this.isSearchActive;
+
+    if (this.isSearchActive) {
+      this.searchInput.setFocus();
+    }
+  }
 
   doSelect(event: SelectCustomEvent) {
     this.selectOptions.choosedItem = event?.detail?.value;
