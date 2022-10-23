@@ -30,11 +30,11 @@ export class PeoplePage implements OnInit, AfterContentInit {
     },
     {
       id: 1,
-      name: 'Exemplares'
+      name: 'Frequentes'
     },
     {
       id: 2,
-      name: 'Preocupantes'
+      name: 'Faltosos'
     },
   ];
   orderBy = this.orderByOptionsItems.find(option => option.id === 0);
