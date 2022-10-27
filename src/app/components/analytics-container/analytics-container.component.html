@@ -11,6 +11,14 @@
     </ion-row>
 
     <ion-row>
+      <ion-col size-lg="12">
+        <app-analytics-history-card
+          [analyticsPresenceHistory]="analyticsPresenceHistory"
+        ></app-analytics-history-card>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
       <ion-col size-lg="6" size-xs="12" class="ion-text-center ion-align-self-center">
         <ion-card>
           <ion-card-header>
@@ -75,15 +83,6 @@
             </swiper>
           </ion-list>
         </ion-card>
-      </ion-col>
-    </ion-row>
-
-
-    <ion-row>
-      <ion-col size-lg="12">
-        <app-analytics-history-card
-          [analyticsPresenceHistory]="analyticsPresenceHistory"
-        ></app-analytics-history-card>
       </ion-col>
     </ion-row>
 
