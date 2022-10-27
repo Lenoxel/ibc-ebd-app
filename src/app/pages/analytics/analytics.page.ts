@@ -9,7 +9,12 @@ import SwiperCore, { Autoplay, Keyboard, Pagination, SwiperOptions } from 'swipe
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { AnalyticsService } from 'src/app/services/analytics/analytics.service';
-import { IAnalyticsPresenceClassInfos, IAnalyticsPresenceCounts, IAnalyticsPresenceHistory } from 'src/app/interfaces';
+import {
+  IAnalyticsPresenceClassInfos,
+  IAnalyticsPresenceCounts,
+  IAnalyticsPresenceHistory,
+  IAnalyticsPresenceUsers
+} from 'src/app/interfaces';
 import { DateFilter } from 'src/app/types';
 
 SwiperCore.use([Autoplay, Keyboard, Pagination]);
@@ -30,6 +35,7 @@ export class AnalyticsPage implements OnInit, ViewDidEnter {
 
   analyticsPresenceCounts$: Observable<IAnalyticsPresenceCounts> = null;
   analyticsPresenceHistory$: Observable<IAnalyticsPresenceHistory[]> = null;
+  analyticsPresenceUsers$: Observable<IAnalyticsPresenceUsers> = null;
   analyticsPresenceClassInfos$: Observable<IAnalyticsPresenceClassInfos> = null;
 
   hideHeader$ = new Subject<boolean>();
@@ -171,6 +177,7 @@ export class AnalyticsPage implements OnInit, ViewDidEnter {
   getAnalytics() {
     this.getAnalyticsPresenceCounts();
     this.getAnalyticsPresenceHistory();
+    this.getAnalyticsPresenceUsers();
     this.getAnalyticsPresenceClasses();
   }
 
@@ -180,6 +187,10 @@ export class AnalyticsPage implements OnInit, ViewDidEnter {
 
   getAnalyticsPresenceHistory() {
     this.analyticsPresenceHistory$ = this.analyticsService.getAnalyticsPresenceHistory();
+  }
+
+  getAnalyticsPresenceUsers() {
+    this.analyticsPresenceUsers$ = this.analyticsService.getAnalyticsPresenceUsers();
   }
 
   updatePresenceClasses({

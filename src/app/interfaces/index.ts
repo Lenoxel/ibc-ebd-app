@@ -8,3 +8,4 @@ export * from './studentHistory';
 export * from './analyticsPresenceCounts';
 export * from './analyticsPresenceHistory';
 export * from './analyticsPresenceClass';
+export * from './analyticsPresenceUsers';

@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+import { SwiperModule } from 'swiper/angular';
 import { AnalyticsClassComponent } from './analytics-class/analytics-class.component';
 import { AnalyticsContainerComponent } from './analytics-container/analytics-container.component';
 import { AnalyticsHistoryCardComponent } from './analytics-history-card/analytics-history-card.component';
@@ -30,6 +31,7 @@ import { StudentComponent } from './student/student.component';
         CommonModule,
         IonicModule.forRoot(),
         FormsModule,
+        SwiperModule,
     ],
     exports: [
         AnalyticsClassComponent,

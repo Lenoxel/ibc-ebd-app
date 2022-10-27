@@ -11,6 +11,75 @@
     </ion-row>
 
     <ion-row>
+      <ion-col size-lg="6" size-xs="12" class="ion-text-center ion-align-self-center">
+        <ion-card>
+          <ion-card-header>
+            Alunos Exemplares
+          </ion-card-header>
+          <ion-list>
+            <swiper #swiperExemplaryStudents [config]="swiperExemplaryStudentsConfig" class="ion-align-items-center">
+              <ng-template *ngFor="let student of analyticsPresenceUsers?.exemplary_students" swiperSlide>
+                <ion-card color="light" style="margin-bottom: 30px; text-align: -webkit-center;"  class="user-card">
+                  <ion-avatar style="margin-top: 10px;">
+                    <ion-img [src]="student?.person_picture || 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/1024px-User-avatar.svg.png'"></ion-img>
+                  </ion-avatar>
+                  <ion-item lines="none" color="light">
+                    <ion-label class="ion-text-wrap ion-text-center">
+                      <h2>{{student?.person_name}}</h2>
+                      <h3>Classe {{student?.class_name}}</h3>
+                      <ion-chip color="success" style="height: auto;">
+                        <ion-label color="dark" class="ion-text-wrap">Presenças</ion-label>
+                        <ion-badge style="margin-left: 10px;" color="success">+{{student?.presences_count}}</ion-badge>
+                      </ion-chip>
+                      <!-- <ion-chip *ngFor="let info of student?.infos" color="success" style="height: auto;">
+                        <ion-label color="dark" class="ion-text-wrap">{{info?.title}}</ion-label>
+                        <ion-badge style="margin-left: 10px;" color="success">+{{info?.count}}</ion-badge>
+                      </ion-chip> -->
+                    </ion-label>
+                  </ion-item>
+                </ion-card>
+              </ng-template>
+            </swiper>
+          </ion-list>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size-lg="6" size-xs="12" class="ion-text-center ion-align-self-center">
+        <ion-card>
+          <ion-card-header>
+            Alunos Preocupantes
+          </ion-card-header>
+          <ion-list>
+            <swiper #swiperWorryingStudents [config]="swiperWorryingStudentsConfig" class="ion-align-items-center">
+              <ng-template *ngFor="let student of analyticsPresenceUsers?.worrying_students" swiperSlide>
+                <ion-card color="light" style="margin-bottom: 30px; text-align: -webkit-center;" class="user-card">
+                  <ion-avatar style="margin-top: 10px;">
+                    <ion-img [src]="student?.person_picture || 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/1024px-User-avatar.svg.png'"></ion-img>
+                  </ion-avatar>
+                  <ion-item lines="none" color="light">
+                    <ion-label class="ion-text-wrap ion-text-center">
+                      <h2>{{student?.person_name}}</h2>
+                      <h3>Classe {{student?.class_name}}</h3>
+                      <ion-chip color="primary" style="height: auto;">
+                        <ion-label color="danger" class="ion-text-wrap">Faltas</ion-label>
+                        <ion-badge style="margin-left: 10px;" color="danger">+{{student?.absences_count}}</ion-badge>
+                      </ion-chip>
+                      <!-- <ion-chip *ngFor="let info of student?.infos" color="primary" style="height: auto;">
+                        <ion-label color="danger" class="ion-text-wrap">{{info?.title}}</ion-label>
+                        <ion-badge style="margin-left: 10px;" color="danger">+{{info?.count}}</ion-badge>
+                      </ion-chip> -->
+                    </ion-label>
+                  </ion-item>
+                </ion-card>
+              </ng-template>
+            </swiper>
+          </ion-list>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+
+    <ion-row>
       <ion-col size-lg="12">
         <app-analytics-history-card
           [analyticsPresenceHistory]="analyticsPresenceHistory"
