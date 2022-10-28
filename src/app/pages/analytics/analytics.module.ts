@@ -7,7 +7,6 @@ import { IonicModule } from '@ionic/angular';
 import { AnalyticsPageRoutingModule } from './analytics-routing.module';
 
 import { AnalyticsPage } from './analytics.page';
-import { SwiperModule } from 'swiper/angular';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { DirectivesModule } from 'src/app/directives/directives.module';
 
@@ -17,7 +16,6 @@ import { DirectivesModule } from 'src/app/directives/directives.module';
     FormsModule,
     IonicModule,
     AnalyticsPageRoutingModule,
-    SwiperModule,
     ComponentsModule,
     DirectivesModule,
   ],

@@ -30,8 +30,8 @@ import { StudentComponent } from './student/student.component';
     imports: [
         CommonModule,
         IonicModule.forRoot(),
-        FormsModule,
         SwiperModule,
+        FormsModule,
     ],
     exports: [
         AnalyticsClassComponent,

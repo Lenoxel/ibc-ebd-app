@@ -4,8 +4,6 @@ import { UtilService } from 'src/app/services/util/util.service';
 // import randomColor from 'randomcolor';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { NavController, ViewDidEnter } from '@ionic/angular';
-import { SwiperComponent } from 'swiper/angular';
-import SwiperCore, { Autoplay, Keyboard, Pagination, SwiperOptions } from 'swiper';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { AnalyticsService } from 'src/app/services/analytics/analytics.service';
@@ -17,7 +15,6 @@ import {
 } from 'src/app/interfaces';
 import { DateFilter } from 'src/app/types';
 
-SwiperCore.use([Autoplay, Keyboard, Pagination]);
 Chart.register(...registerables);
 
 @Component({
@@ -30,9 +27,6 @@ export class AnalyticsPage implements OnInit, ViewDidEnter {
   // @ViewChild('barCanvas') private barCanvas: ElementRef;
   // @ViewChild('doughnutCanvas') private doughnutCanvas: ElementRef;
 
-  @ViewChild('swiperExemplaryStudents', { static: true }) private swiperExemplaryStudents: SwiperComponent;
-  @ViewChild('swiperWorryingStudents', { static: true }) private swiperWorryingStudents: SwiperComponent;
-
   analyticsPresenceCounts$: Observable<IAnalyticsPresenceCounts> = null;
   analyticsPresenceHistory$: Observable<IAnalyticsPresenceHistory[]> = null;
   analyticsPresenceUsers$: Observable<IAnalyticsPresenceUsers> = null;
@@ -44,20 +38,6 @@ export class AnalyticsPage implements OnInit, ViewDidEnter {
   doubleLineChart: Chart;
   // barChart: Chart;
   // doughnutChart: Chart;
-
-  swiperExemplaryStudentsConfig: SwiperOptions = {
-    slidesPerView: 1.0,
-    pagination: true,
-    keyboard: true,
-    autoplay: true,
-  };
-
-  swiperWorryingStudentsConfig: SwiperOptions = {
-    slidesPerView: 1.0,
-    pagination: true,
-    keyboard: true,
-    autoplay: true,
-  };
 
   selectedYear = '';
   selectedMonth = '';

@@ -1,15 +1,20 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
-type StudentInfos = {
+type StudentInfo = {
+    title: string;
+    type: 'positive' | 'negative' | 'neutral';
+    count: number;
+};
+
+type StudentAnalytics = {
     person_id: number;
     person_name: string;
     person_picture: string | null;
     class_name: string | null;
-    presences_count?: number;
-    absences_count?: number;
+    infos: StudentInfo[];
 };
 
 export interface IAnalyticsPresenceUsers {
-    exemplary_students: StudentInfos[];
-    worrying_students: StudentInfos[];
+    exemplary_students: StudentAnalytics[];
+    worrying_students: StudentAnalytics[];
 }

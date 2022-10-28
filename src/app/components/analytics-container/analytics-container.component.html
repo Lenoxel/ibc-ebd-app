@@ -35,14 +35,10 @@
                     <ion-label class="ion-text-wrap ion-text-center">
                       <h2>{{student?.person_name}}</h2>
                       <h3>Classe {{student?.class_name}}</h3>
-                      <ion-chip color="success" style="height: auto;">
-                        <ion-label color="dark" class="ion-text-wrap">Presenças</ion-label>
-                        <ion-badge style="margin-left: 10px;" color="success">+{{student?.presences_count}}</ion-badge>
+                      <ion-chip *ngFor="let info of student?.infos" [color]="info?.type === 'positive' ? 'success' : 'primary'" style="height: auto;">
+                        <ion-label [color]="info?.type === 'positive' ? 'dark' : 'danger'" class="ion-text-wrap">{{info?.title}}</ion-label>
+                        <ion-badge style="margin-left: 10px;" [color]="info?.type === 'positive' ? 'success' : 'danger'">+{{info?.count}}</ion-badge>
                       </ion-chip>
-                      <!-- <ion-chip *ngFor="let info of student?.infos" color="success" style="height: auto;">
-                        <ion-label color="dark" class="ion-text-wrap">{{info?.title}}</ion-label>
-                        <ion-badge style="margin-left: 10px;" color="success">+{{info?.count}}</ion-badge>
-                      </ion-chip> -->
                     </ion-label>
                   </ion-item>
                 </ion-card>
@@ -68,9 +64,9 @@
                     <ion-label class="ion-text-wrap ion-text-center">
                       <h2>{{student?.person_name}}</h2>
                       <h3>Classe {{student?.class_name}}</h3>
-                      <ion-chip color="primary" style="height: auto;">
-                        <ion-label color="danger" class="ion-text-wrap">Faltas</ion-label>
-                        <ion-badge style="margin-left: 10px;" color="danger">+{{student?.absences_count}}</ion-badge>
+                      <ion-chip *ngFor="let info of student?.infos" [color]="info?.type === 'positive' ? 'success' : 'primary'" style="height: auto;">
+                        <ion-label [color]="info?.type === 'positive' ? 'dark' : 'danger'" class="ion-text-wrap">{{info?.title}}</ion-label>
+                        <ion-badge style="margin-left: 10px;" [color]="info?.type === 'positive' ? 'success' : 'danger'">+{{info?.count}}</ion-badge>
                       </ion-chip>
                       <!-- <ion-chip *ngFor="let info of student?.infos" color="primary" style="height: auto;">
                         <ion-label color="danger" class="ion-text-wrap">{{info?.title}}</ion-label>

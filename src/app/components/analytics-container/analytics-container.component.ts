@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import {
   IAnalyticsPresenceClassInfos,
   IAnalyticsPresenceCounts,
@@ -7,12 +7,10 @@ import {
 } from 'src/app/interfaces';
 import { UtilService } from 'src/app/services/util/util.service';
 import { DateFilter } from 'src/app/types';
-import { Chart, registerables } from 'chart.js';
-import { SwiperComponent } from 'swiper/angular';
 import SwiperCore, { Autoplay, Keyboard, Pagination, SwiperOptions } from 'swiper';
+import { SwiperComponent } from 'swiper/angular';
 
 SwiperCore.use([Autoplay, Keyboard, Pagination]);
-Chart.register(...registerables);
 
 @Component({
   selector: 'app-analytics-container',
@@ -20,7 +18,7 @@ Chart.register(...registerables);
   styleUrls: ['./analytics-container.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AnalyticsContainerComponent implements OnInit {
+export class AnalyticsContainerComponent implements OnInit, AfterViewInit {
   @Input() analyticsPresenceCounts: IAnalyticsPresenceCounts = null;
   @Input() analyticsPresenceHistory: IAnalyticsPresenceHistory[] = null;
   @Input() analyticsPresenceUsers: IAnalyticsPresenceUsers = null;
@@ -36,21 +34,28 @@ export class AnalyticsContainerComponent implements OnInit {
     slidesPerView: 1.0,
     pagination: true,
     keyboard: true,
-    autoplay: true,
+    autoplay: true
   };
 
   swiperWorryingStudentsConfig: SwiperOptions = {
     slidesPerView: 1.0,
     pagination: true,
     keyboard: true,
-    autoplay: true,
+    autoplay: {
+      disableOnInteraction: false,
+    }
   };
 
   constructor(
     public utilService: UtilService,
   ) { }
 
-  ngOnInit() {}
+  ngOnInit(): void {}
+
+  ngAfterViewInit(): void {
+    this.swiperExemplaryStudents.swiperRef.autoplay.running = true;
+    this.swiperWorryingStudents.swiperRef.autoplay.running = true;
+  }
 
   handleChangeDateEvent(dateFilter: DateFilter) {
     this.filterByPeriod = dateFilter?.filterByPeriod;
