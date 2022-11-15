@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { IEbdLabel } from 'src/app/interfaces';
@@ -13,8 +14,8 @@ import { UtilService } from 'src/app/services/util/util.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StudentPresenceComponent implements OnInit {
-  @Input() presenceRegister: any;
-  @Input() ebdLabels: any;
+  @Input() presenceRegister: IPresenceRegister;
+  @Input() ebdLabels: IEbdLabel[];
   @Input() hasLessonEnded = false;
   @Input() classId: number | null = null;
   @Input() lessonId: number | null = null;
@@ -132,6 +133,7 @@ export class StudentPresenceComponent implements OnInit {
                 Number(hoursAndMinutes[1]),
               );
 
+              this.handleStudentPunctuality(presenceRegister);
               this.savePresenceRegister(presenceRegister);
             } else {
               this.handleGivePresence(presenceRegister);
@@ -179,6 +181,140 @@ export class StudentPresenceComponent implements OnInit {
     await alert.present();
   }
 
+  async handleStudentPunctuality(presenceRegister: IPresenceRegister) {
+    if (
+      presenceRegister?.tempRegisterOn.getHours() < 9
+      ||
+      (presenceRegister?.tempRegisterOn.getHours() === 9 && presenceRegister?.tempRegisterOn.getMinutes() === 0)
+    ) {
+      // Pontual
+      this.givePunctualLabel(presenceRegister, this.ebdLabels.find(({ id }) => id === 3));
+      return;
+    }
+
+    if (
+      presenceRegister?.tempRegisterOn.getHours() >= 10
+      ||
+      (
+        presenceRegister?.tempRegisterOn.getHours() === 9
+        &&
+        presenceRegister?.tempRegisterOn.getMinutes() >= 21
+      )
+    ) {
+      // Atrasado
+      this.giveDelayedLabel(presenceRegister, this.ebdLabels.find(({ id }) => id === 6));
+      return;
+    }
+
+    this.removeDelayedAndPunctualLabels(presenceRegister);
+  }
+
+  removeDelayedAndPunctualLabels(partialPresenceRegister: IPresenceRegister) {
+    let punctualLabelAlreadyAdded = partialPresenceRegister.labels.find(
+      uniqueLabel => uniqueLabel.id ? uniqueLabel.id === 3 : uniqueLabel.label_id === 3
+    );
+
+    if (punctualLabelAlreadyAdded) {
+      punctualLabelAlreadyAdded = {
+        ...punctualLabelAlreadyAdded,
+        label_id: punctualLabelAlreadyAdded?.label_id || punctualLabelAlreadyAdded?.id,
+        id: punctualLabelAlreadyAdded?.id || punctualLabelAlreadyAdded?.label_id
+      };
+
+      partialPresenceRegister.labels = partialPresenceRegister.labels.filter(
+        uniqueLabel => uniqueLabel.id ? uniqueLabel.id !== 3 : uniqueLabel.label_id !== 3
+      );
+      partialPresenceRegister.labelIds = partialPresenceRegister.labelIds.filter(labelId => labelId !== 3);
+      partialPresenceRegister.labels_to_remove.push(punctualLabelAlreadyAdded);
+    }
+
+    let delayedLabelAlreadyAdded = partialPresenceRegister.labels.find(
+      uniqueLabel => uniqueLabel.id ? uniqueLabel.id === 6 : uniqueLabel.label_id === 6
+    );
+
+    if (delayedLabelAlreadyAdded) {
+      delayedLabelAlreadyAdded = {
+        ...delayedLabelAlreadyAdded,
+        label_id: delayedLabelAlreadyAdded?.label_id || delayedLabelAlreadyAdded?.id,
+        id: delayedLabelAlreadyAdded?.id || delayedLabelAlreadyAdded?.label_id
+      };
+
+      partialPresenceRegister.labels = partialPresenceRegister.labels.filter(
+        uniqueLabel => uniqueLabel.id ? uniqueLabel.id !== 6 : uniqueLabel.label_id !== 6
+      );
+      partialPresenceRegister.labelIds = partialPresenceRegister.labelIds.filter(labelId => labelId !== 6);
+      partialPresenceRegister.labels_to_remove.push(delayedLabelAlreadyAdded);
+    }
+  }
+
+
+  givePunctualLabel(partialPresenceRegister: IPresenceRegister, label: IEbdLabel) {
+    label = {...label, label_id: label?.label_id || label?.id, id: label?.id || label?.label_id};
+
+    const punctualLabelAlreadyAdded = partialPresenceRegister.labels.find(
+      uniqueLabel => uniqueLabel.id ? uniqueLabel.id === label?.id : uniqueLabel.label_id === label?.id
+    );
+
+    if (!punctualLabelAlreadyAdded) {
+      partialPresenceRegister.labels.push(label);
+      partialPresenceRegister.labelIds.push(label?.id);
+      partialPresenceRegister.labels_to_remove = partialPresenceRegister.labels_to_remove.filter(
+        uniqueLabel => uniqueLabel?.id ? uniqueLabel?.id !== label?.id : uniqueLabel?.label_id !== label?.id
+      );
+    }
+
+    let delayedLabelAlreadyAdded = partialPresenceRegister.labels.find(
+      uniqueLabel => uniqueLabel.id ? uniqueLabel.id === 6 : uniqueLabel.label_id === 6
+    );
+
+    if (delayedLabelAlreadyAdded) {
+      delayedLabelAlreadyAdded = {
+        ...delayedLabelAlreadyAdded,
+        label_id: delayedLabelAlreadyAdded?.label_id || delayedLabelAlreadyAdded?.id,
+        id: delayedLabelAlreadyAdded?.id || delayedLabelAlreadyAdded?.label_id
+      };
+
+      partialPresenceRegister.labels = partialPresenceRegister.labels.filter(
+        uniqueLabel => uniqueLabel.id ? uniqueLabel.id !== 6 : uniqueLabel.label_id !== 6
+      );
+      partialPresenceRegister.labelIds = partialPresenceRegister.labelIds.filter(labelId => labelId !== 6);
+      partialPresenceRegister.labels_to_remove.push(delayedLabelAlreadyAdded);
+    }
+  }
+
+  giveDelayedLabel(partialPresenceRegister: IPresenceRegister, label: IEbdLabel) {
+    label = {...label, label_id: label?.label_id || label?.id, id: label?.id || label?.label_id};
+
+    const delayedLabelAlreadyAdded = partialPresenceRegister.labels.find(
+      uniqueLabel => uniqueLabel.id ? uniqueLabel.id === label?.id : uniqueLabel.label_id === label?.id
+    );
+
+    if (!delayedLabelAlreadyAdded) {
+      partialPresenceRegister.labels.push(label);
+      partialPresenceRegister.labelIds.push(label?.id);
+      partialPresenceRegister.labels_to_remove = partialPresenceRegister.labels_to_remove.filter(
+        uniqueLabel => uniqueLabel?.id ? uniqueLabel?.id !== label?.id : uniqueLabel?.label_id !== label?.id
+      );
+    }
+
+    let punctualLabelAlreadyAdded = partialPresenceRegister.labels.find(
+      uniqueLabel => uniqueLabel.id ? uniqueLabel.id === 3 : uniqueLabel.label_id === 3
+    );
+
+    if (punctualLabelAlreadyAdded) {
+      punctualLabelAlreadyAdded = {
+        ...punctualLabelAlreadyAdded,
+        label_id: punctualLabelAlreadyAdded?.label_id || punctualLabelAlreadyAdded?.id,
+        id: punctualLabelAlreadyAdded?.id || punctualLabelAlreadyAdded?.label_id
+      };
+
+      partialPresenceRegister.labels = partialPresenceRegister.labels.filter(
+        uniqueLabel => uniqueLabel.id ? uniqueLabel.id !== 3 : uniqueLabel.label_id !== 3
+      );
+      partialPresenceRegister.labelIds = partialPresenceRegister.labelIds.filter(labelId => labelId !== 3);
+      partialPresenceRegister.labels_to_remove.push(punctualLabelAlreadyAdded);
+    }
+  }
 
   async savePresenceRegister(presenceRegister: IPresenceRegister) {
     presenceRegister.underAction = true;

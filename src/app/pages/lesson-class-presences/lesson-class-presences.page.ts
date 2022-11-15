@@ -4,7 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IonAccordionGroup } from '@ionic/angular';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { IEbdClassLessonDetails } from 'src/app/interfaces';
+import { IEbdClassLessonDetails, IEbdLabel } from 'src/app/interfaces';
+import { IPresenceRegister } from 'src/app/interfaces/presenceRegister';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { LessonService } from 'src/app/services/lesson/lesson.service';
 import { UtilService } from 'src/app/services/util/util.service';
@@ -19,8 +20,8 @@ export class LessonClassPresencesPage implements OnInit {
   @ViewChild(IonAccordionGroup) accordionGroup: IonAccordionGroup;
 
   hasLessonEnded = false;
-  ebdPresencesRegister$: Observable<any>;
-  ebdLabels$: Observable<any>;
+  ebdPresencesRegister$: Observable<IPresenceRegister[]>;
+  ebdLabels$: Observable<IEbdLabel[]>;
   classId: number = null;
   className = '';
   lessonId: number = null;

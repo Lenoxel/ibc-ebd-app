@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { API_ENDPOINT } from 'config';
 import { Observable } from 'rxjs';
-import { IEbdClassLessonDetails } from 'src/app/interfaces';
+import { IEbdClass, IEbdClassLessonDetails, IEbdLabel } from 'src/app/interfaces';
 import { IPresenceRegister } from 'src/app/interfaces/presenceRegister';
 
 @Injectable({
@@ -14,8 +14,8 @@ export class LessonService {
     private httpClient: HttpClient,
   ) { }
 
-  getEbdLabels(): Observable<any> {
-    return this.httpClient.get(`${API_ENDPOINT}/ebd/labels`);
+  getEbdLabels(): Observable<IEbdLabel[]> {
+    return this.httpClient.get<IEbdLabel[]>(`${API_ENDPOINT}/ebd/labels`);
   }
 
   getEbdLessons(): Observable<any> {
@@ -26,16 +26,16 @@ export class LessonService {
     return this.httpClient.get(`${API_ENDPOINT}/ebd/lessons/${lessonId}`);
   }
 
-  getEbdClassesByLesson(lessonId: number): Observable<any> {
-    return this.httpClient.get(`${API_ENDPOINT}/ebd/lessons/${lessonId}/classes`);
+  getEbdClassesByLesson(lessonId: number): Observable<IEbdClass[]> {
+    return this.httpClient.get<IEbdClass[]>(`${API_ENDPOINT}/ebd/lessons/${lessonId}/classes`);
   }
 
-  getEbdPresencesRegister(lessonId: number, classId: number): Observable<any> {
-    return this.httpClient.get(`${API_ENDPOINT}/ebd/lessons/${lessonId}/classes/${classId}/presences`);
+  getEbdPresencesRegister(lessonId: number, classId: number): Observable<IPresenceRegister[]> {
+    return this.httpClient.get<IPresenceRegister[]>(`${API_ENDPOINT}/ebd/lessons/${lessonId}/classes/${classId}/presences`);
   }
 
-  getEbdClassLessonDetails(lessonId: number, classId: number): Observable<any> {
-    return this.httpClient.get(
+  getEbdClassLessonDetails(lessonId: number, classId: number): Observable<IEbdClassLessonDetails> {
+    return this.httpClient.get<IEbdClassLessonDetails>(
       `${API_ENDPOINT}/ebd/lessons/${lessonId}/classes/${classId}/details`
     );
   }

@@ -74,6 +74,7 @@ export class PeopleListComponent implements OnInit {
 
   sortPeople(orderById = this.orderById) {
     if (!isNaN(orderById)) {
+      // Ordem alfabética
       if (orderById === 0) {
         this.filteredEbdStudents.sort((student1, student2) => {
           if (student1.name.replace(/[^\x00-\x7F]/g,'') > student2.name.replace(/[^\x00-\x7F]/g,'')) {
@@ -89,6 +90,7 @@ export class PeopleListComponent implements OnInit {
         return;
       }
 
+      // Frequentes
       if (orderById === 1) {
         this.filteredEbdStudents.sort((student1, student2) => {
           if (
@@ -112,6 +114,7 @@ export class PeopleListComponent implements OnInit {
         return;
       }
 
+      // Faltosos
       if (orderById === 2) {
         this.filteredEbdStudents.sort((student1, student2) => {
           if (!student1.ebd_class) {
