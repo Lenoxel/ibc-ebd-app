@@ -198,7 +198,7 @@ export class StudentPresenceComponent implements OnInit {
       (
         presenceRegister?.tempRegisterOn.getHours() === 9
         &&
-        presenceRegister?.tempRegisterOn.getMinutes() >= 21
+        presenceRegister?.tempRegisterOn.getMinutes() >= 1
       )
     ) {
       // Atrasado
@@ -206,7 +206,7 @@ export class StudentPresenceComponent implements OnInit {
       return;
     }
 
-    this.removeDelayedAndPunctualLabels(presenceRegister);
+    // this.removeDelayedAndPunctualLabels(presenceRegister);
   }
 
   removeDelayedAndPunctualLabels(partialPresenceRegister: IPresenceRegister) {
