@@ -17,6 +17,10 @@ const routes: Routes = [
         loadChildren: () => import('../pages/people/people.module').then(m => m.PeoplePageModule),
       },
       {
+        path: 'people/:personId',
+        loadChildren: () => import('../pages/people/people.module').then( m => m.PeoplePageModule)
+      },
+      {
         path: 'analytics',
         loadChildren: () => import('../pages/analytics/analytics.module').then(m => m.AnalyticsPageModule),
         canLoad: [FullAccessGuard],

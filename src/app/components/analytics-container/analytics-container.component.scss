@@ -1,9 +1,14 @@
 ion-card-header {
-    font-size: 16px;
-    font-weight: bolder;
-    color: var(--ion-color-primary);
+  font-size: 16px;
+  font-weight: bolder;
+  color: var(--ion-color-primary);
 }
 
 .user-card {
-    min-width: 330px;
+  min-width: 330px;
+}
+
+ion-avatar {
+  width: 80px;
+  height: 80px;
 }

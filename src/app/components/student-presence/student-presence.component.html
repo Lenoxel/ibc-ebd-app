@@ -3,101 +3,138 @@
   id="accordion-{{ presenceRegister?.id }}"
   value="accordion-{{ presenceRegister?.id }}"
 >
-  <ion-item slot="header" lines="none">
-    <ion-label class="ion-text-wrap">
-      <ng-container
-        *ngIf="
-          presenceRegister['is_teacher'] || presenceRegister['is_secretary'];
-          else ebdRelationTemplate
-        "
-      >
-        <ion-text *ngIf="presenceRegister['is_teacher']" color="highlight">
-          <h4>Professor</h4>
-        </ion-text>
-        <ion-text *ngIf="presenceRegister['is_secretary']" color="fancy">
-          <h4>Secretário</h4>
-        </ion-text>
-      </ng-container>
-      <ng-template #ebdRelationTemplate>
-        <ion-text
-          *ngIf="presenceRegister['person_ebd_relation']"
-          color="{{
-            presenceRegister['person_ebd_relation'] === 'visitante'
-              ? 'secondary'
-              : 'dark'
-          }}"
-        >
-          <h4>{{ presenceRegister["person_ebd_relation"] | titlecase }}</h4>
-        </ion-text>
-      </ng-template>
-      <h3>{{ presenceRegister["person_name"] }}</h3>
-      <h5
-        *ngIf="
-          !presenceRegister?.underAction &&
-          (presenceRegister['tempRegisterOn'] ||
-            presenceRegister['register_on'])
-        "
-      >
-        <span *ngIf="presenceRegister?.attended"
-          >Chegou às
-          {{
-            presenceRegister["tempRegisterOn"] ||
-              presenceRegister["register_on"] | date: "HH:mm"
-          }}</span
-        >
-        <div *ngIf="!presenceRegister?.attended">
-          <div>
-            Recebeu falta em
-            {{
-              presenceRegister["tempRegisterOn"] ||
-                presenceRegister["register_on"] | date: "dd/MM/yyyy HH:mm"
-            }}
-          </div>
-          <div>{{ presenceRegister?.justification || "Não justificada" }}</div>
-        </div>
-      </h5>
-      <h5
-        *ngIf="
-          presenceRegister?.tempRegisterOn && !presenceRegister?.register_on
-        "
-      >
-        <ion-text color="warning"
-          ><ion-label>Não esqueça de salvar</ion-label></ion-text
-        >
-      </h5>
-    </ion-label>
-    <ion-button
-      class="button-large"
-      style="margin-right: 5px"
-      color="success"
-      size="small"
-      [fill]="
-        presenceRegister?.attended &&
-        (presenceRegister?.register_on || presenceRegister?.tempRegisterOn)
-          ? 'solid'
-          : 'clear'
-      "
-      (click)="givePresence(presenceRegister); $event.stopPropagation()"
-      [disabled]="presenceRegister?.underAction || hasLessonEnded"
-    >
-      <ion-icon slot="icon-only" name="checkmark-circle-outline"></ion-icon>
-    </ion-button>
-    <ion-button
-      class="button-large"
-      style="margin-left: 5px"
-      color="danger"
-      size="small"
-      [fill]="
-        !presenceRegister?.attended &&
-        (presenceRegister?.register_on || presenceRegister?.tempRegisterOn)
-          ? 'solid'
-          : 'clear'
-      "
-      (click)="giveAbsence(presenceRegister); $event.stopPropagation()"
-      [disabled]="presenceRegister?.underAction || hasLessonEnded"
-    >
-      <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
-    </ion-button>
+  <ion-item slot="header" lines="full">
+    <ion-grid>
+      <ion-row>
+        <ion-col size-lg="12" class="ion-text-center ion-align-self-center">
+          <ion-chip
+            class="student-chip-container"
+            [color]="
+              presenceRegister['is_secretary']
+                ? 'fancy'
+                : presenceRegister['is_teacher']
+                ? 'highlight'
+                : presenceRegister['person_ebd_relation'] === 'visitante'
+                ? 'secondary'
+                : 'dark'
+            "
+          >
+            <ion-avatar>
+              <ion-img
+                alt="{{ presenceRegister['person_name'] }}"
+                [src]="
+                  presenceRegister?.person_picture || '/assets/img/person.png'
+                "
+              ></ion-img>
+            </ion-avatar>
+            <ion-label style="width: 100%" class="ion-text-wrap">
+              <h3>{{ presenceRegister["person_name"] }}</h3>
+              <ng-container
+                *ngIf="
+                  presenceRegister['is_teacher'] ||
+                    presenceRegister['is_secretary'];
+                  else ebdRelationTemplate
+                "
+              >
+                <ion-text *ngIf="presenceRegister['is_teacher']">
+                  <h4>Professor</h4>
+                </ion-text>
+                <ion-text *ngIf="presenceRegister['is_secretary']">
+                  <h4>Secretário</h4>
+                </ion-text>
+              </ng-container>
+              <ng-template #ebdRelationTemplate>
+                <ion-text *ngIf="presenceRegister['person_ebd_relation']">
+                  <h4>
+                    {{ presenceRegister["person_ebd_relation"] | titlecase }}
+                  </h4>
+                </ion-text>
+              </ng-template>
+            </ion-label>
+          </ion-chip>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-lg="12" class="ion-text-center ion-align-self-center">
+          <ion-label class="ion-text-wrap">
+            <h5
+              *ngIf="
+                !presenceRegister?.underAction &&
+                (presenceRegister['tempRegisterOn'] ||
+                  presenceRegister['register_on'])
+              "
+            >
+              <span *ngIf="presenceRegister?.attended"
+                >Chegou às
+                {{
+                  presenceRegister["tempRegisterOn"] ||
+                    presenceRegister["register_on"] | date: "HH:mm"
+                }}</span
+              >
+              <div *ngIf="!presenceRegister?.attended">
+                <div>
+                  Recebeu falta em
+                  {{
+                    presenceRegister["tempRegisterOn"] ||
+                      presenceRegister["register_on"] | date: "dd/MM/yyyy HH:mm"
+                  }}
+                </div>
+                <div>
+                  {{ presenceRegister?.justification || "Não justificada" }}
+                </div>
+              </div>
+            </h5>
+            <h5
+              *ngIf="
+                presenceRegister?.tempRegisterOn &&
+                !presenceRegister?.register_on
+              "
+            >
+              <ion-text color="warning"
+                ><ion-label>Não esqueça de salvar</ion-label></ion-text
+              >
+            </h5>
+          </ion-label>
+          <ion-button
+            class="button-large"
+            style="margin-right: 5px"
+            color="success"
+            size="small"
+            [fill]="
+              presenceRegister?.attended &&
+              (presenceRegister?.register_on ||
+                presenceRegister?.tempRegisterOn)
+                ? 'solid'
+                : 'clear'
+            "
+            (click)="givePresence(presenceRegister); $event.stopPropagation()"
+            [disabled]="presenceRegister?.underAction || hasLessonEnded"
+          >
+            <ion-icon
+              slot="icon-only"
+              name="checkmark-circle-outline"
+            ></ion-icon>
+          </ion-button>
+          <ion-button
+            class="button-large"
+            style="margin-left: 5px"
+            color="danger"
+            size="small"
+            [fill]="
+              !presenceRegister?.attended &&
+              (presenceRegister?.register_on ||
+                presenceRegister?.tempRegisterOn)
+                ? 'solid'
+                : 'clear'
+            "
+            (click)="giveAbsence(presenceRegister); $event.stopPropagation()"
+            [disabled]="presenceRegister?.underAction || hasLessonEnded"
+          >
+            <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </ion-item>
 
   <ion-list slot="content" lines="full">

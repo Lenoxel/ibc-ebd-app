@@ -9,6 +9,8 @@ export interface IPresenceRegister {
     register_on: Date;
     person_name: string;
     person_nickname: string;
+    // falta adicionar person_picture no retorno da API
+    person_picture?: string;
     person_ebd_relation: string;
     is_teacher: boolean;
     is_secretary: boolean;
