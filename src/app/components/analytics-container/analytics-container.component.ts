@@ -34,13 +34,17 @@ export class AnalyticsContainerComponent implements OnInit, AfterViewInit {
     slidesPerView: 1.0,
     pagination: true,
     keyboard: true,
-    autoplay: true
+    speed: 1000,
+    autoplay: {
+      disableOnInteraction: false,
+    }
   };
 
   swiperWorryingStudentsConfig: SwiperOptions = {
     slidesPerView: 1.0,
     pagination: true,
     keyboard: true,
+    speed: 1000,
     autoplay: {
       disableOnInteraction: false,
     }

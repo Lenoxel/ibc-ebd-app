@@ -50,13 +50,51 @@
                   </h4>
                 </ion-text>
               </ng-template>
+              <h5
+                *ngIf="
+                  !presenceRegister?.underAction &&
+                  (presenceRegister['tempRegisterOn'] ||
+                    presenceRegister['register_on'])
+                "
+              >
+                <span *ngIf="presenceRegister?.attended"
+                  >Chegou às
+                  {{
+                    presenceRegister["tempRegisterOn"] ||
+                      presenceRegister["register_on"] | date: "HH:mm"
+                  }}</span
+                >
+                <div *ngIf="!presenceRegister?.attended">
+                  <div>
+                    Falta em
+                    {{
+                      presenceRegister["tempRegisterOn"] ||
+                        presenceRegister["register_on"]
+                        | date: "dd/MM/yyyy HH:mm"
+                    }}
+                  </div>
+                  <div>
+                    {{ presenceRegister?.justification || "Não justificada" }}
+                  </div>
+                </div>
+              </h5>
+              <h5
+                *ngIf="
+                  presenceRegister?.tempRegisterOn &&
+                  !presenceRegister?.register_on
+                "
+              >
+                <ion-text color="warning"
+                  ><ion-label>Não esqueça de salvar</ion-label></ion-text
+                >
+              </h5>
             </ion-label>
           </ion-chip>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col size-lg="12" class="ion-text-center ion-align-self-center">
-          <ion-label class="ion-text-wrap">
+          <!-- <ion-label class="ion-text-wrap">
             <h5
               *ngIf="
                 !presenceRegister?.underAction &&
@@ -94,12 +132,12 @@
                 ><ion-label>Não esqueça de salvar</ion-label></ion-text
               >
             </h5>
-          </ion-label>
+          </ion-label> -->
           <ion-button
-            class="button-large"
             style="margin-right: 5px"
             color="success"
-            size="small"
+            size="default"
+            shape="round"
             [fill]="
               presenceRegister?.attended &&
               (presenceRegister?.register_on ||
@@ -116,10 +154,10 @@
             ></ion-icon>
           </ion-button>
           <ion-button
-            class="button-large"
             style="margin-left: 5px"
             color="danger"
-            size="small"
+            size="default"
+            shape="round"
             [fill]="
               !presenceRegister?.attended &&
               (presenceRegister?.register_on ||

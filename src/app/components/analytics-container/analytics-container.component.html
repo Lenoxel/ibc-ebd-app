@@ -1,6 +1,11 @@
-<ion-progress-bar *ngIf="!analyticsPresenceCounts || !analyticsPresenceHistory?.length" type="indeterminate"></ion-progress-bar>
+<ion-progress-bar
+  *ngIf="!analyticsPresenceCounts || !analyticsPresenceHistory?.length"
+  type="indeterminate"
+></ion-progress-bar>
 
-<ion-grid [hidden]="!analyticsPresenceCounts || !analyticsPresenceHistory?.length">
+<ion-grid
+  [hidden]="!analyticsPresenceCounts || !analyticsPresenceHistory?.length"
+>
   <div class="ion-padding">
     <ion-row>
       <ion-col size-lg="12" class="ion-text-center ion-align-self-center">
@@ -19,25 +24,62 @@
     </ion-row>
 
     <ion-row>
-      <ion-col size-lg="6" size-xs="12" class="ion-text-center ion-align-self-center">
+      <ion-col
+        size-lg="6"
+        size-xs="12"
+        class="ion-text-center ion-align-self-center"
+      >
         <ion-card>
-          <ion-card-header>
-            Alunos Exemplares
-          </ion-card-header>
+          <ion-card-header> Alunos Exemplares </ion-card-header>
           <ion-list>
-            <swiper #swiperExemplaryStudents [config]="swiperExemplaryStudentsConfig" class="ion-align-items-center">
-              <ng-template *ngFor="let student of analyticsPresenceUsers?.exemplary_students" swiperSlide>
-                <ion-card color="light" style="margin-bottom: 30px; text-align: -webkit-center;"  class="user-card">
-                  <ion-avatar style="margin-top: 10px;">
-                    <ion-img [src]="student?.person_picture || 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/1024px-User-avatar.svg.png'"></ion-img>
+            <swiper
+              #swiperExemplaryStudents
+              [config]="swiperExemplaryStudentsConfig"
+              class="ion-align-items-center"
+            >
+              <ng-template
+                *ngFor="
+                  let student of analyticsPresenceUsers?.exemplary_students
+                "
+                swiperSlide
+              >
+                <ion-card
+                  color="light"
+                  style="margin-bottom: 30px; text-align: -webkit-center"
+                  class="user-card"
+                >
+                  <ion-avatar style="margin-top: 10px">
+                    <ion-img
+                      [src]="
+                        student?.person_picture || '/assets/img/person.png'
+                      "
+                    ></ion-img>
                   </ion-avatar>
                   <ion-item lines="none" color="light">
                     <ion-label class="ion-text-wrap ion-text-center">
-                      <h2>{{student?.person_name}}</h2>
-                      <h3>Classe {{student?.class_name}}</h3>
-                      <ion-chip *ngFor="let info of student?.infos" [color]="info?.type === 'positive' ? 'success' : 'primary'" style="height: auto;">
-                        <ion-label [color]="info?.type === 'positive' ? 'dark' : 'danger'" class="ion-text-wrap">{{info?.title}}</ion-label>
-                        <ion-badge style="margin-left: 10px;" [color]="info?.type === 'positive' ? 'success' : 'danger'">+{{info?.count}}</ion-badge>
+                      <h2>{{ student?.person_name }}</h2>
+                      <h3>Classe {{ student?.class_name }}</h3>
+                      <ion-chip
+                        *ngFor="let info of student?.infos"
+                        [color]="
+                          info?.type === 'positive' ? 'success' : 'primary'
+                        "
+                        style="height: auto"
+                      >
+                        <ion-label
+                          [color]="
+                            info?.type === 'positive' ? 'dark' : 'danger'
+                          "
+                          class="ion-text-wrap"
+                          >{{ info?.title }}</ion-label
+                        >
+                        <ion-badge
+                          style="margin-left: 10px"
+                          [color]="
+                            info?.type === 'positive' ? 'success' : 'danger'
+                          "
+                          >+{{ info?.count }}</ion-badge
+                        >
                       </ion-chip>
                     </ion-label>
                   </ion-item>
@@ -48,25 +90,62 @@
         </ion-card>
       </ion-col>
 
-      <ion-col size-lg="6" size-xs="12" class="ion-text-center ion-align-self-center">
+      <ion-col
+        size-lg="6"
+        size-xs="12"
+        class="ion-text-center ion-align-self-center"
+      >
         <ion-card>
-          <ion-card-header>
-            Alunos Preocupantes
-          </ion-card-header>
+          <ion-card-header> Alunos Preocupantes </ion-card-header>
           <ion-list>
-            <swiper #swiperWorryingStudents [config]="swiperWorryingStudentsConfig" class="ion-align-items-center">
-              <ng-template *ngFor="let student of analyticsPresenceUsers?.worrying_students" swiperSlide>
-                <ion-card color="light" style="margin-bottom: 30px; text-align: -webkit-center;" class="user-card">
-                  <ion-avatar style="margin-top: 10px;">
-                    <ion-img [src]="student?.person_picture || 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/1024px-User-avatar.svg.png'"></ion-img>
+            <swiper
+              #swiperWorryingStudents
+              [config]="swiperWorryingStudentsConfig"
+              class="ion-align-items-center"
+            >
+              <ng-template
+                *ngFor="
+                  let student of analyticsPresenceUsers?.worrying_students
+                "
+                swiperSlide
+              >
+                <ion-card
+                  color="light"
+                  style="margin-bottom: 30px; text-align: -webkit-center"
+                  class="user-card"
+                >
+                  <ion-avatar style="margin-top: 10px">
+                    <ion-img
+                      [src]="
+                        student?.person_picture || '/assets/img/person.png'
+                      "
+                    ></ion-img>
                   </ion-avatar>
                   <ion-item lines="none" color="light">
                     <ion-label class="ion-text-wrap ion-text-center">
-                      <h2>{{student?.person_name}}</h2>
-                      <h3>Classe {{student?.class_name}}</h3>
-                      <ion-chip *ngFor="let info of student?.infos" [color]="info?.type === 'positive' ? 'success' : 'primary'" style="height: auto;">
-                        <ion-label [color]="info?.type === 'positive' ? 'dark' : 'danger'" class="ion-text-wrap">{{info?.title}}</ion-label>
-                        <ion-badge style="margin-left: 10px;" [color]="info?.type === 'positive' ? 'success' : 'danger'">+{{info?.count}}</ion-badge>
+                      <h2>{{ student?.person_name }}</h2>
+                      <h3>Classe {{ student?.class_name }}</h3>
+                      <ion-chip
+                        *ngFor="let info of student?.infos"
+                        [color]="
+                          info?.type === 'positive' ? 'success' : 'primary'
+                        "
+                        style="height: auto"
+                      >
+                        <ion-label
+                          [color]="
+                            info?.type === 'positive' ? 'dark' : 'danger'
+                          "
+                          class="ion-text-wrap"
+                          >{{ info?.title }}</ion-label
+                        >
+                        <ion-badge
+                          style="margin-left: 10px"
+                          [color]="
+                            info?.type === 'positive' ? 'success' : 'danger'
+                          "
+                          >+{{ info?.count }}</ion-badge
+                        >
                       </ion-chip>
                       <!-- <ion-chip *ngFor="let info of student?.infos" color="primary" style="height: auto;">
                         <ion-label color="danger" class="ion-text-wrap">{{info?.title}}</ion-label>
@@ -82,18 +161,33 @@
       </ion-col>
     </ion-row>
 
-    <app-date-selector
-      (changeDateEvent)="handleChangeDateEvent($event)"
-    >
+    <app-date-selector (changeDateEvent)="handleChangeDateEvent($event)">
     </app-date-selector>
 
     <ion-row class="ion-justify-content-center">
-      <ng-container *ngIf="analyticsPresenceClassInfos?.classes?.length; else noPresenceClassesTemplate">
-        <ion-col *ngFor="let presenceClass of analyticsPresenceClassInfos.classes" size-lg="3" size-md="6" size-sm="12" size-xs="12">
+      <ng-container
+        *ngIf="
+          analyticsPresenceClassInfos?.classes?.length;
+          else noPresenceClassesTemplate
+        "
+      >
+        <ion-col
+          *ngFor="let presenceClass of analyticsPresenceClassInfos.classes"
+          size-lg="3"
+          size-md="6"
+          size-sm="12"
+          size-xs="12"
+        >
           <app-analytics-class
             [presenceClass]="presenceClass"
-            [isBestFrequency]="presenceClass?.class_id === analyticsPresenceClassInfos?.best_frequency_class"
-            [isWorstFrequency]="presenceClass?.class_id === analyticsPresenceClassInfos?.worst_frequency_class"
+            [isBestFrequency]="
+              presenceClass?.class_id ===
+              analyticsPresenceClassInfos?.best_frequency_class
+            "
+            [isWorstFrequency]="
+              presenceClass?.class_id ===
+              analyticsPresenceClassInfos?.worst_frequency_class
+            "
             [filterByPeriod]="filterByPeriod"
           >
           </app-analytics-class>
@@ -102,14 +196,27 @@
 
       <ng-template #noPresenceClassesTemplate>
         <ng-container *ngIf="analyticsPresenceClassInfos?.classes === null">
-          <ion-col *ngFor="let fakeIndex of utilService?.fakeArrayPipe?.transform(6)" size-lg="3" size-md="6" size-sm="12" size-xs="12">
+          <ion-col
+            *ngFor="let fakeIndex of utilService?.fakeArrayPipe?.transform(6)"
+            size-lg="3"
+            size-md="6"
+            size-sm="12"
+            size-xs="12"
+          >
             <ion-item lines="none">
-              <ion-skeleton-text style="width: 100%; height: 310px" [animated]="true"></ion-skeleton-text>
+              <ion-skeleton-text
+                style="width: 100%; height: 310px"
+                [animated]="true"
+              ></ion-skeleton-text>
             </ion-item>
           </ion-col>
         </ng-container>
 
-        <h3 *ngIf="analyticsPresenceClassInfos?.classes?.length === 0" class="ion-text-center" style="padding: 5rem 3rem;">
+        <h3
+          *ngIf="analyticsPresenceClassInfos?.classes?.length === 0"
+          class="ion-text-center"
+          style="padding: 5rem 3rem"
+        >
           Não há registros para essa data
         </h3>
       </ng-template>
