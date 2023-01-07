@@ -15,17 +15,17 @@
                 : presenceRegister['is_teacher']
                 ? 'highlight'
                 : presenceRegister['person_ebd_relation'] === 'visitante'
-                ? 'secondary'
+                ? 'orange'
                 : 'dark'
             "
           >
             <ion-avatar>
-              <ion-img
-                alt="{{ presenceRegister['person_name'] }}"
+              <img
                 [src]="
                   presenceRegister?.person_picture || '/assets/img/person.png'
                 "
-              ></ion-img>
+                [alt]="presenceRegister['person_name']"
+              />
             </ion-avatar>
             <ion-label style="width: 100%" class="ion-text-wrap">
               <h3>{{ presenceRegister["person_name"] }}</h3>
@@ -37,16 +37,16 @@
                 "
               >
                 <ion-text *ngIf="presenceRegister['is_teacher']">
-                  <h4>Professor</h4>
+                  <h4>{{ "Professor" | uppercase }}</h4>
                 </ion-text>
                 <ion-text *ngIf="presenceRegister['is_secretary']">
-                  <h4>Secretário</h4>
+                  <h4>{{ "Secretário" | uppercase }}</h4>
                 </ion-text>
               </ng-container>
               <ng-template #ebdRelationTemplate>
                 <ion-text *ngIf="presenceRegister['person_ebd_relation']">
                   <h4>
-                    {{ presenceRegister["person_ebd_relation"] | titlecase }}
+                    {{ presenceRegister["person_ebd_relation"] | uppercase }}
                   </h4>
                 </ion-text>
               </ng-template>
@@ -61,7 +61,7 @@
                   >Chegou às
                   {{
                     presenceRegister["tempRegisterOn"] ||
-                      presenceRegister["register_on"] | date: "HH:mm"
+                      presenceRegister["register_on"] | date : "HH:mm"
                   }}</span
                 >
                 <div *ngIf="!presenceRegister?.attended">
@@ -70,7 +70,7 @@
                     {{
                       presenceRegister["tempRegisterOn"] ||
                         presenceRegister["register_on"]
-                        | date: "dd/MM/yyyy HH:mm"
+                        | date : "dd/MM/yyyy HH:mm"
                     }}
                   </div>
                   <div>

@@ -34,9 +34,10 @@ export class AnalyticsContainerComponent implements OnInit, AfterViewInit {
     slidesPerView: 1.0,
     pagination: true,
     keyboard: true,
-    speed: 1000,
+    speed: 500,
     autoplay: {
       disableOnInteraction: false,
+      delay: 4000,
     }
   };
 
@@ -44,9 +45,10 @@ export class AnalyticsContainerComponent implements OnInit, AfterViewInit {
     slidesPerView: 1.0,
     pagination: true,
     keyboard: true,
-    speed: 1000,
+    speed: 500,
     autoplay: {
       disableOnInteraction: false,
+      delay: 4000,
     }
   };
 

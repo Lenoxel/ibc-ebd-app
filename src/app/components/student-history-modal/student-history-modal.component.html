@@ -15,17 +15,24 @@
       <ion-item class="ion-text-center ion-align-items-center" lines="full">
         <ion-label class="ion-text-wrap">
           <ion-avatar>
-            <img [src]="student?.picture || '/assets/img/person.png'">
+            <img
+              [src]="student?.picture || '/assets/img/person.png'"
+              [alt]="student?.name"
+            />
           </ion-avatar>
-          <h2>{{student?.name}}</h2>
-          <h3>{{student?.ebd_class ? 'Classe ' + student?.ebd_class : 'Sem Classe'}}</h3>
-          <ion-chip style="--background: var(--ion-color-success);">
+          <h2>{{ student?.name }}</h2>
+          <h3>
+            {{
+              student?.ebd_class ? "Classe " + student?.ebd_class : "Sem Classe"
+            }}
+          </h3>
+          <ion-chip style="--background: var(--ion-color-success)">
             <ion-icon name="checkmark" color="light"></ion-icon>
-            <ion-label color="light">{{presencesCount}}</ion-label>
+            <ion-label color="light">{{ presencesCount }}</ion-label>
           </ion-chip>
-          <ion-chip style="--background: var(--ion-color-danger);">
+          <ion-chip style="--background: var(--ion-color-danger)">
             <ion-icon name="close" color="light"></ion-icon>
-            <ion-label color="light">{{absencesCount}}</ion-label>
+            <ion-label color="light">{{ absencesCount }}</ion-label>
           </ion-chip>
         </ion-label>
       </ion-item>
@@ -48,16 +55,34 @@
       </ion-grid> -->
 
       <ng-container *ngIf="studentHistoryList?.length; else noDataTemplate">
-      <!-- <ng-container *ngIf="studentHistoryList?.length"> -->
-        <ion-card *ngFor="let studentHistory of studentHistoryList" color="light">
+        <!-- <ng-container *ngIf="studentHistoryList?.length"> -->
+        <ion-card
+          *ngFor="let studentHistory of studentHistoryList"
+          color="light"
+        >
           <ion-item lines="none">
             <ion-label class="ion-text-wrap">
-              <h3>{{studentHistory?.lesson_title}}</h3>
-              <h4>{{studentHistory?.lesson_date | date: 'dd/MM/yyyy'}}</h4>
-              <p>Recebeu {{studentHistory?.attended ? 'presença' : 'falta'}} {{studentHistory?.register_on ? 'de ' + (studentHistory?.register_on | date: 'HH:mm') : 'automaticamente'}}.</p>
-              <p *ngIf="studentHistory?.justification">{{studentHistory?.justification}}</p>
+              <h3>{{ studentHistory?.lesson_title }}</h3>
+              <h4>{{ studentHistory?.lesson_date | date : "dd/MM/yyyy" }}</h4>
+              <p>
+                Recebeu {{ studentHistory?.attended ? "presença" : "falta" }}
+                {{
+                  studentHistory?.register_on
+                    ? "de " + (studentHistory?.register_on | date : "HH:mm")
+                    : "automaticamente"
+                }}.
+              </p>
+              <p *ngIf="studentHistory?.justification">
+                {{ studentHistory?.justification }}
+              </p>
             </ion-label>
-            <ion-icon slot="end" [name]="studentHistory?.attended ? 'checkmark-outline' : 'close-outline'" [color]="studentHistory?.attended ? 'success' : 'danger'"></ion-icon>
+            <ion-icon
+              slot="end"
+              [name]="
+                studentHistory?.attended ? 'checkmark-outline' : 'close-outline'
+              "
+              [color]="studentHistory?.attended ? 'success' : 'danger'"
+            ></ion-icon>
           </ion-item>
         </ion-card>
       </ng-container>

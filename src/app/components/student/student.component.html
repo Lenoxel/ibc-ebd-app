@@ -1,20 +1,32 @@
-<ion-item *ngIf="show" style="height: 91px !important;" button lines="full" (click)="selectStudentEvent.emit(student)" wid>
+<ion-item
+  *ngIf="show"
+  style="height: 91px !important"
+  button
+  lines="full"
+  (click)="selectStudentEvent.emit(student)"
+>
   <ion-avatar slot="start">
-    <ion-img
+    <img
       [src]="student?.picture || '/assets/img/person.png'"
       [alt]="student?.name"
-    ></ion-img>
+    />
   </ion-avatar>
   <ion-label>
-    <h3>{{student?.name}}</h3>
-    <p>{{student?.ebd_class ? 'Classe ' + student?.ebd_class : 'Sem Classe'}}</p>
+    <h3>{{ student?.name }}</h3>
+    <p>
+      {{ student?.ebd_class ? "Classe " + student?.ebd_class : "Sem Classe" }}
+    </p>
     <ion-text
-      *ngIf="student?.frequency?.absences_in_sequence || student?.frequency?.presences_in_sequence; else noEbdHistoryTemplate"
+      *ngIf="
+        student?.frequency?.absences_in_sequence ||
+          student?.frequency?.presences_in_sequence;
+        else noEbdHistoryTemplate
+      "
       [color]="student?.frequency?.absences_in_sequence ? 'danger' : 'success'"
     >
       <p>
         <ng-container *ngIf="student?.frequency?.absences_in_sequence > 1">
-          {{student?.frequency?.absences_in_sequence}} faltas seguidas
+          {{ student?.frequency?.absences_in_sequence }} faltas seguidas
         </ng-container>
         <ng-container *ngIf="student?.frequency?.absences_in_sequence === 1">
           Faltou à última lição
@@ -23,7 +35,7 @@
           Veio à última lição
         </ng-container>
         <ng-container *ngIf="student?.frequency?.presences_in_sequence > 1">
-          {{student?.frequency?.presences_in_sequence}} presenças seguidas
+          {{ student?.frequency?.presences_in_sequence }} presenças seguidas
         </ng-container>
       </p>
     </ion-text>
@@ -33,7 +45,21 @@
   </ion-label>
 
   <ng-container *ngIf="student?.whatsapp">
-    <ion-icon slot="end" name="logo-whatsapp" color="success" (click)="$any($event)?.stopPropagation(); redirectToWhatsapp(student?.whatsapp);"></ion-icon>
-    <ion-icon slot="end" name="call" color="highlight" (click)="$any($event)?.stopPropagation(); redirectToCall(student?.whatsapp);"></ion-icon>
+    <ion-icon
+      slot="end"
+      name="logo-whatsapp"
+      color="success"
+      (click)="
+        $any($event)?.stopPropagation(); redirectToWhatsapp(student?.whatsapp)
+      "
+    ></ion-icon>
+    <ion-icon
+      slot="end"
+      name="call"
+      color="highlight"
+      (click)="
+        $any($event)?.stopPropagation(); redirectToCall(student?.whatsapp)
+      "
+    ></ion-icon>
   </ng-container>
 </ion-item>

@@ -99,6 +99,14 @@
 	--ion-color-fancy-shade: #470641;
 	--ion-color-fancy-tint: #62205c;
 
+	/** orange **/
+	--ion-color-orange: #ffa500;
+	--ion-color-orange-rgb: 255,165,0;
+	--ion-color-orange-contrast: #000000;
+	--ion-color-orange-contrast-rgb: 0,0,0;
+	--ion-color-orange-shade: #e09100;
+	--ion-color-orange-tint: #ffae1a;
+
 	--ion-font-family: 'Open Sans';
 }
 
@@ -127,6 +135,15 @@
 	--ion-color-contrast-rgb: var(--ion-color-fancy-contrast-rgb);
 	--ion-color-shade: var(--ion-color-fancy-shade);
 	--ion-color-tint: var(--ion-color-fancy-tint);
+}
+
+.ion-color-orange {
+	--ion-color-base: var(--ion-color-orange);
+	--ion-color-base-rgb: var(--ion-color-orange-rgb);
+	--ion-color-contrast: var(--ion-color-orange-contrast);
+	--ion-color-contrast-rgb: var(--ion-color-orange-contrast-rgb);
+	--ion-color-shade: var(--ion-color-orange-shade);
+	--ion-color-tint: var(--ion-color-orange-tint);
 }
 
 @font-face {

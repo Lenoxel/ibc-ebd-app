@@ -49,11 +49,12 @@
                   class="user-card"
                 >
                   <ion-avatar style="margin-top: 10px">
-                    <ion-img
+                    <img
                       [src]="
                         student?.person_picture || '/assets/img/person.png'
                       "
-                    ></ion-img>
+                      [alt]="student?.person_name"
+                    />
                   </ion-avatar>
                   <ion-item lines="none" color="light">
                     <ion-label class="ion-text-wrap ion-text-center">
@@ -115,11 +116,12 @@
                   class="user-card"
                 >
                   <ion-avatar style="margin-top: 10px">
-                    <ion-img
+                    <img
                       [src]="
                         student?.person_picture || '/assets/img/person.png'
                       "
-                    ></ion-img>
+                      [alt]="student?.person_name"
+                    />
                   </ion-avatar>
                   <ion-item lines="none" color="light">
                     <ion-label class="ion-text-wrap ion-text-center">
