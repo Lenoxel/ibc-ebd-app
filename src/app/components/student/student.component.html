@@ -1,11 +1,14 @@
 <ion-item
   *ngIf="show"
-  style="height: 91px !important"
+  style="height: 112px !important"
   button
   lines="full"
   (click)="selectStudentEvent.emit(student)"
 >
-  <ion-avatar slot="start">
+  <ion-avatar
+    slot="start"
+    [ngClass]="{ 'birthday-person': student?.is_birthday_person }"
+  >
     <img
       [src]="student?.picture || '/assets/img/person.png'"
       [alt]="student?.name"
@@ -16,6 +19,16 @@
     <p>
       {{ student?.ebd_class ? "Classe " + student?.ebd_class : "Sem Classe" }}
     </p>
+    <p *ngIf="!student?.is_birthday_person; else isBirthdayPerson">
+      {{
+        student?.date_of_birth
+          ? "Aniversário em " + student?.date_of_birth
+          : "Sem Data de Aniversário"
+      }}
+    </p>
+    <ng-template #isBirthdayPerson>
+      <strong>{{ "Aniversário hoje" | uppercase }}</strong>
+    </ng-template>
     <ion-text
       *ngIf="
         student?.frequency?.absences_in_sequence ||

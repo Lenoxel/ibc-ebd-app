@@ -14,6 +14,8 @@ import { TokenInterceptorService } from './services/token/token-interceptor.serv
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { DirectivesModule } from './directives/directives.module';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireMessagingModule } from '@angular/fire/compat/messaging';
 
 registerLocaleData(localePt, 'pt');
 
@@ -27,6 +29,8 @@ registerLocaleData(localePt, 'pt');
     HttpClientModule,
     PipesModule,
     DirectivesModule,
+    AngularFireMessagingModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the application is stable

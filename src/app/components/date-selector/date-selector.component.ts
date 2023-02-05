@@ -21,9 +21,7 @@ export class DateSelectorComponent implements OnInit {
 
   constructor(
     public utilService: UtilService,
-  ) {
-    this.utilService.setSundaysOnMonth();
-  }
+  ) {}
 
   ngOnInit() {
     if (this.filterByPeriod) {
@@ -38,6 +36,7 @@ export class DateSelectorComponent implements OnInit {
     this.selectedDay = Number(day);
     this.selectedMonth = Number(month) - 1;
     this.selectedYear = year;
+    this.utilService.setSundaysOnMonth(this.selectedMonth, Number(this.selectedYear));
   }
 
   initializeFilterByRangeDate() {
@@ -59,7 +58,7 @@ export class DateSelectorComponent implements OnInit {
 
   onChangeMonth() {
     this.selectedDay = null;
-    this.utilService.setSundaysOnMonth(this.selectedMonth);
+    this.utilService.setSundaysOnMonth(this.selectedMonth, Number(this.selectedYear));
   }
 
   onChangeDay() {

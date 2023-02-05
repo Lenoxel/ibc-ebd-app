@@ -4,6 +4,7 @@ import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { IonModal, Platform } from '@ionic/angular';
 import { IStudent, IStudentHistory } from 'src/app/interfaces';
+import { UtilService } from 'src/app/services/util/util.service';
 
 @Component({
   selector: 'app-student-history-modal',
@@ -25,8 +26,9 @@ export class StudentHistoryModalComponent implements OnInit, OnDestroy {
   private _studentHistoryList: IStudentHistory[] | null = null;
 
   constructor(
+    public utilService: UtilService,
     private location: Location,
-    private platform: Platform
+    private platform: Platform,
   ) {
     // const now = new Date();
     // this.startDate = new Date(now.getTime() - (1000 * 3600 * 24 * 90));

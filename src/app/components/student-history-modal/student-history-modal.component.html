@@ -14,7 +14,9 @@
     <ion-content class="ion-padding">
       <ion-item class="ion-text-center ion-align-items-center" lines="full">
         <ion-label class="ion-text-wrap">
-          <ion-avatar>
+          <ion-avatar
+            [ngClass]="{ 'birthday-person': student?.is_birthday_person }"
+          >
             <img
               [src]="student?.picture || '/assets/img/person.png'"
               [alt]="student?.name"
@@ -88,11 +90,28 @@
       </ng-container>
 
       <ng-template #noDataTemplate>
-        <!-- <ng-container *ngIf="loading; else noReallyDataTemplate">
-          <ion-progress-bar type="indeterminate"></ion-progress-bar>
-        </ng-container> -->
+        <ng-container
+          *ngIf="
+            studentHistoryList === null || studentHistoryList === undefined;
+            else noReallyDataTemplate
+          "
+        >
+          <ion-item
+            *ngFor="let fakeIndex of utilService?.fakeArrayPipe?.transform(4)"
+            lines="none"
+          >
+            <ion-skeleton-text
+              style="width: 100%; height: 90px"
+              [animated]="true"
+            ></ion-skeleton-text>
+          </ion-item>
+        </ng-container>
 
-        <h2 class="ion-text-center ion-text-wrap">Sem histórico de chamada</h2>
+        <ng-template #noReallyDataTemplate>
+          <h2 class="ion-text-center ion-text-wrap">
+            Sem histórico de chamada
+          </h2>
+        </ng-template>
       </ng-template>
     </ion-content>
   </ng-template>

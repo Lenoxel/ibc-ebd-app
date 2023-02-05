@@ -4,6 +4,8 @@ export interface IStudent {
     name: string;
     picture: string;
     ebd_class: string;
+    date_of_birth?: string;
+    is_birthday_person: boolean;
     whatsapp?: string;
     work_on_sundays?: boolean;
     frequency?: {

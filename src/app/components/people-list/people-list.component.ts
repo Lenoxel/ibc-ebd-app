@@ -62,6 +62,8 @@ export class PeopleListComponent implements OnInit {
   ngOnInit() {}
 
   onSelectPerson(student: IStudent | null) {
+    event.stopImmediatePropagation();
+    event.preventDefault();
     if (student) {
       this.selectedStudent = student;
       this.getEbdPersonHistory(student.id);
