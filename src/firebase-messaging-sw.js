@@ -1,5 +1,5 @@
-import { initializeApp } from "firebase/app";
-import { getMessaging, onBackgroundMessage } from "firebase/messaging/sw";
+const { initializeApp } = require("firebase/app");
+const { getMessaging, onBackgroundMessage } = require("firebase/messaging/sw");
 
 const messaging = getMessaging(initializeApp({ 
     apiKey: "AIzaSyCvugUvnxTW1Agmbl_l3Ax49fTk3r33tjg", 
