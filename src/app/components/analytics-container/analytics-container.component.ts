@@ -6,7 +6,7 @@ import {
   IAnalyticsPresenceUsers
 } from 'src/app/interfaces';
 import { UtilService } from 'src/app/services/util/util.service';
-import { DateFilter } from 'src/app/types';
+import { DateFilter, EntityBasic } from 'src/app/types';
 import SwiperCore, { Autoplay, Keyboard, Pagination, SwiperOptions } from 'swiper';
 import { SwiperComponent } from 'swiper/angular';
 
@@ -50,6 +50,31 @@ export class AnalyticsContainerComponent implements OnInit, AfterViewInit {
       disableOnInteraction: false,
       delay: 4000,
     }
+  };
+
+  filterLabelItems = [
+    {
+      id: 0,
+      name: 'Todos os Selos'
+    },
+    {
+      id: 1,
+      name: 'Selos Positivos'
+    },
+    {
+      id: 2,
+      name: 'Selos Negativos'
+    },
+  ]
+
+  filterExemplaryStudentsLabelOptions: { items: EntityBasic[], choosedItem: EntityBasic } = {
+    items: this.filterLabelItems,
+    choosedItem: this.filterLabelItems[0]
+  };
+
+  filterWorryingStudentsLabelOptions: { items: EntityBasic[], choosedItem: EntityBasic } = {
+    items: this.filterLabelItems,
+    choosedItem: this.filterLabelItems[0]
   };
 
   constructor(

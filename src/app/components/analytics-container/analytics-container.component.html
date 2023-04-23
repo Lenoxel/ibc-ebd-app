@@ -31,6 +31,22 @@
       >
         <ion-card>
           <ion-card-header> Alunos Exemplares </ion-card-header>
+
+          <section *ngIf="filterExemplaryStudentsLabelOptions?.items?.length">
+            <ion-chip
+              *ngFor="let item of filterExemplaryStudentsLabelOptions?.items"
+              [ngClass]="{
+                'ion-chip-active':
+                  item?.id ===
+                  filterExemplaryStudentsLabelOptions?.choosedItem?.id
+              }"
+              color="primary"
+              (click)="filterExemplaryStudentsLabelOptions.choosedItem = item"
+            >
+              <ion-label color="primary">{{ item?.name }}</ion-label>
+            </ion-chip>
+          </section>
+
           <ion-list>
             <swiper
               #swiperExemplaryStudents
@@ -60,28 +76,41 @@
                     <ion-label class="ion-text-wrap ion-text-center">
                       <h2>{{ student?.person_name }}</h2>
                       <h3>Classe {{ student?.class_name }}</h3>
-                      <ion-chip
-                        *ngFor="let info of student?.infos"
-                        [color]="
-                          info?.type === 'positive' ? 'success' : 'primary'
-                        "
-                        style="height: auto"
-                      >
-                        <ion-label
-                          [color]="
-                            info?.type === 'positive' ? 'dark' : 'danger'
+                      <ng-container *ngFor="let info of student?.infos">
+                        <ion-chip
+                          *ngIf="
+                            (info?.type === 'positive' &&
+                              [0, 1]?.includes(
+                                filterExemplaryStudentsLabelOptions?.choosedItem
+                                  ?.id
+                              )) ||
+                            (info?.type === 'negative' &&
+                              [0, 2]?.includes(
+                                filterExemplaryStudentsLabelOptions?.choosedItem
+                                  ?.id
+                              ))
                           "
-                          class="ion-text-wrap"
-                          >{{ info?.title }}</ion-label
-                        >
-                        <ion-badge
-                          style="margin-left: 10px"
                           [color]="
-                            info?.type === 'positive' ? 'success' : 'danger'
+                            info?.type === 'positive' ? 'success' : 'primary'
                           "
-                          >+{{ info?.count }}</ion-badge
+                          style="height: auto"
                         >
-                      </ion-chip>
+                          <ion-label
+                            [color]="
+                              info?.type === 'positive' ? 'dark' : 'danger'
+                            "
+                            class="ion-text-wrap"
+                            >{{ info?.title }}</ion-label
+                          >
+                          <ion-badge
+                            style="margin-left: 10px"
+                            [color]="
+                              info?.type === 'positive' ? 'success' : 'danger'
+                            "
+                            >+{{ info?.count }}</ion-badge
+                          >
+                        </ion-chip>
+                      </ng-container>
                     </ion-label>
                   </ion-item>
                 </ion-card>
@@ -98,6 +127,22 @@
       >
         <ion-card>
           <ion-card-header> Alunos Preocupantes </ion-card-header>
+
+          <section *ngIf="filterWorryingStudentsLabelOptions?.items?.length">
+            <ion-chip
+              *ngFor="let item of filterWorryingStudentsLabelOptions?.items"
+              [ngClass]="{
+                'ion-chip-active':
+                  item?.id ===
+                  filterWorryingStudentsLabelOptions?.choosedItem?.id
+              }"
+              color="primary"
+              (click)="filterWorryingStudentsLabelOptions.choosedItem = item"
+            >
+              <ion-label color="primary">{{ item?.name }}</ion-label>
+            </ion-chip>
+          </section>
+
           <ion-list>
             <swiper
               #swiperWorryingStudents
@@ -127,32 +172,41 @@
                     <ion-label class="ion-text-wrap ion-text-center">
                       <h2>{{ student?.person_name }}</h2>
                       <h3>Classe {{ student?.class_name }}</h3>
-                      <ion-chip
-                        *ngFor="let info of student?.infos"
-                        [color]="
-                          info?.type === 'positive' ? 'success' : 'primary'
-                        "
-                        style="height: auto"
-                      >
-                        <ion-label
-                          [color]="
-                            info?.type === 'positive' ? 'dark' : 'danger'
+                      <ng-container *ngFor="let info of student?.infos">
+                        <ion-chip
+                          *ngIf="
+                            (info?.type === 'positive' &&
+                              [0, 1]?.includes(
+                                filterWorryingStudentsLabelOptions?.choosedItem
+                                  ?.id
+                              )) ||
+                            (info?.type === 'negative' &&
+                              [0, 2]?.includes(
+                                filterWorryingStudentsLabelOptions?.choosedItem
+                                  ?.id
+                              ))
                           "
-                          class="ion-text-wrap"
-                          >{{ info?.title }}</ion-label
-                        >
-                        <ion-badge
-                          style="margin-left: 10px"
                           [color]="
-                            info?.type === 'positive' ? 'success' : 'danger'
+                            info?.type === 'positive' ? 'success' : 'primary'
                           "
-                          >+{{ info?.count }}</ion-badge
+                          style="height: auto"
                         >
-                      </ion-chip>
-                      <!-- <ion-chip *ngFor="let info of student?.infos" color="primary" style="height: auto;">
-                        <ion-label color="danger" class="ion-text-wrap">{{info?.title}}</ion-label>
-                        <ion-badge style="margin-left: 10px;" color="danger">+{{info?.count}}</ion-badge>
-                      </ion-chip> -->
+                          <ion-label
+                            [color]="
+                              info?.type === 'positive' ? 'dark' : 'danger'
+                            "
+                            class="ion-text-wrap"
+                            >{{ info?.title }}</ion-label
+                          >
+                          <ion-badge
+                            style="margin-left: 10px"
+                            [color]="
+                              info?.type === 'positive' ? 'success' : 'danger'
+                            "
+                            >+{{ info?.count }}</ion-badge
+                          >
+                        </ion-chip>
+                      </ng-container>
                     </ion-label>
                   </ion-item>
                 </ion-card>
