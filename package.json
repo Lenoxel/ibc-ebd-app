@@ -12,7 +12,8 @@
     "docker:start": "docker run --name ibcebd_container --network host ibcebd:v1",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "hmr": "ng serve --configuration hmr"
   },
   "private": true,
   "dependencies": {
@@ -54,6 +55,7 @@
     "@angular/compiler": "~14.1.0",
     "@angular/compiler-cli": "~14.1.0",
     "@angular/language-service": "~14.1.0",
+    "@angularclass/hmr": "^3.0.0",
     "@capacitor/cli": "3.4.0",
     "@ionic/angular-toolkit": "^7.0.0",
     "@ionic/lab": "3.2.10",

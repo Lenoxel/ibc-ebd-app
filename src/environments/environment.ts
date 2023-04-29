@@ -1,5 +1,6 @@
 export const environment = {
   production: false,
+  hmr: false,
   apiEndpoint: 'https://ibcportal.herokuapp.com/api',
   // apiEndpoint: 'http://localhost:8000/api',
   firebaseConfig: {
@@ -9,6 +10,6 @@ export const environment = {
     storageBucket: 'minha-ebd.appspot.com',
     messagingSenderId: '170193242677',
     appId: '1:170193242677:web:642b56bd882a44fbe73f7c',
-    measurementId: 'G-Y3CG1V8TPH'
-  }
+    measurementId: 'G-Y3CG1V8TPH',
+  },
 };
