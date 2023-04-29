@@ -1,5 +1,12 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { IEbdLabel } from 'src/app/interfaces';
 import { IPresenceRegister } from 'src/app/interfaces/presenceRegister';
@@ -11,7 +18,7 @@ import { UtilService } from 'src/app/services/util/util.service';
   selector: 'app-student-presence',
   templateUrl: './student-presence.component.html',
   styleUrls: ['./student-presence.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StudentPresenceComponent implements OnInit {
   @Input() presenceRegister: IPresenceRegister;
@@ -27,11 +34,12 @@ export class StudentPresenceComponent implements OnInit {
     private alertController: AlertController,
     private lessonService: LessonService,
     private utilService: UtilService,
-    public authService: AuthService,
-  ) {
-  }
+    public authService: AuthService
+  ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log(this.ebdLabels);
+  }
 
   givePresence(presenceRegister: IPresenceRegister) {
     if (!presenceRegister.attended || !presenceRegister.tempRegisterOn) {
@@ -45,7 +53,6 @@ export class StudentPresenceComponent implements OnInit {
 
   giveAbsence(presenceRegister: IPresenceRegister) {
     if (presenceRegister.attended || !presenceRegister.tempRegisterOn) {
-
       presenceRegister.attended = false;
       presenceRegister.tempRegisterOn = new Date();
       presenceRegister.register_on = null;
@@ -54,26 +61,37 @@ export class StudentPresenceComponent implements OnInit {
     }
   }
 
-  giveCharacteristic(partialPresenceRegister: IPresenceRegister, label: IEbdLabel) {
+  giveLabelToStudent(
+    partialPresenceRegister: IPresenceRegister,
+    label: IEbdLabel
+  ) {
     if (partialPresenceRegister.register_on) {
-      partialPresenceRegister.tempRegisterOn = new Date(partialPresenceRegister.register_on);
+      partialPresenceRegister.tempRegisterOn = new Date(
+        partialPresenceRegister.register_on
+      );
       partialPresenceRegister.register_on = null;
     }
 
-    let choosedLabel = partialPresenceRegister.labels.find(
-      uniqueLabel => uniqueLabel.id ? uniqueLabel.id === label?.id : uniqueLabel.label_id === label?.id
+    let choosedLabel = partialPresenceRegister.labels.find((uniqueLabel) =>
+      uniqueLabel.id
+        ? uniqueLabel.id === label?.id
+        : uniqueLabel.label_id === label?.id
     );
 
     if (choosedLabel) {
       choosedLabel = null;
 
       partialPresenceRegister.labels = partialPresenceRegister.labels.filter(
-        uniqueLabel => uniqueLabel?.id ? uniqueLabel?.id !== label?.id : uniqueLabel?.label_id !== label?.label_id
+        (uniqueLabel) =>
+          uniqueLabel?.id
+            ? uniqueLabel?.id !== label?.id
+            : uniqueLabel?.label_id !== label?.label_id
       );
 
-      partialPresenceRegister.labelIds = partialPresenceRegister.labelIds.filter(
-        labelId => label?.id ? labelId !== label?.id : labelId !== label?.label_id
-      );
+      partialPresenceRegister.labelIds =
+        partialPresenceRegister.labelIds.filter((labelId) =>
+          label?.id ? labelId !== label?.id : labelId !== label?.label_id
+        );
 
       partialPresenceRegister.labels_to_remove.push(label);
 
@@ -85,41 +103,86 @@ export class StudentPresenceComponent implements OnInit {
     } else {
       partialPresenceRegister.labels.push(label);
       partialPresenceRegister.labelIds.push(label?.id);
-      partialPresenceRegister.labels_to_remove = partialPresenceRegister.labels_to_remove.filter(
-        uniqueLabel => uniqueLabel?.id ? uniqueLabel?.id !== label?.id : uniqueLabel?.label_id !== label?.id
-      );
+      partialPresenceRegister.labels_to_remove =
+        partialPresenceRegister.labels_to_remove.filter((uniqueLabel) =>
+          uniqueLabel?.id
+            ? uniqueLabel?.id !== label?.id
+            : uniqueLabel?.label_id !== label?.id
+        );
     }
   }
 
   async handleSavePresenceRegister(presenceRegister: IPresenceRegister) {
     if (presenceRegister.attended) {
+      if (!this.studentHasAlreadyBroughtMagazineLabel(presenceRegister)) {
+        this.confirmStudentBroughtMagazineOrNot(presenceRegister);
+        return;
+      }
+
       this.handleGivePresence(presenceRegister);
     } else {
       this.handleGiveAbsence(presenceRegister);
     }
   }
 
+  studentHasAlreadyBroughtMagazineLabel(presenceRegister: IPresenceRegister) {
+    return !!presenceRegister.labelIds.find((labelId) => labelId === 2);
+  }
+
+  async confirmStudentBroughtMagazineOrNot(
+    presenceRegister: IPresenceRegister
+  ) {
+    const alert = await this.alertController.create({
+      message: `${presenceRegister?.person_name} <strong>trouxe revista</strong>?`,
+      buttons: [
+        {
+          text: 'Não',
+          handler: () => {
+            this.handleGivePresence(presenceRegister);
+          },
+        },
+        {
+          text: 'Sim',
+          handler: () => {
+            this.giveLabelToStudent(
+              presenceRegister,
+              this.ebdLabels.find((ebdLabel) => ebdLabel?.id === 2)
+            );
+            this.handleGivePresence(presenceRegister);
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
+
   async handleGivePresence(presenceRegister: IPresenceRegister) {
-    presenceRegister.tempRegisterOn = presenceRegister.register_on ? new Date(presenceRegister.register_on) : new Date();
+    presenceRegister.tempRegisterOn = presenceRegister.register_on
+      ? new Date(presenceRegister.register_on)
+      : new Date();
     presenceRegister.register_on = null;
 
     const hours = presenceRegister?.tempRegisterOn?.getHours();
     const minutes = presenceRegister?.tempRegisterOn?.getMinutes();
 
     const alert = await this.alertController.create({
-      header: `Confirme o horário de chegada de ${presenceRegister?.person_name}`,
+      message: `Confirme o horário de chegada de <strong>${presenceRegister?.person_name}</strong>`,
       inputs: [
         {
           name: 'arrivalTime',
           type: 'time',
-          value: `${hours < 10 ? `0${hours}` : hours}:${minutes < 10 ? `0${minutes}` : minutes}`,
+          value: `${hours < 10 ? `0${hours}` : hours}:${
+            minutes < 10 ? `0${minutes}` : minutes
+          }`,
         },
       ],
       buttons: [
         {
           text: 'Cancelar',
-          role: 'cancel'
-        }, {
+          role: 'cancel',
+        },
+        {
           text: 'Salvar',
           handler: ({ arrivalTime }) => {
             if (arrivalTime) {
@@ -130,7 +193,7 @@ export class StudentPresenceComponent implements OnInit {
                 presenceRegister.tempRegisterOn.getMonth(),
                 presenceRegister.tempRegisterOn.getDate(),
                 Number(hoursAndMinutes[0]),
-                Number(hoursAndMinutes[1]),
+                Number(hoursAndMinutes[1])
               );
 
               this.handleStudentPunctuality(presenceRegister);
@@ -138,9 +201,9 @@ export class StudentPresenceComponent implements OnInit {
             } else {
               this.handleGivePresence(presenceRegister);
             }
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
 
     await alert.present();
@@ -148,12 +211,12 @@ export class StudentPresenceComponent implements OnInit {
 
   async handleGiveAbsence(presenceRegister: IPresenceRegister) {
     const alert = await this.alertController.create({
-      header: 'Justificar falta?',
+      message: `Deseja justificar a falta de <strong>${presenceRegister?.person_name}</strong>?`,
       inputs: [
         {
           name: 'justification',
           type: 'text',
-          placeholder: 'Digite aqui a justificativa'
+          placeholder: 'Digite aqui o motivo da falta',
         },
       ],
       buttons: [
@@ -162,8 +225,9 @@ export class StudentPresenceComponent implements OnInit {
           role: 'cancel',
           handler: () => {
             this.savePresenceRegister(presenceRegister);
-          }
-        }, {
+          },
+        },
+        {
           text: 'Sim',
           handler: ({ justification }) => {
             if (justification) {
@@ -173,9 +237,9 @@ export class StudentPresenceComponent implements OnInit {
               presenceRegister.justification = null;
               this.handleGiveAbsence(presenceRegister);
             }
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
 
     await alert.present();
@@ -183,26 +247,28 @@ export class StudentPresenceComponent implements OnInit {
 
   async handleStudentPunctuality(presenceRegister: IPresenceRegister) {
     if (
-      presenceRegister?.tempRegisterOn.getHours() < 9
-      ||
-      (presenceRegister?.tempRegisterOn.getHours() === 9 && presenceRegister?.tempRegisterOn.getMinutes() === 0)
+      presenceRegister?.tempRegisterOn.getHours() < 9 ||
+      (presenceRegister?.tempRegisterOn.getHours() === 9 &&
+        presenceRegister?.tempRegisterOn.getMinutes() === 0)
     ) {
       // Pontual
-      this.givePunctualLabel(presenceRegister, this.ebdLabels.find(({ id }) => id === 3));
+      this.givePunctualLabel(
+        presenceRegister,
+        this.ebdLabels.find(({ id }) => id === 3)
+      );
       return;
     }
 
     if (
-      presenceRegister?.tempRegisterOn.getHours() >= 10
-      ||
-      (
-        presenceRegister?.tempRegisterOn.getHours() === 9
-        &&
-        presenceRegister?.tempRegisterOn.getMinutes() >= 1
-      )
+      presenceRegister?.tempRegisterOn.getHours() >= 10 ||
+      (presenceRegister?.tempRegisterOn.getHours() === 9 &&
+        presenceRegister?.tempRegisterOn.getMinutes() >= 1)
     ) {
       // Atrasado
-      this.giveDelayedLabel(presenceRegister, this.ebdLabels.find(({ id }) => id === 6));
+      this.giveDelayedLabel(
+        presenceRegister,
+        this.ebdLabels.find(({ id }) => id === 6)
+      );
       return;
     }
 
@@ -211,107 +277,150 @@ export class StudentPresenceComponent implements OnInit {
 
   removeDelayedAndPunctualLabels(partialPresenceRegister: IPresenceRegister) {
     let punctualLabelAlreadyAdded = partialPresenceRegister.labels.find(
-      uniqueLabel => uniqueLabel.id ? uniqueLabel.id === 3 : uniqueLabel.label_id === 3
+      (uniqueLabel) =>
+        uniqueLabel.id ? uniqueLabel.id === 3 : uniqueLabel.label_id === 3
     );
 
     if (punctualLabelAlreadyAdded) {
       punctualLabelAlreadyAdded = {
         ...punctualLabelAlreadyAdded,
-        label_id: punctualLabelAlreadyAdded?.label_id || punctualLabelAlreadyAdded?.id,
-        id: punctualLabelAlreadyAdded?.id || punctualLabelAlreadyAdded?.label_id
+        label_id:
+          punctualLabelAlreadyAdded?.label_id || punctualLabelAlreadyAdded?.id,
+        id:
+          punctualLabelAlreadyAdded?.id || punctualLabelAlreadyAdded?.label_id,
       };
 
       partialPresenceRegister.labels = partialPresenceRegister.labels.filter(
-        uniqueLabel => uniqueLabel.id ? uniqueLabel.id !== 3 : uniqueLabel.label_id !== 3
+        (uniqueLabel) =>
+          uniqueLabel.id ? uniqueLabel.id !== 3 : uniqueLabel.label_id !== 3
       );
-      partialPresenceRegister.labelIds = partialPresenceRegister.labelIds.filter(labelId => labelId !== 3);
+      partialPresenceRegister.labelIds =
+        partialPresenceRegister.labelIds.filter((labelId) => labelId !== 3);
       partialPresenceRegister.labels_to_remove.push(punctualLabelAlreadyAdded);
     }
 
     let delayedLabelAlreadyAdded = partialPresenceRegister.labels.find(
-      uniqueLabel => uniqueLabel.id ? uniqueLabel.id === 6 : uniqueLabel.label_id === 6
+      (uniqueLabel) =>
+        uniqueLabel.id ? uniqueLabel.id === 6 : uniqueLabel.label_id === 6
     );
 
     if (delayedLabelAlreadyAdded) {
       delayedLabelAlreadyAdded = {
         ...delayedLabelAlreadyAdded,
-        label_id: delayedLabelAlreadyAdded?.label_id || delayedLabelAlreadyAdded?.id,
-        id: delayedLabelAlreadyAdded?.id || delayedLabelAlreadyAdded?.label_id
+        label_id:
+          delayedLabelAlreadyAdded?.label_id || delayedLabelAlreadyAdded?.id,
+        id: delayedLabelAlreadyAdded?.id || delayedLabelAlreadyAdded?.label_id,
       };
 
       partialPresenceRegister.labels = partialPresenceRegister.labels.filter(
-        uniqueLabel => uniqueLabel.id ? uniqueLabel.id !== 6 : uniqueLabel.label_id !== 6
+        (uniqueLabel) =>
+          uniqueLabel.id ? uniqueLabel.id !== 6 : uniqueLabel.label_id !== 6
       );
-      partialPresenceRegister.labelIds = partialPresenceRegister.labelIds.filter(labelId => labelId !== 6);
+      partialPresenceRegister.labelIds =
+        partialPresenceRegister.labelIds.filter((labelId) => labelId !== 6);
       partialPresenceRegister.labels_to_remove.push(delayedLabelAlreadyAdded);
     }
   }
 
-
-  givePunctualLabel(partialPresenceRegister: IPresenceRegister, label: IEbdLabel) {
-    label = {...label, label_id: label?.label_id || label?.id, id: label?.id || label?.label_id};
+  givePunctualLabel(
+    partialPresenceRegister: IPresenceRegister,
+    label: IEbdLabel
+  ) {
+    label = {
+      ...label,
+      label_id: label?.label_id || label?.id,
+      id: label?.id || label?.label_id,
+    };
 
     const punctualLabelAlreadyAdded = partialPresenceRegister.labels.find(
-      uniqueLabel => uniqueLabel.id ? uniqueLabel.id === label?.id : uniqueLabel.label_id === label?.id
+      (uniqueLabel) =>
+        uniqueLabel.id
+          ? uniqueLabel.id === label?.id
+          : uniqueLabel.label_id === label?.id
     );
 
     if (!punctualLabelAlreadyAdded) {
       partialPresenceRegister.labels.push(label);
       partialPresenceRegister.labelIds.push(label?.id);
-      partialPresenceRegister.labels_to_remove = partialPresenceRegister.labels_to_remove.filter(
-        uniqueLabel => uniqueLabel?.id ? uniqueLabel?.id !== label?.id : uniqueLabel?.label_id !== label?.id
-      );
+      partialPresenceRegister.labels_to_remove =
+        partialPresenceRegister.labels_to_remove.filter((uniqueLabel) =>
+          uniqueLabel?.id
+            ? uniqueLabel?.id !== label?.id
+            : uniqueLabel?.label_id !== label?.id
+        );
     }
 
     let delayedLabelAlreadyAdded = partialPresenceRegister.labels.find(
-      uniqueLabel => uniqueLabel.id ? uniqueLabel.id === 6 : uniqueLabel.label_id === 6
+      (uniqueLabel) =>
+        uniqueLabel.id ? uniqueLabel.id === 6 : uniqueLabel.label_id === 6
     );
 
     if (delayedLabelAlreadyAdded) {
       delayedLabelAlreadyAdded = {
         ...delayedLabelAlreadyAdded,
-        label_id: delayedLabelAlreadyAdded?.label_id || delayedLabelAlreadyAdded?.id,
-        id: delayedLabelAlreadyAdded?.id || delayedLabelAlreadyAdded?.label_id
+        label_id:
+          delayedLabelAlreadyAdded?.label_id || delayedLabelAlreadyAdded?.id,
+        id: delayedLabelAlreadyAdded?.id || delayedLabelAlreadyAdded?.label_id,
       };
 
       partialPresenceRegister.labels = partialPresenceRegister.labels.filter(
-        uniqueLabel => uniqueLabel.id ? uniqueLabel.id !== 6 : uniqueLabel.label_id !== 6
+        (uniqueLabel) =>
+          uniqueLabel.id ? uniqueLabel.id !== 6 : uniqueLabel.label_id !== 6
       );
-      partialPresenceRegister.labelIds = partialPresenceRegister.labelIds.filter(labelId => labelId !== 6);
+      partialPresenceRegister.labelIds =
+        partialPresenceRegister.labelIds.filter((labelId) => labelId !== 6);
       partialPresenceRegister.labels_to_remove.push(delayedLabelAlreadyAdded);
     }
   }
 
-  giveDelayedLabel(partialPresenceRegister: IPresenceRegister, label: IEbdLabel) {
-    label = {...label, label_id: label?.label_id || label?.id, id: label?.id || label?.label_id};
+  giveDelayedLabel(
+    partialPresenceRegister: IPresenceRegister,
+    label: IEbdLabel
+  ) {
+    label = {
+      ...label,
+      label_id: label?.label_id || label?.id,
+      id: label?.id || label?.label_id,
+    };
 
     const delayedLabelAlreadyAdded = partialPresenceRegister.labels.find(
-      uniqueLabel => uniqueLabel.id ? uniqueLabel.id === label?.id : uniqueLabel.label_id === label?.id
+      (uniqueLabel) =>
+        uniqueLabel.id
+          ? uniqueLabel.id === label?.id
+          : uniqueLabel.label_id === label?.id
     );
 
     if (!delayedLabelAlreadyAdded) {
       partialPresenceRegister.labels.push(label);
       partialPresenceRegister.labelIds.push(label?.id);
-      partialPresenceRegister.labels_to_remove = partialPresenceRegister.labels_to_remove.filter(
-        uniqueLabel => uniqueLabel?.id ? uniqueLabel?.id !== label?.id : uniqueLabel?.label_id !== label?.id
-      );
+      partialPresenceRegister.labels_to_remove =
+        partialPresenceRegister.labels_to_remove.filter((uniqueLabel) =>
+          uniqueLabel?.id
+            ? uniqueLabel?.id !== label?.id
+            : uniqueLabel?.label_id !== label?.id
+        );
     }
 
     let punctualLabelAlreadyAdded = partialPresenceRegister.labels.find(
-      uniqueLabel => uniqueLabel.id ? uniqueLabel.id === 3 : uniqueLabel.label_id === 3
+      (uniqueLabel) =>
+        uniqueLabel.id ? uniqueLabel.id === 3 : uniqueLabel.label_id === 3
     );
 
     if (punctualLabelAlreadyAdded) {
       punctualLabelAlreadyAdded = {
         ...punctualLabelAlreadyAdded,
-        label_id: punctualLabelAlreadyAdded?.label_id || punctualLabelAlreadyAdded?.id,
-        id: punctualLabelAlreadyAdded?.id || punctualLabelAlreadyAdded?.label_id
+        label_id:
+          punctualLabelAlreadyAdded?.label_id || punctualLabelAlreadyAdded?.id,
+        id:
+          punctualLabelAlreadyAdded?.id || punctualLabelAlreadyAdded?.label_id,
       };
 
       partialPresenceRegister.labels = partialPresenceRegister.labels.filter(
-        uniqueLabel => uniqueLabel.id ? uniqueLabel.id !== 3 : uniqueLabel.label_id !== 3
+        (uniqueLabel) =>
+          uniqueLabel.id ? uniqueLabel.id !== 3 : uniqueLabel.label_id !== 3
       );
-      partialPresenceRegister.labelIds = partialPresenceRegister.labelIds.filter(labelId => labelId !== 3);
+      partialPresenceRegister.labelIds =
+        partialPresenceRegister.labelIds.filter((labelId) => labelId !== 3);
       partialPresenceRegister.labels_to_remove.push(punctualLabelAlreadyAdded);
     }
   }
@@ -334,32 +443,43 @@ export class StudentPresenceComponent implements OnInit {
       labels_to_remove: presenceRegister.labels_to_remove,
     };
 
-    this.lessonService.saveUniqueEbdPresenceRegister(
-      this.lessonId,
-      this.classId,
-      presenceRegister?.id,
-      presenceRegisterToUpdate,
-    ).subscribe((data) => {
-      this.collapseAccordionEvent.emit();
+    this.lessonService
+      .saveUniqueEbdPresenceRegister(
+        this.lessonId,
+        this.classId,
+        presenceRegister?.id,
+        presenceRegisterToUpdate
+      )
+      .subscribe(
+        (data) => {
+          this.collapseAccordionEvent.emit();
 
-      this.utilService.showToastController(
-        `${presenceRegister.attended ? 'Presença' : 'Falta'} de ${presenceRegister.person_name} salva com sucesso!`,
-        'light',
-        'top',
-        4500,
-        presenceRegister.attended ? 'checkmark-circle-outline' : 'close-circle-outline',
+          this.utilService.showToastController(
+            `${presenceRegister.attended ? 'Presença' : 'Falta'} de ${
+              presenceRegister.person_name
+            } salva com sucesso!`,
+            'light',
+            'top',
+            4500,
+            presenceRegister.attended
+              ? 'checkmark-circle-outline'
+              : 'close-circle-outline'
+          );
+
+          presenceRegister.underAction = false;
+        },
+        (err) => {
+          this.utilService.showToastController(
+            `Ocorreu um erro ao dar ${
+              presenceRegister.attended ? 'presença' : 'falta'
+            } para ${presenceRegister.person_name}.`,
+            'danger',
+            'top',
+            4500
+          );
+
+          presenceRegister.underAction = false;
+        }
       );
-
-      presenceRegister.underAction = false;
-    }, err => {
-      this.utilService.showToastController(
-        `Ocorreu um erro ao dar ${presenceRegister.attended ? 'presença' : 'falta'} para ${presenceRegister.person_name}.`,
-        'danger',
-        'top',
-        4500,
-      );
-
-      presenceRegister.underAction = false;
-    });
   }
 }

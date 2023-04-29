@@ -198,7 +198,7 @@
               ? 'background: var(--ion-color-danger); color: var(--ion-color-light)'
               : ''
           "
-          (click)="giveCharacteristic(presenceRegister, label)"
+          (click)="giveLabelToStudent(presenceRegister, label)"
           [disabled]="
             presenceRegister?.underAction ||
             hasLessonEnded ||
