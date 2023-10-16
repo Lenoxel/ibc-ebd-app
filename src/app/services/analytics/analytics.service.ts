@@ -5,28 +5,31 @@ import {
   IAnalyticsPresenceClassInfos,
   IAnalyticsPresenceCounts,
   IAnalyticsPresenceHistory,
-  IAnalyticsPresenceUsers
+  IAnalyticsPresenceUsers,
 } from 'src/app/interfaces';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AnalyticsService {
-
-  constructor(
-    private httpClient: HttpClient,
-  ) { }
+  constructor(private httpClient: HttpClient) {}
 
   getAnalyticsPresenceCounts() {
-    return this.httpClient.get<IAnalyticsPresenceCounts>(`${API_ENDPOINT}/ebd/analytics/presences/counts`);
+    return this.httpClient.get<IAnalyticsPresenceCounts>(
+      `${API_ENDPOINT}/ebd/analytics/presences/counts?startDate=2022-07-17`
+    );
   }
 
   getAnalyticsPresenceHistory() {
-    return this.httpClient.get<IAnalyticsPresenceHistory[]>(`${API_ENDPOINT}/ebd/analytics/presences/history`);
+    return this.httpClient.get<IAnalyticsPresenceHistory[]>(
+      `${API_ENDPOINT}/ebd/analytics/presences/history`
+    );
   }
 
   getAnalyticsPresenceUsers() {
-    return this.httpClient.get<IAnalyticsPresenceUsers>(`${API_ENDPOINT}/ebd/analytics/presences/users`);
+    return this.httpClient.get<IAnalyticsPresenceUsers>(
+      `${API_ENDPOINT}/ebd/analytics/presences/users?startDate=2022-07-17&exemplaryCount=15&worryingCount=15`
+    );
   }
 
   getAnalyticsPresenceClassInfos(
@@ -34,7 +37,7 @@ export class AnalyticsService {
     endDate = '',
     day = '',
     month = '',
-    year = '',
+    year = ''
   ) {
     const params: HttpParams = new HttpParams().appendAll({
       startDate,
@@ -44,6 +47,9 @@ export class AnalyticsService {
       year,
     });
 
-    return this.httpClient.get<IAnalyticsPresenceClassInfos>(`${API_ENDPOINT}/ebd/analytics/presences/classes`, { params });
+    return this.httpClient.get<IAnalyticsPresenceClassInfos>(
+      `${API_ENDPOINT}/ebd/analytics/presences/classes`,
+      { params }
+    );
   }
 }

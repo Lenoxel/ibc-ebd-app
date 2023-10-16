@@ -1,4 +1,10 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { IAnalyticsPresenceCounts } from 'src/app/interfaces';
 
 @Component({
@@ -10,7 +16,9 @@ import { IAnalyticsPresenceCounts } from 'src/app/interfaces';
 export class AnalyticsOverallCardComponent implements AfterViewInit {
   @Input() analyticsPresenceCounts: IAnalyticsPresenceCounts;
 
-  constructor() { }
+  nowDate = new Date();
+
+  constructor() {}
 
   ngAfterViewInit() {}
 }
