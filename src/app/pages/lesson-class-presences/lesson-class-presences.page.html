@@ -4,12 +4,8 @@
       <ion-back-button defaultHref="tabs"></ion-back-button>
     </ion-buttons>
     <ion-title>
-      <h2>
-        Registro de Chamada
-      </h2>
-      <h6>
-        {{lessonDate | date: 'dd/MM/yyyy'}}
-      </h6>
+      <h2>Registro de Chamada</h2>
+      <h6>{{lessonDate | date: 'dd/MM/yyyy'}}</h6>
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -19,32 +15,62 @@
       <ion-title size="large">Registro de Chamada<</ion-title>
     </ion-toolbar>
   </ion-header>
-  
-  <ng-container *ngIf="{ ebdPresencesRegister: ebdPresencesRegister$ | async, ebdLabels: ebdLabels$ | async } as values">
+
+  <ng-container
+    *ngIf="{ ebdPresencesRegister: ebdPresencesRegister$ | async, ebdLabels: ebdLabels$ | async } as values"
+  >
     <ion-list>
       <ion-item lines="full">
-        <ion-label class="ion-text-wrap" style="margin-bottom: 0px;">
+        <ion-label class="ion-text-wrap" style="margin-bottom: 0px">
           <h2><strong>Classe {{className}}</strong></h2>
-          <h3 style="font-weight: 400;">
+          <h3 style="font-weight: 400">
             <span>{{lessonTitle}}</span>
-            <span *ngIf="hasLessonEnded"> - Essa lição já terminou</span>
+            <span *ngIf="hasLessonEnded">
+              - <strong>Essa lição já terminou</strong></span
+            >
           </h3>
-          <h3>{{values?.ebdPresencesRegister | peopleCount}} pessoas nessa chamada</h3>
-          <div style="display: flex; align-items: center;">
-            <h3 style="margin-right: 8px;">{{visitorsQuantity}} {{visitorsQuantity === 1 ? 'visitante' : 'visitantes'}}</h3>
-            <ion-button size="small" color="dark" fill="clear" (click)="increaseVisitorsQuantity()" [disabled]="hasLessonEnded">
+          <h3>
+            {{values?.ebdPresencesRegister | peopleCount}} pessoas nessa chamada
+          </h3>
+          <div style="display: flex; align-items: center">
+            <h3 style="margin-right: 8px">
+              {{visitorsQuantity}} {{visitorsQuantity === 1 ? 'visitante' :
+              'visitantes'}}
+            </h3>
+            <ion-button
+              size="small"
+              color="dark"
+              fill="clear"
+              (click)="increaseVisitorsQuantity()"
+              [disabled]="hasLessonEnded"
+            >
               <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
             </ion-button>
-            <ion-button size="small" color="dark" fill="clear" (click)="decreaseVisitorsQuantity()" [disabled]="!visitorsQuantity || hasLessonEnded">
-              <ion-icon slot="icon-only" name="remove-circle-outline"></ion-icon>
+            <ion-button
+              size="small"
+              color="dark"
+              fill="clear"
+              (click)="decreaseVisitorsQuantity()"
+              [disabled]="!visitorsQuantity || hasLessonEnded"
+            >
+              <ion-icon
+                slot="icon-only"
+                name="remove-circle-outline"
+              ></ion-icon>
             </ion-button>
           </div>
           <!-- <ion-input type="number" [(ngModel)]="moneyRaised" (keyup)="moneyRaisedCheck()"></ion-input> -->
         </ion-label>
       </ion-item>
 
-      <ng-container *ngIf="values?.ebdPresencesRegister?.length; else loadingTemplate">
-        <ion-accordion-group [multiple]="false" animated="true" expand="compact">
+      <ng-container
+        *ngIf="values?.ebdPresencesRegister?.length; else loadingTemplate"
+      >
+        <ion-accordion-group
+          [multiple]="false"
+          animated="true"
+          expand="compact"
+        >
           <app-student-presence
             *ngFor="let presenceRegister of values?.ebdPresencesRegister"
             [presenceRegister]="presenceRegister"

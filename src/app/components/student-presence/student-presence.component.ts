@@ -188,12 +188,21 @@ export class StudentPresenceComponent implements OnInit {
             if (arrivalTime) {
               const hoursAndMinutes = (arrivalTime as string)?.split(':');
 
+              const hours = Number(hoursAndMinutes[0]);
+              const minutes = Number(hoursAndMinutes[1]);
+
+              if ((hours === 9 && minutes > 25) || hours >= 10) {
+                presenceRegister.attended = false;
+                this.handleGiveAbsence(presenceRegister, arrivalTime);
+                return;
+              }
+
               presenceRegister.tempRegisterOn = new Date(
                 presenceRegister.tempRegisterOn.getFullYear(),
                 presenceRegister.tempRegisterOn.getMonth(),
                 presenceRegister.tempRegisterOn.getDate(),
-                Number(hoursAndMinutes[0]),
-                Number(hoursAndMinutes[1])
+                hours,
+                minutes
               );
 
               this.handleStudentPunctuality(presenceRegister);
@@ -209,7 +218,36 @@ export class StudentPresenceComponent implements OnInit {
     await alert.present();
   }
 
-  async handleGiveAbsence(presenceRegister: IPresenceRegister) {
+  async handleGiveAbsence(
+    presenceRegister: IPresenceRegister,
+    timeConsideredAsAbsence?: string | undefined
+  ) {
+    if (timeConsideredAsAbsence) {
+      const alert = await this.alertController.create({
+        message: `<div>O horário <strong>${timeConsideredAsAbsence}</strong> já é considerado como falta.</div><br/><div>Deseja prosseguir com a falta de <strong>${presenceRegister?.person_name}</strong>?</div>`,
+        buttons: [
+          {
+            text: 'Não',
+            role: 'cancel',
+            handler: () => {
+              presenceRegister.attended = true;
+              this.handleGivePresence(presenceRegister);
+            },
+          },
+          {
+            text: 'Sim',
+            handler: () => {
+              this.handleGiveAbsence(presenceRegister);
+            },
+          },
+        ],
+      });
+
+      await alert.present();
+
+      return;
+    }
+
     const alert = await this.alertController.create({
       message: `Deseja justificar a falta de <strong>${presenceRegister?.person_name}</strong>?`,
       inputs: [

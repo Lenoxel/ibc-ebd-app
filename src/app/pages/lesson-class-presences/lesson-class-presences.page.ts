@@ -1,5 +1,10 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonAccordionGroup } from '@ionic/angular';
 import { Observable, Subject } from 'rxjs';
@@ -14,7 +19,7 @@ import { UtilService } from 'src/app/services/util/util.service';
   selector: 'app-lesson-class-presences',
   templateUrl: './lesson-class-presences.page.html',
   styleUrls: ['./lesson-class-presences.page.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LessonClassPresencesPage implements OnInit {
   @ViewChild(IonAccordionGroup) accordionGroup: IonAccordionGroup;
@@ -38,9 +43,9 @@ export class LessonClassPresencesPage implements OnInit {
     private authService: AuthService,
     private lessonService: LessonService,
     private router: Router,
-    private utilService: UtilService,
+    private utilService: UtilService
   ) {
-    this.activatedRoute.paramMap.subscribe(params => {
+    this.activatedRoute.paramMap.subscribe((params) => {
       this.lessonId = Number(params.get('lessonId'));
       this.classId = Number(params.get('classId'));
       this.getEbdPresencesRegister(this.lessonId, this.classId);
@@ -60,12 +65,8 @@ export class LessonClassPresencesPage implements OnInit {
       return;
     }
 
-    const {
-      lessonTitle,
-      lessonDate,
-      className,
-      details,
-    } = this.router.getCurrentNavigation().extras.state;
+    const { lessonTitle, lessonDate, className, details } =
+      this.router.getCurrentNavigation().extras.state;
     this.className = className;
     this.lessonTitle = lessonTitle;
     this.lessonDate = lessonDate;
@@ -75,10 +76,9 @@ export class LessonClassPresencesPage implements OnInit {
   }
 
   subscribeDetails() {
-    this.details$.pipe(
-      debounceTime(500),
-      distinctUntilChanged(),
-    ).subscribe(() => this.saveEbdClassLessonDetails());
+    this.details$
+      .pipe(debounceTime(500), distinctUntilChanged())
+      .subscribe(() => this.saveEbdClassLessonDetails());
   }
 
   getEbdLabels() {
@@ -86,8 +86,13 @@ export class LessonClassPresencesPage implements OnInit {
   }
 
   handleHasLessonEnded() {
-    const formattedLessonDate = new Date(this.utilService.datePipe.transform(this.lessonDate, `yyyy-MM-dd'T'HH:mm:ss.SSS`));
-    formattedLessonDate.setHours(16, 0, 0, 0);
+    const formattedLessonDate = new Date(
+      this.utilService.datePipe.transform(
+        this.lessonDate,
+        `yyyy-MM-dd'T'HH:mm:ss.SSS`
+      )
+    );
+    formattedLessonDate.setHours(9, 50, 0, 0);
 
     if (new Date() > formattedLessonDate) {
       this.hasLessonEnded = true;
@@ -96,10 +101,8 @@ export class LessonClassPresencesPage implements OnInit {
 
   handleClassLessonDetails(details: IEbdClassLessonDetails | null) {
     if (details) {
-      const {
-        visitors_quantity: visitorsQuantity,
-        money_raised: moneyRaised,
-      } = details;
+      const { visitors_quantity: visitorsQuantity, money_raised: moneyRaised } =
+        details;
 
       this.visitorsQuantity = visitorsQuantity || 0;
       this.moneyRaised = moneyRaised || 0;
@@ -107,27 +110,34 @@ export class LessonClassPresencesPage implements OnInit {
       return;
     }
 
-    this.lessonService.getEbdClassLessonDetails(this.lessonId, this.classId).subscribe((ebdClassLessonDetails: any) => {
-      const {
-        visitors_quantity: visitorsQuantity,
-        money_raised: moneyRaised,
-      } = ebdClassLessonDetails;
+    this.lessonService
+      .getEbdClassLessonDetails(this.lessonId, this.classId)
+      .subscribe((ebdClassLessonDetails: any) => {
+        const {
+          visitors_quantity: visitorsQuantity,
+          money_raised: moneyRaised,
+        } = ebdClassLessonDetails;
 
-      this.visitorsQuantity = visitorsQuantity || 0;
-      this.moneyRaised = moneyRaised || 0;
-      this.oldMoneyRaised = moneyRaised || 0;
-      return;
-    });
+        this.visitorsQuantity = visitorsQuantity || 0;
+        this.moneyRaised = moneyRaised || 0;
+        this.oldMoneyRaised = moneyRaised || 0;
+        return;
+      });
   }
 
   getEbdPresencesRegister(lessonId: number, classId: number) {
-    this.ebdPresencesRegister$ = this.lessonService.getEbdPresencesRegister(lessonId, classId);
+    this.ebdPresencesRegister$ = this.lessonService.getEbdPresencesRegister(
+      lessonId,
+      classId
+    );
   }
 
   handleLoggedUserIsTeacher() {
     if (this.authService.$user?.getValue()) {
       const { classesAsATeacher } = this.authService.$user.getValue();
-      this.loggedUserIsTeacher = !!(classesAsATeacher?.find(({ id }) => id === this.classId));
+      this.loggedUserIsTeacher = !!classesAsATeacher?.find(
+        ({ id }) => id === this.classId
+      );
     }
   }
 
@@ -152,18 +162,19 @@ export class LessonClassPresencesPage implements OnInit {
   }
 
   saveEbdClassLessonDetails() {
-    this.lessonService.saveEbdClassLessonDetails(
-      this.lessonId,
-      this.classId,
-      {
+    this.lessonService
+      .saveEbdClassLessonDetails(this.lessonId, this.classId, {
         visitors_quantity: this.visitorsQuantity,
         money_raised: null,
-      }
-    ).subscribe((data) => {
-      console.log(data);
-    }, err => {
-      console.log(err);
-    });
+      })
+      .subscribe(
+        (data) => {
+          console.log(data);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
   }
 
   async collapseAccordion() {
