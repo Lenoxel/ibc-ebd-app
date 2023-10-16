@@ -1,7 +1,24 @@
- import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { AlertController, IonSearchbar, NavController, SelectCustomEvent } from '@ionic/angular';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
+import {
+  AlertController,
+  IonSearchbar,
+  NavController,
+  SelectCustomEvent,
+} from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { ButtonOptions, EntityBasic, SearchbarOptions, SelectOptions } from 'src/app/types';
+import {
+  ButtonOptions,
+  EntityBasic,
+  SearchbarOptions,
+  SelectOptions,
+} from 'src/app/types';
 
 @Component({
   selector: 'app-header',
@@ -20,7 +37,7 @@ export class HeaderComponent implements OnInit {
   @Output() searchEvent = new EventEmitter<string>();
   @Output() buttonClickEvent = new EventEmitter<void>();
 
-  @ViewChild('searchInput', {static: false}) searchInput: IonSearchbar;
+  @ViewChild('searchInput', { static: false }) searchInput: IonSearchbar;
 
   isSearchActive = false;
   searchInputText = '';
@@ -28,7 +45,7 @@ export class HeaderComponent implements OnInit {
   constructor(
     public authService: AuthService,
     private alertController: AlertController,
-    private navController: NavController,
+    private navController: NavController
   ) {}
 
   ngOnInit() {}
@@ -39,13 +56,13 @@ export class HeaderComponent implements OnInit {
   }
 
   doSelect(event: SelectCustomEvent) {
-    this.selectOptions.choosedItem = event?.detail?.value;
+    this.selectOptions.chosenItem = event?.detail?.value;
     this.selectEvent.emit(event?.detail?.value || null);
   }
 
   doOrderBy(item: EntityBasic) {
-    this.orderByOptions.choosedItem = {...item};
-    this.orderByEvent.emit({...item} || null);
+    this.orderByOptions.chosenItem = { ...item };
+    this.orderByEvent.emit({ ...item } || null);
   }
 
   doSearch(event: { target: HTMLInputElement }) {
@@ -64,13 +81,14 @@ export class HeaderComponent implements OnInit {
         {
           text: 'Não',
           role: 'cancel',
-        }, {
+        },
+        {
           text: 'Sim',
           handler: () => {
             this.logout();
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
 
     await alert.present();
@@ -80,5 +98,4 @@ export class HeaderComponent implements OnInit {
     await this.authService.logout();
     this.navController.navigateRoot('login', { replaceUrl: true });
   }
-
 }

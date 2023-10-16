@@ -1,4 +1,9 @@
-import { AfterContentInit, ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  AfterContentInit,
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+} from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { IStudent } from 'src/app/interfaces';
@@ -26,39 +31,38 @@ export class PeoplePage implements OnInit, AfterContentInit {
   orderByOptionsItems: EntityBasic[] = [
     {
       id: 0,
-      name: 'Ordem alfabética'
+      name: 'Ordem alfabética',
     },
     {
       id: 1,
-      name: 'Frequentes'
+      name: 'Frequentes',
     },
     {
       id: 2,
-      name: 'Faltosos'
+      name: 'Faltosos',
     },
   ];
-  orderBy = this.orderByOptionsItems.find(option => option.id === 0);
+  orderBy = this.orderByOptionsItems.find((option) => option.id === 0);
   orderByOptions: SelectOptions<EntityBasic> = {
     placeholder: 'Ordernar por',
     items: this.orderByOptionsItems,
-    choosedItem: this.orderBy
+    chosenItem: this.orderBy,
   };
 
   searchbarOptions: SearchbarOptions = {
     placeholder: 'Pesquise pelo nome',
     showCancelButton: 'focus',
-    debounce: 500
+    debounce: 500,
   };
 
   constructor(
     public authService: AuthService,
     private ebdService: EbdService,
-    private studentService: StudentService,
+    private studentService: StudentService
   ) {
-    this.hideHeader$.pipe(
-      debounceTime(50),
-      distinctUntilChanged(),
-    ).subscribe((hideHeader: boolean) => this.hideHeader = hideHeader);
+    this.hideHeader$
+      .pipe(debounceTime(50), distinctUntilChanged())
+      .subscribe((hideHeader: boolean) => (this.hideHeader = hideHeader));
   }
 
   ngOnInit() {}
@@ -69,7 +73,8 @@ export class PeoplePage implements OnInit, AfterContentInit {
   }
 
   getLoggedUser() {
-    const { classesAsASecretary, classesAsATeacher, fullAccess } = this.authService.$user.getValue();
+    const { classesAsASecretary, classesAsATeacher, fullAccess } =
+      this.authService.$user.getValue();
 
     if (fullAccess) {
       this.loggedUserHasFullAccess = true;
@@ -95,7 +100,9 @@ export class PeoplePage implements OnInit, AfterContentInit {
   }
 
   getEbdStudents(classId?: number) {
-    this.ebdStudents$ = this.studentService.getEbdStudents(classId || this.loggedUserPreferredClass?.id);
+    this.ebdStudents$ = this.studentService.getEbdStudents(
+      classId || this.loggedUserPreferredClass?.id
+    );
   }
 
   onSelectClass(value: EntityBasic) {

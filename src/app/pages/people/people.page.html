@@ -1,7 +1,4 @@
-<ion-header
-  [translucent]="true"
-  #header
->
+<ion-header [translucent]="true" #header>
   <app-header
     headerTitle="Pessoas"
     (refreshEvent)="getEbdStudents()"
@@ -9,7 +6,7 @@
       placeholder: 'Selecione uma classe',
       items: (ebdClasses$ | async),
       defaultAll: 'Todas as classes',
-      choosedItem: loggedUserPreferredClass
+      chosenItem: loggedUserPreferredClass
     } : null"
     (selectEvent)="loggedUserHasFullAccess ? onSelectClass($event) : null"
     [orderByOptions]="orderByOptions"
@@ -19,11 +16,7 @@
   ></app-header>
 </ion-header>
 
-<ion-content
-  [fullscreen]="true"
-  [scrollEvents]="true"
-  [appHideHeader]="header"
->
+<ion-content [fullscreen]="true" [scrollEvents]="true" [appHideHeader]="header">
   <app-people-list
     *ngIf="ebdStudents$ | async as ebdStudents; else loadingTemplate"
     [ebdStudents]="ebdStudents"

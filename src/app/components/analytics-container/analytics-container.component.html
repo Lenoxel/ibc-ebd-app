@@ -38,10 +38,10 @@
               [ngClass]="{
                 'ion-chip-active':
                   item?.id ===
-                  filterExemplaryStudentsLabelOptions?.choosedItem?.id
+                  filterExemplaryStudentsLabelOptions?.chosenItem?.id
               }"
               color="primary"
-              (click)="filterExemplaryStudentsLabelOptions.choosedItem = item"
+              (click)="filterExemplaryStudentsLabelOptions.chosenItem = item"
             >
               <ion-label color="primary">{{ item?.name }}</ion-label>
             </ion-chip>
@@ -81,12 +81,12 @@
                           *ngIf="
                             (info?.type === 'positive' &&
                               [0, 1]?.includes(
-                                filterExemplaryStudentsLabelOptions?.choosedItem
+                                filterExemplaryStudentsLabelOptions?.chosenItem
                                   ?.id
                               )) ||
                             (info?.type === 'negative' &&
                               [0, 2]?.includes(
-                                filterExemplaryStudentsLabelOptions?.choosedItem
+                                filterExemplaryStudentsLabelOptions?.chosenItem
                                   ?.id
                               ))
                           "
@@ -134,10 +134,10 @@
               [ngClass]="{
                 'ion-chip-active':
                   item?.id ===
-                  filterWorryingStudentsLabelOptions?.choosedItem?.id
+                  filterWorryingStudentsLabelOptions?.chosenItem?.id
               }"
               color="primary"
-              (click)="filterWorryingStudentsLabelOptions.choosedItem = item"
+              (click)="filterWorryingStudentsLabelOptions.chosenItem = item"
             >
               <ion-label color="primary">{{ item?.name }}</ion-label>
             </ion-chip>
@@ -177,12 +177,12 @@
                           *ngIf="
                             (info?.type === 'positive' &&
                               [0, 1]?.includes(
-                                filterWorryingStudentsLabelOptions?.choosedItem
+                                filterWorryingStudentsLabelOptions?.chosenItem
                                   ?.id
                               )) ||
                             (info?.type === 'negative' &&
                               [0, 2]?.includes(
-                                filterWorryingStudentsLabelOptions?.choosedItem
+                                filterWorryingStudentsLabelOptions?.chosenItem
                                   ?.id
                               ))
                           "

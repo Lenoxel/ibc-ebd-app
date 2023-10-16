@@ -1,13 +1,27 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import {
   IAnalyticsPresenceClassInfos,
   IAnalyticsPresenceCounts,
   IAnalyticsPresenceHistory,
-  IAnalyticsPresenceUsers
+  IAnalyticsPresenceUsers,
 } from 'src/app/interfaces';
 import { UtilService } from 'src/app/services/util/util.service';
 import { DateFilter, EntityBasic } from 'src/app/types';
-import SwiperCore, { Autoplay, Keyboard, Pagination, SwiperOptions } from 'swiper';
+import SwiperCore, {
+  Autoplay,
+  Keyboard,
+  Pagination,
+  SwiperOptions,
+} from 'swiper';
 import { SwiperComponent } from 'swiper/angular';
 
 SwiperCore.use([Autoplay, Keyboard, Pagination]);
@@ -25,8 +39,10 @@ export class AnalyticsContainerComponent implements OnInit, AfterViewInit {
   @Input() analyticsPresenceClassInfos: IAnalyticsPresenceClassInfos = null;
   @Output() updatePresenceClassesEvent = new EventEmitter<DateFilter>();
 
-  @ViewChild('swiperExemplaryStudents', { static: true }) private swiperExemplaryStudents: SwiperComponent;
-  @ViewChild('swiperWorryingStudents', { static: true }) private swiperWorryingStudents: SwiperComponent;
+  @ViewChild('swiperExemplaryStudents', { static: true })
+  private swiperExemplaryStudents: SwiperComponent;
+  @ViewChild('swiperWorryingStudents', { static: true })
+  private swiperWorryingStudents: SwiperComponent;
 
   filterByPeriod = false;
 
@@ -38,7 +54,7 @@ export class AnalyticsContainerComponent implements OnInit, AfterViewInit {
     autoplay: {
       disableOnInteraction: false,
       delay: 4000,
-    }
+    },
   };
 
   swiperWorryingStudentsConfig: SwiperOptions = {
@@ -49,37 +65,41 @@ export class AnalyticsContainerComponent implements OnInit, AfterViewInit {
     autoplay: {
       disableOnInteraction: false,
       delay: 4000,
-    }
+    },
   };
 
   filterLabelItems = [
     {
       id: 0,
-      name: 'Todos os Selos'
+      name: 'Todos os Selos',
     },
     {
       id: 1,
-      name: 'Selos Positivos'
+      name: 'Selos Positivos',
     },
     {
       id: 2,
-      name: 'Selos Negativos'
+      name: 'Selos Negativos',
     },
-  ]
+  ];
 
-  filterExemplaryStudentsLabelOptions: { items: EntityBasic[], choosedItem: EntityBasic } = {
+  filterExemplaryStudentsLabelOptions: {
+    items: EntityBasic[];
+    chosenItem: EntityBasic;
+  } = {
     items: this.filterLabelItems,
-    choosedItem: this.filterLabelItems[0]
+    chosenItem: this.filterLabelItems[0],
   };
 
-  filterWorryingStudentsLabelOptions: { items: EntityBasic[], choosedItem: EntityBasic } = {
+  filterWorryingStudentsLabelOptions: {
+    items: EntityBasic[];
+    chosenItem: EntityBasic;
+  } = {
     items: this.filterLabelItems,
-    choosedItem: this.filterLabelItems[0]
+    chosenItem: this.filterLabelItems[0],
   };
 
-  constructor(
-    public utilService: UtilService,
-  ) { }
+  constructor(public utilService: UtilService) {}
 
   ngOnInit(): void {}
 

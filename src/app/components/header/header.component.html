@@ -65,7 +65,7 @@
       interface="action-sheet"
       [placeholder]="selectOptions?.placeholder || 'Selecione uma opção'"
       (ionChange)="doSelect($any($event))"
-      [value]="selectOptions?.choosedItem"
+      [value]="selectOptions?.chosenItem"
     >
       <ion-select-option *ngIf="selectOptions?.defaultAll" [value]="null">{{
         selectOptions?.defaultAll
@@ -86,7 +86,7 @@
     <ion-chip
       *ngFor="let item of orderByOptions?.items"
       [ngClass]="{
-        'ion-chip-active': item?.name === orderByOptions?.choosedItem?.name
+        'ion-chip-active': item?.name === orderByOptions?.chosenItem?.name
       }"
       color="light"
       (click)="doOrderBy(item)"
