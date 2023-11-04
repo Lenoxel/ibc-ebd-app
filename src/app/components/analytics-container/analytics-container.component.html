@@ -217,6 +217,138 @@
       </ion-col>
     </ion-row>
 
+    <ion-row>
+      <ion-col
+        size-lg="6"
+        size-xs="12"
+        class="ion-text-center ion-align-self-center"
+      >
+        <ion-card>
+          <ion-card-header>Alunos Mais Pontuais</ion-card-header>
+
+          <ion-list>
+            <swiper
+              #swiperPunctualStudents
+              [config]="swiperPunctualStudentsConfig"
+              class="ion-align-items-center"
+            >
+              <ng-template
+                *ngFor="
+                  let student of analyticsUsersPunctuality?.punctual_students
+                "
+                swiperSlide
+              >
+                <ion-card
+                  color="light"
+                  style="margin-bottom: 30px; text-align: -webkit-center"
+                  class="user-card"
+                >
+                  <ion-avatar style="margin-top: 10px">
+                    <img
+                      [src]="
+                        student?.person_picture || '/assets/img/person.png'
+                      "
+                      [alt]="student?.person_name"
+                    />
+                  </ion-avatar>
+                  <ion-item lines="none" color="light">
+                    <ion-label class="ion-text-wrap ion-text-center">
+                      <h2>{{ student?.person_name }}</h2>
+                      <ion-chip color="success" style="height: auto">
+                        <ion-label color="dark" class="ion-text-wrap"
+                          >Pontual</ion-label
+                        >
+                        <ion-badge style="margin-left: 10px" color="success"
+                          >+{{ student?.punctual_count }}</ion-badge
+                        >
+                      </ion-chip>
+                      <ion-chip color="primary" style="height: auto">
+                        <ion-label color="dark" class="ion-text-wrap"
+                          >Frequência</ion-label
+                        >
+                        <ion-badge style="margin-left: 10px" color="primary">{{
+                          student?.time_frequency | date : "HH:mm"
+                        }}</ion-badge>
+                      </ion-chip>
+                    </ion-label>
+                  </ion-item>
+                </ion-card>
+              </ng-template>
+            </swiper>
+          </ion-list>
+        </ion-card>
+      </ion-col>
+
+      <ion-col
+        size-lg="6"
+        size-xs="12"
+        class="ion-text-center ion-align-self-center"
+      >
+        <ion-card>
+          <ion-card-header>Alunos que mais Interagem</ion-card-header>
+
+          <ion-list>
+            <swiper
+              #swiperInteractiveStudents
+              [config]="swiperInteractiveStudentsConfig"
+              class="ion-align-items-center"
+            >
+              <ng-template
+                *ngFor="
+                  let student of analyticsUsersInteractivity?.interactive_students
+                "
+                swiperSlide
+              >
+                <ion-card
+                  color="light"
+                  style="margin-bottom: 30px; text-align: -webkit-center"
+                  class="user-card"
+                >
+                  <ion-avatar style="margin-top: 10px">
+                    <img
+                      [src]="
+                        student?.person_picture || '/assets/img/person.png'
+                      "
+                      [alt]="student?.person_name"
+                    />
+                  </ion-avatar>
+                  <ion-item lines="none" color="light">
+                    <ion-label class="ion-text-wrap ion-text-center">
+                      <h2>{{ student?.person_name }}</h2>
+                      <ion-chip color="success" style="height: auto">
+                        <ion-label color="dark" class="ion-text-wrap"
+                          >Interação</ion-label
+                        >
+                        <ion-badge style="margin-left: 10px" color="success"
+                          >+{{ student?.interactive_count }}</ion-badge
+                        >
+                      </ion-chip>
+                      <ion-chip color="primary" style="height: auto">
+                        <ion-label color="dark" class="ion-text-wrap"
+                          >Colaborativo</ion-label
+                        >
+                        <ion-badge style="margin-left: 10px" color="primary"
+                          >+{{ student?.collaborative_count }}</ion-badge
+                        >
+                      </ion-chip>
+                      <ion-chip color="primary" style="height: auto">
+                        <ion-label color="dark" class="ion-text-wrap"
+                          >Participativo</ion-label
+                        >
+                        <ion-badge style="margin-left: 10px" color="primary"
+                          >+{{ student?.participative_count }}</ion-badge
+                        >
+                      </ion-chip>
+                    </ion-label>
+                  </ion-item>
+                </ion-card>
+              </ng-template>
+            </swiper>
+          </ion-list>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
     <app-date-selector (changeDateEvent)="handleChangeDateEvent($event)">
     </app-date-selector>
 

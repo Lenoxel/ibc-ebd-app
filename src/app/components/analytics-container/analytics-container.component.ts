@@ -13,6 +13,8 @@ import {
   IAnalyticsPresenceCounts,
   IAnalyticsPresenceHistory,
   IAnalyticsPresenceUsers,
+  IAnalyticsUsersInteractivity,
+  IAnalyticsUsersPunctuality,
 } from 'src/app/interfaces';
 import { UtilService } from 'src/app/services/util/util.service';
 import { DateFilter, EntityBasic } from 'src/app/types';
@@ -27,7 +29,7 @@ import { SwiperComponent } from 'swiper/angular';
 SwiperCore.use([Autoplay, Keyboard, Pagination]);
 
 @Component({
-  selector: 'app-analytics-container',
+  selector: 'analytics-container',
   templateUrl: './analytics-container.component.html',
   styleUrls: ['./analytics-container.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -36,6 +38,8 @@ export class AnalyticsContainerComponent implements OnInit, AfterViewInit {
   @Input() analyticsPresenceCounts: IAnalyticsPresenceCounts = null;
   @Input() analyticsPresenceHistory: IAnalyticsPresenceHistory[] = null;
   @Input() analyticsPresenceUsers: IAnalyticsPresenceUsers = null;
+  @Input() analyticsUsersPunctuality: IAnalyticsUsersPunctuality = null;
+  @Input() analyticsUsersInteractivity: IAnalyticsUsersInteractivity = null;
   @Input() analyticsPresenceClassInfos: IAnalyticsPresenceClassInfos = null;
   @Output() updatePresenceClassesEvent = new EventEmitter<DateFilter>();
 
@@ -44,28 +48,30 @@ export class AnalyticsContainerComponent implements OnInit, AfterViewInit {
   @ViewChild('swiperWorryingStudents', { static: true })
   private swiperWorryingStudents: SwiperComponent;
 
+  @ViewChild('swiperPunctualStudents', { static: true })
+  private swiperPunctualStudents: SwiperComponent;
+  @ViewChild('swiperInteractiveStudents', { static: true })
+  private swiperInteractiveStudents: SwiperComponent;
+
   filterByPeriod = false;
 
-  swiperExemplaryStudentsConfig: SwiperOptions = {
+  private defaultSwiperConfig: SwiperOptions = {
     slidesPerView: 1.0,
     pagination: true,
     keyboard: true,
     speed: 500,
     autoplay: {
       disableOnInteraction: false,
-      delay: 4000,
+      delay: 6000,
     },
   };
 
+  swiperExemplaryStudentsConfig: SwiperOptions = {
+    ...this.defaultSwiperConfig,
+  };
+
   swiperWorryingStudentsConfig: SwiperOptions = {
-    slidesPerView: 1.0,
-    pagination: true,
-    keyboard: true,
-    speed: 500,
-    autoplay: {
-      disableOnInteraction: false,
-      delay: 4000,
-    },
+    ...this.defaultSwiperConfig,
   };
 
   filterLabelItems = [
@@ -99,6 +105,22 @@ export class AnalyticsContainerComponent implements OnInit, AfterViewInit {
     chosenItem: this.filterLabelItems[0],
   };
 
+  swiperPunctualStudentsConfig: SwiperOptions = {
+    ...this.defaultSwiperConfig,
+    autoplay: {
+      disableOnInteraction: false,
+      delay: 5000,
+    },
+  };
+
+  swiperInteractiveStudentsConfig: SwiperOptions = {
+    ...this.defaultSwiperConfig,
+    autoplay: {
+      disableOnInteraction: false,
+      delay: 5000,
+    },
+  };
+
   constructor(public utilService: UtilService) {}
 
   ngOnInit(): void {}
@@ -106,6 +128,8 @@ export class AnalyticsContainerComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.swiperExemplaryStudents.swiperRef.autoplay.running = true;
     this.swiperWorryingStudents.swiperRef.autoplay.running = true;
+    this.swiperPunctualStudents.swiperRef.autoplay.running = true;
+    this.swiperInteractiveStudents.swiperRef.autoplay.running = true;
   }
 
   handleChangeDateEvent(dateFilter: DateFilter) {

@@ -1,26 +1,21 @@
-<ion-header
-  [translucent]="true"
-  #header
->
+<ion-header [translucent]="true" #header>
   <app-header
     headerTitle="'Indicadores'"
     (refreshEvent)="getAnalytics()"
   ></app-header>
 </ion-header>
 
-<ion-content
-  [fullscreen]="true"
-  [scrollEvents]="true"
-  [appHideHeader]="header"
->
-  <app-analytics-container
+<ion-content [fullscreen]="true" [scrollEvents]="true" [appHideHeader]="header">
+  <analytics-container
     [analyticsPresenceCounts]="analyticsPresenceCounts$ | async"
     [analyticsPresenceHistory]="analyticsPresenceHistory$ | async"
     [analyticsPresenceUsers]="analyticsPresenceUsers$ | async"
+    [analyticsUsersPunctuality]="analyticsUsersPunctuality$ | async"
+    [analyticsUsersInteractivity]="analyticsUsersInteractivity$ | async"
     [analyticsPresenceClassInfos]="analyticsPresenceClassInfos$ | async"
     (updatePresenceClassesEvent)="updatePresenceClasses($any($event))"
   >
-  </app-analytics-container>
+  </analytics-container>
 
   <!-- <ion-grid *ngIf="!loading; else loadingTemplate">
     <div class="ion-padding"> 
@@ -245,7 +240,7 @@
         </ion-col>
       </ion-row> -->
 
-      <!-- <ion-card>
+  <!-- <ion-card>
         <ion-card-header>
           Presenças por Domingo
         </ion-card-header>
