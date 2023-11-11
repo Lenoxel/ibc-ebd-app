@@ -14,8 +14,8 @@ import { TokenInterceptorService } from './services/token/token-interceptor.serv
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { DirectivesModule } from './directives/directives.module';
-import { AngularFireModule } from '@angular/fire/compat';
-import { AngularFireMessagingModule } from '@angular/fire/compat/messaging';
+// import { AngularFireModule } from '@angular/fire/compat';
+// import { AngularFireMessagingModule } from '@angular/fire/compat/messaging';
 
 registerLocaleData(localePt, 'pt');
 
@@ -29,20 +29,24 @@ registerLocaleData(localePt, 'pt');
     HttpClientModule,
     PipesModule,
     DirectivesModule,
-    AngularFireMessagingModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig),
+    // AngularFireMessagingModule,
+    // AngularFireModule.initializeApp(environment.firebaseConfig),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the application is stable
       // or after 30 seconds (whichever comes first).
       // registrationStrategy: 'registerWhenStable:30000'
-      registrationStrategy: 'registerImmediately'
+      registrationStrategy: 'registerImmediately',
     }),
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true },
-    { provide: LOCALE_ID, useValue: 'pt-BR' }
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptorService,
+      multi: true,
+    },
+    { provide: LOCALE_ID, useValue: 'pt-BR' },
   ],
   bootstrap: [AppComponent],
 })

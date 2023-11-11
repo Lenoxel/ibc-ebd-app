@@ -7,11 +7,11 @@ import { MessagingService } from './services/messaging/messaging.service';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent implements OnInit {
-
-  constructor(private messagingService: MessagingService) { }
+  constructor() // private messagingService: MessagingService
+  {}
 
   ngOnInit() {
-    this.messagingService.requestPermission();
-    this.messagingService.receiveMessage();
+    // this.messagingService.requestPermission();
+    // this.messagingService.receiveMessage();
   }
 }
