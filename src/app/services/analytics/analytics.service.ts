@@ -42,7 +42,7 @@ export class AnalyticsService {
 
   getAnalyticsUsersInteractivity() {
     return this.httpClient.get<IAnalyticsUsersInteractivity>(
-      `${API_ENDPOINT}/ebd/analytics/presences/users/interactivity?startDate=2022-07-17&punctualCount=15`
+      `${API_ENDPOINT}/ebd/analytics/presences/users/interactivity?startDate=2022-07-17&interactiveCount=15`
     );
   }
 
