@@ -4,16 +4,13 @@ import { ToastController } from '@ionic/angular';
 import { FakeArrayPipe } from 'src/app/pipes/fake-array/fake-array.pipe';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UtilService {
   datePipe = new DatePipe('pt-BR');
   fakeArrayPipe = new FakeArrayPipe();
 
-  years = [
-    '2022',
-    '2023'
-  ];
+  years = ['2022', '2023', '2024'];
 
   months = [
     {
@@ -68,15 +65,16 @@ export class UtilService {
 
   sundaysOfMonth: number[] = [];
 
-  constructor(
-    private toastController: ToastController,
-  ) { }
+  constructor(private toastController: ToastController) {}
 
-  setSundaysOnMonth(month: number = new Date().getMonth(), year: number = new Date().getFullYear()) {
+  setSundaysOnMonth(
+    month: number = new Date().getMonth(),
+    year: number = new Date().getFullYear()
+  ) {
     const days = new Date(year, month + 1, 0).getDate();
-    const sundays = [8 - (new Date(`${month + 1}/01/${year}`).getDay())];
+    const sundays = [8 - new Date(`${month + 1}/01/${year}`).getDay()];
 
-    for (let sunday = sundays[0] + 7; sunday < days; sunday += 7 ) {
+    for (let sunday = sundays[0] + 7; sunday < days; sunday += 7) {
       sundays.push(sunday);
     }
 
@@ -91,19 +89,26 @@ export class UtilService {
     return {
       day: String(lastEbdDate.getDate()),
       month: String(lastEbdDate.getMonth() + 1),
-      year: String(lastEbdDate.getFullYear())
+      year: String(lastEbdDate.getFullYear()),
     };
   }
 
   dateToString(date: Date) {
     const day = date.getDate() > 9 ? date.getDate() : `0${date.getDate()}`;
-    const month = date.getMonth() + 1 > 9 ? date.getMonth() + 1 : `0${date.getMonth() + 1}`;
+    const month =
+      date.getMonth() + 1 > 9 ? date.getMonth() + 1 : `0${date.getMonth() + 1}`;
     const year = date.getFullYear();
 
     return `${day}/${month}/${year}`;
   }
 
-  async showToastController(message: string, color: string, position: 'top' | 'bottom' | 'middle', duration = 2500, icon: string = '') {
+  async showToastController(
+    message: string,
+    color: string,
+    position: 'top' | 'bottom' | 'middle',
+    duration = 2500,
+    icon: string = ''
+  ) {
     if (await this.toastController.getTop()) {
       this.toastController.dismiss();
     }
