@@ -10,7 +10,7 @@ export class UtilService {
   datePipe = new DatePipe('pt-BR');
   fakeArrayPipe = new FakeArrayPipe();
 
-  years = ['2022', '2023', '2024'];
+  years = ['2022', '2023', '2024', '2025'];
 
   months = [
     {
