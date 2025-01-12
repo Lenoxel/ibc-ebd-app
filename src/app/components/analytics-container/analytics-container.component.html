@@ -15,6 +15,67 @@
       </ion-col>
     </ion-row>
 
+    <app-date-selector (changeDateEvent)="handleChangeDateEvent($event)">
+    </app-date-selector>
+
+    <ion-row class="ion-justify-content-center">
+      <ng-container
+        *ngIf="
+          analyticsPresenceClassInfos?.classes?.length;
+          else noPresenceClassesTemplate
+        "
+      >
+        <ion-col
+          *ngFor="let presenceClass of analyticsPresenceClassInfos.classes"
+          size-lg="3"
+          size-md="6"
+          size-sm="12"
+          size-xs="12"
+        >
+          <app-analytics-class
+            [presenceClass]="presenceClass"
+            [isBestFrequency]="
+              presenceClass?.class_id ===
+              analyticsPresenceClassInfos?.best_frequency_class
+            "
+            [isWorstFrequency]="
+              presenceClass?.class_id ===
+              analyticsPresenceClassInfos?.worst_frequency_class
+            "
+            [filterByPeriod]="filterByPeriod"
+          >
+          </app-analytics-class>
+        </ion-col>
+      </ng-container>
+
+      <ng-template #noPresenceClassesTemplate>
+        <ng-container *ngIf="analyticsPresenceClassInfos?.classes === null">
+          <ion-col
+            *ngFor="let fakeIndex of utilService?.fakeArrayPipe?.transform(6)"
+            size-lg="3"
+            size-md="6"
+            size-sm="12"
+            size-xs="12"
+          >
+            <ion-item lines="none">
+              <ion-skeleton-text
+                style="width: 100%; height: 310px"
+                [animated]="true"
+              ></ion-skeleton-text>
+            </ion-item>
+          </ion-col>
+        </ng-container>
+
+        <h3
+          *ngIf="analyticsPresenceClassInfos?.classes?.length === 0"
+          class="ion-text-center"
+          style="padding: 5rem 3rem"
+        >
+          Não há registros para essa data
+        </h3>
+      </ng-template>
+    </ion-row>
+
     <ion-row>
       <ion-col size-lg="12">
         <app-analytics-history-card
@@ -347,67 +408,6 @@
           </ion-list>
         </ion-card>
       </ion-col>
-    </ion-row>
-
-    <app-date-selector (changeDateEvent)="handleChangeDateEvent($event)">
-    </app-date-selector>
-
-    <ion-row class="ion-justify-content-center">
-      <ng-container
-        *ngIf="
-          analyticsPresenceClassInfos?.classes?.length;
-          else noPresenceClassesTemplate
-        "
-      >
-        <ion-col
-          *ngFor="let presenceClass of analyticsPresenceClassInfos.classes"
-          size-lg="3"
-          size-md="6"
-          size-sm="12"
-          size-xs="12"
-        >
-          <app-analytics-class
-            [presenceClass]="presenceClass"
-            [isBestFrequency]="
-              presenceClass?.class_id ===
-              analyticsPresenceClassInfos?.best_frequency_class
-            "
-            [isWorstFrequency]="
-              presenceClass?.class_id ===
-              analyticsPresenceClassInfos?.worst_frequency_class
-            "
-            [filterByPeriod]="filterByPeriod"
-          >
-          </app-analytics-class>
-        </ion-col>
-      </ng-container>
-
-      <ng-template #noPresenceClassesTemplate>
-        <ng-container *ngIf="analyticsPresenceClassInfos?.classes === null">
-          <ion-col
-            *ngFor="let fakeIndex of utilService?.fakeArrayPipe?.transform(6)"
-            size-lg="3"
-            size-md="6"
-            size-sm="12"
-            size-xs="12"
-          >
-            <ion-item lines="none">
-              <ion-skeleton-text
-                style="width: 100%; height: 310px"
-                [animated]="true"
-              ></ion-skeleton-text>
-            </ion-item>
-          </ion-col>
-        </ng-container>
-
-        <h3
-          *ngIf="analyticsPresenceClassInfos?.classes?.length === 0"
-          class="ion-text-center"
-          style="padding: 5rem 3rem"
-        >
-          Não há registros para essa data
-        </h3>
-      </ng-template>
     </ion-row>
   </div>
 </ion-grid>
