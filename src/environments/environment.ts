@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
   hmr: false,
-  apiEndpoint: 'https://ibcportal.herokuapp.com/api',
+  apiEndpoint: 'https://ibcc2.com.br/api',
   // apiEndpoint: 'http://localhost:8000/api',
   firebaseConfig: {
     apiKey: 'AIzaSyCvugUvnxTW1Agmbl_l3Ax49fTk3r33tjg',

@@ -1,7 +1,13 @@
 import { DatePipe } from '@angular/common';
 import { Injectable } from '@angular/core';
-import { ToastController } from '@ionic/angular';
+import { ToastButton, ToastController } from '@ionic/angular';
 import { FakeArrayPipe } from 'src/app/pipes/fake-array/fake-array.pipe';
+
+enum UnitValue {
+  day = 24 * 60 * 60 * 1000,
+  month = 30 * 24 * 60 * 60 * 1000,
+  year = 365 * 24 * 60 * 60 * 1000,
+}
 
 @Injectable({
   providedIn: 'root',
@@ -102,12 +108,33 @@ export class UtilService {
     return `${day}/${month}/${year}`;
   }
 
+  olderThan(date: string, amount: number, unit: 'days' | 'months' | 'years') {
+    const now = new Date();
+    const dateToCompare = new Date(date);
+
+    switch (unit) {
+      case 'days':
+        return now.getTime() - dateToCompare.getTime() > amount * UnitValue.day;
+      case 'months':
+        return (
+          now.getTime() - dateToCompare.getTime() > amount * UnitValue.month
+        );
+      case 'years':
+        return (
+          now.getTime() - dateToCompare.getTime() > amount * UnitValue.year
+        );
+      default:
+        return false;
+    }
+  }
+
   async showToastController(
     message: string,
     color: string,
     position: 'top' | 'bottom' | 'middle',
     duration = 2500,
-    icon: string = ''
+    icon: string = '',
+    buttons: ToastButton[] = null
   ) {
     if (await this.toastController.getTop()) {
       this.toastController.dismiss();
@@ -120,6 +147,7 @@ export class UtilService {
       duration,
       icon,
       cssClass: 'toast-controller',
+      ...(buttons && { buttons }),
     });
 
     toast.present();
