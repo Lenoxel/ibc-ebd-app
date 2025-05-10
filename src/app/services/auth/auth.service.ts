@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AlertController, AlertInput } from '@ionic/angular';
+import { AlertController, AlertInput, NavController } from '@ionic/angular';
 import { API_ENDPOINT } from 'config';
 import jwt_decode from 'jwt-decode';
 import { BehaviorSubject, from, Observable } from 'rxjs';
@@ -25,7 +25,8 @@ export class AuthService {
     private readonly httpClient: HttpClient,
     private readonly utilService: UtilService,
     private readonly alertController: AlertController,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly navController: NavController
   ) {
     this.loadToken();
   }
@@ -93,12 +94,27 @@ export class AuthService {
     passwordChangedAt = null
   ) {
     const hasEmail = !!currentEmail;
+
     const oldPassword =
       !passwordChangedAt ||
       this.utilService.olderThan(passwordChangedAt, 120, 'days');
+
+    let userShouldSeeAlert = false;
+
+    const lastTimeUserSawAlert = await this.storageService.get(
+      'lastTimeUserSawAlert'
+    );
+    if (lastTimeUserSawAlert) {
+      userShouldSeeAlert = this.utilService.olderThan(
+        lastTimeUserSawAlert,
+        1,
+        'days'
+      );
+    }
+
     const inputs: AlertInput[] = [];
 
-    if (!hasEmail || oldPassword) {
+    if (userShouldSeeAlert && (!hasEmail || oldPassword)) {
       let header = '';
       let message = '';
 
@@ -183,14 +199,35 @@ export class AuthService {
           {
             text: 'Agora não',
             role: 'cancel',
+            handler: async () => {
+              await this.storageService.set('lastTimeUserSawAlert', new Date());
+            },
           },
           {
             text: 'Salvar',
             role: 'save',
-            handler: async ({ email, password }) => {
+            handler: async ({ email, password, confirmPassword }) => {
               if (!email && !password) {
                 this.utilService.showToastController(
                   'Por favor, preencha os campos obrigatórios.',
+                  'danger',
+                  'top'
+                );
+                return false;
+              }
+
+              if (password && password !== confirmPassword) {
+                this.utilService.showToastController(
+                  'As senhas não conferem.',
+                  'danger',
+                  'top'
+                );
+                return false;
+              }
+
+              if (password && password.length < 8) {
+                this.utilService.showToastController(
+                  'A senha deve ter pelo menos 8 caracteres.',
                   'danger',
                   'top'
                 );
@@ -212,23 +249,42 @@ export class AuthService {
                   .saveUserDetails(userId, { email, password })
                   .toPromise();
 
-                this.$user.next({
-                  ...this.$user.getValue(),
-                  email,
-                  passwordChangedAt: new Date().toISOString(),
-                });
+                this.logout();
+
+                this.navController.navigateRoot('login', { replaceUrl: true });
+
+                await this.storageService.set(
+                  'lastTimeUserSawAlert',
+                  new Date()
+                );
+
                 this.utilService.showToastController(
-                  'Informações atualizadas com sucesso',
+                  'Informações atualizadas com sucesso! Faça login novamente.',
                   'success',
-                  'top'
+                  'top',
+                  5000
                 );
               } catch (error) {
                 console.log('error', error);
                 this.utilService.showToastController(
                   'Houve um erro ao atualizar suas informações. Tente novamente mais tarde.',
                   'danger',
-                  'top'
+                  'top',
+                  4500
                 );
+
+                await this.storageService.set(
+                  'lastTimeUserSawAlert',
+                  new Date()
+                );
+              } finally {
+                buttons.forEach((button) => {
+                  button.removeAttribute('disabled');
+                });
+
+                inputs.forEach((input) => {
+                  input.removeAttribute('disabled');
+                });
               }
             },
           },
