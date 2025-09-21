@@ -1,5 +1,13 @@
-ion-avatar { 
+ion-avatar {
     margin: auto;
-    width: 90px;
-    height: 90px;
+    width: 115px;
+    height: 115px;
+}
+
+ion-avatar img {
+    object-fit: cover;
+    object-position: center 20%;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
 }
