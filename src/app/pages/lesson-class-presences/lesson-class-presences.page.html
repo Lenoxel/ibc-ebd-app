@@ -26,7 +26,11 @@
           <h3 style="font-weight: 400">
             <span>{{lessonTitle}}</span>
             <span *ngIf="hasLessonEnded">
-              - <strong>Essa lição já terminou</strong></span
+              -
+              <strong
+                >Não é mais possível fazer alterações desde {{limitedTimeToEdit
+                | date: 'HH:mm'}}</strong
+              ></span
             >
           </h3>
           <h3>

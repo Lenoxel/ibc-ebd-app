@@ -36,6 +36,8 @@ export class LessonClassPresencesPage implements OnInit {
   moneyRaised = 0;
   oldMoneyRaised = 0;
   loggedUserIsTeacher = false;
+  loggedUserHasFullAccess = false;
+  limitedTimeToEdit: Date = null;
   details$ = new Subject<number>();
 
   constructor(
@@ -49,7 +51,7 @@ export class LessonClassPresencesPage implements OnInit {
       this.lessonId = Number(params.get('lessonId'));
       this.classId = Number(params.get('classId'));
       this.getEbdPresencesRegister(this.lessonId, this.classId);
-      this.handleLoggedUserIsTeacher();
+      this.handleLoggedUserPermissions();
     });
   }
 
@@ -92,7 +94,14 @@ export class LessonClassPresencesPage implements OnInit {
         `yyyy-MM-dd'T'HH:mm:ss.SSS`
       )
     );
-    formattedLessonDate.setHours(9, 50, 0, 0);
+
+    if (this.loggedUserHasFullAccess) {
+      formattedLessonDate.setHours(9, 50, 0, 0);
+      this.limitedTimeToEdit = formattedLessonDate;
+    } else {
+      formattedLessonDate.setHours(9, 15, 0, 0);
+      this.limitedTimeToEdit = formattedLessonDate;
+    }
 
     if (new Date() > formattedLessonDate) {
       this.hasLessonEnded = true;
@@ -132,12 +141,14 @@ export class LessonClassPresencesPage implements OnInit {
     );
   }
 
-  handleLoggedUserIsTeacher() {
+  handleLoggedUserPermissions() {
     if (this.authService.$user?.getValue()) {
-      const { classesAsATeacher } = this.authService.$user.getValue();
+      const { classesAsATeacher, fullAccess } =
+        this.authService.$user.getValue();
       this.loggedUserIsTeacher = !!classesAsATeacher?.find(
         ({ id }) => id === this.classId
       );
+      this.loggedUserHasFullAccess = fullAccess;
     }
   }
 
