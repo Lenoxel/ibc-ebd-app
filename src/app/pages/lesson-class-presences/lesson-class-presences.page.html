@@ -33,9 +33,17 @@
               ></span
             >
           </h3>
+
           <h3>
             {{values?.ebdPresencesRegister | peopleCount}} pessoas nessa chamada
           </h3>
+
+          <span *ngIf="countdownActive">
+            <ion-text color="danger">
+              <strong>Tempo restante para editar: {{ countdown }}</strong>
+            </ion-text>
+          </span>
+
           <div style="display: flex; align-items: center">
             <h3 style="margin-right: 8px">
               {{visitorsQuantity}} {{visitorsQuantity === 1 ? 'visitante' :

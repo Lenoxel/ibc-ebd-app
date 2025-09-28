@@ -1,13 +1,15 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
+  OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonAccordionGroup } from '@ionic/angular';
-import { Observable, Subject } from 'rxjs';
+import { interval, Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { IEbdClassLessonDetails, IEbdLabel } from 'src/app/interfaces';
 import { IPresenceRegister } from 'src/app/interfaces/presenceRegister';
@@ -21,7 +23,7 @@ import { UtilService } from 'src/app/services/util/util.service';
   styleUrls: ['./lesson-class-presences.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LessonClassPresencesPage implements OnInit {
+export class LessonClassPresencesPage implements OnInit, OnDestroy {
   @ViewChild(IonAccordionGroup) accordionGroup: IonAccordionGroup;
 
   hasLessonEnded = false;
@@ -40,12 +42,17 @@ export class LessonClassPresencesPage implements OnInit {
   limitedTimeToEdit: Date = null;
   details$ = new Subject<number>();
 
+  countdown = '';
+  countdownActive = false;
+  private countdownSubscription: Subscription;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private authService: AuthService,
     private lessonService: LessonService,
     private router: Router,
-    private utilService: UtilService
+    private utilService: UtilService,
+    private changeDetectorRef: ChangeDetectorRef
   ) {
     this.activatedRoute.paramMap.subscribe((params) => {
       this.lessonId = Number(params.get('lessonId'));
@@ -59,6 +66,12 @@ export class LessonClassPresencesPage implements OnInit {
     this.handleParams();
     this.subscribeDetails();
     this.getEbdLabels();
+  }
+
+  ngOnDestroy() {
+    if (this.countdownSubscription) {
+      this.countdownSubscription.unsubscribe();
+    }
   }
 
   handleParams() {
@@ -87,6 +100,38 @@ export class LessonClassPresencesPage implements OnInit {
     this.ebdLabels$ = this.lessonService.getEbdLabels();
   }
 
+  startCountdown(editTime: number) {
+    this.countdownSubscription = interval(1000).subscribe(() => {
+      const now = new Date().getTime();
+      const diff = editTime - now;
+
+      if (diff > 0) {
+        const minutes = Math.floor(diff / 60000);
+        const seconds = Math.floor((diff % 60000) / 1000);
+        this.countdown = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        this.changeDetectorRef.detectChanges();
+      } else {
+        this.countdownActive = false;
+        this.countdown = '';
+        this.countdownSubscription.unsubscribe();
+        this.changeDetectorRef.detectChanges();
+      }
+    });
+  }
+
+  checkCountdown() {
+    const now = new Date().getTime();
+    const diff = this.limitedTimeToEdit.getTime() - now;
+
+    if (diff > 0 && diff <= 10 * 60 * 1000) {
+      this.countdownActive = true;
+      this.startCountdown(this.limitedTimeToEdit.getTime());
+    } else {
+      this.countdownActive = false;
+      this.countdown = '';
+    }
+  }
+
   handleHasLessonEnded() {
     const formattedLessonDate = new Date(
       this.utilService.datePipe.transform(
@@ -105,7 +150,10 @@ export class LessonClassPresencesPage implements OnInit {
 
     if (new Date() > formattedLessonDate) {
       this.hasLessonEnded = true;
+      return;
     }
+
+    this.checkCountdown();
   }
 
   handleClassLessonDetails(details: IEbdClassLessonDetails | null) {
