@@ -40,11 +40,17 @@ export class LessonClassPresencesPage implements OnInit, OnDestroy {
   loggedUserIsTeacher = false;
   loggedUserHasFullAccess = false;
   limitedTimeToEdit: Date = null;
+
+  private paramMapSubscription: Subscription;
+
+  private detailsSubscription: Subscription;
   details$ = new Subject<number>();
 
   countdown = '';
   countdownActive = false;
   private countdownSubscription: Subscription;
+
+  private handleHasLessonEndedSubscription: Subscription;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -54,12 +60,14 @@ export class LessonClassPresencesPage implements OnInit, OnDestroy {
     private utilService: UtilService,
     private changeDetectorRef: ChangeDetectorRef
   ) {
-    this.activatedRoute.paramMap.subscribe((params) => {
-      this.lessonId = Number(params.get('lessonId'));
-      this.classId = Number(params.get('classId'));
-      this.getEbdPresencesRegister(this.lessonId, this.classId);
-      this.handleLoggedUserPermissions();
-    });
+    this.paramMapSubscription = this.activatedRoute.paramMap.subscribe(
+      (params) => {
+        this.lessonId = Number(params.get('lessonId'));
+        this.classId = Number(params.get('classId'));
+        this.getEbdPresencesRegister(this.lessonId, this.classId);
+        this.handleLoggedUserPermissions();
+      }
+    );
   }
 
   ngOnInit() {
@@ -69,8 +77,20 @@ export class LessonClassPresencesPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    if (this.paramMapSubscription) {
+      this.paramMapSubscription.unsubscribe();
+    }
+
+    if (this.detailsSubscription) {
+      this.detailsSubscription.unsubscribe();
+    }
+
     if (this.countdownSubscription) {
       this.countdownSubscription.unsubscribe();
+    }
+
+    if (this.handleHasLessonEndedSubscription) {
+      this.handleHasLessonEndedSubscription.unsubscribe();
     }
   }
 
@@ -86,12 +106,13 @@ export class LessonClassPresencesPage implements OnInit, OnDestroy {
     this.lessonTitle = lessonTitle;
     this.lessonDate = lessonDate;
 
-    this.handleHasLessonEnded();
+    this.subscribeHandleHasLessonEnded();
+
     this.handleClassLessonDetails(details);
   }
 
   subscribeDetails() {
-    this.details$
+    this.detailsSubscription = this.details$
       .pipe(debounceTime(500), distinctUntilChanged())
       .subscribe(() => this.saveEbdClassLessonDetails());
   }
@@ -100,8 +121,32 @@ export class LessonClassPresencesPage implements OnInit, OnDestroy {
     this.ebdLabels$ = this.lessonService.getEbdLabels();
   }
 
+  subscribeHandleHasLessonEnded() {
+    this.handleHasLessonEnded();
+
+    if (!this.hasLessonEnded) {
+      const ONE_MINUTE = 1 * 60 * 1000;
+
+      this.handleHasLessonEndedSubscription = interval(ONE_MINUTE).subscribe(
+        () => {
+          this.handleHasLessonEnded();
+        }
+      );
+    }
+  }
+
   startCountdown(editTime: number) {
-    this.countdownSubscription = interval(1000).subscribe(() => {
+    if (this.countdownSubscription) {
+      this.countdownSubscription.unsubscribe();
+    }
+
+    if (this.handleHasLessonEndedSubscription) {
+      this.handleHasLessonEndedSubscription.unsubscribe();
+    }
+
+    const ONE_SECOND = 1000;
+
+    this.countdownSubscription = interval(ONE_SECOND).subscribe(() => {
       const now = new Date().getTime();
       const diff = editTime - now;
 
@@ -113,6 +158,7 @@ export class LessonClassPresencesPage implements OnInit, OnDestroy {
       } else {
         this.countdownActive = false;
         this.countdown = '';
+        this.handleHasLessonEnded();
         this.countdownSubscription.unsubscribe();
         this.changeDetectorRef.detectChanges();
       }
@@ -123,7 +169,9 @@ export class LessonClassPresencesPage implements OnInit, OnDestroy {
     const now = new Date().getTime();
     const diff = this.limitedTimeToEdit.getTime() - now;
 
-    if (diff > 0 && diff <= 10 * 60 * 1000) {
+    const TEN_MINUTES = 10 * 60 * 1000;
+
+    if (diff > 0 && diff <= TEN_MINUTES) {
       this.countdownActive = true;
       this.startCountdown(this.limitedTimeToEdit.getTime());
     } else {
@@ -150,6 +198,15 @@ export class LessonClassPresencesPage implements OnInit, OnDestroy {
 
     if (new Date() > formattedLessonDate) {
       this.hasLessonEnded = true;
+
+      if (this.countdownSubscription) {
+        this.countdownSubscription.unsubscribe();
+      }
+
+      if (this.handleHasLessonEndedSubscription) {
+        this.handleHasLessonEndedSubscription.unsubscribe();
+      }
+
       return;
     }
 

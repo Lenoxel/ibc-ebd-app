@@ -189,7 +189,7 @@ export class StudentPresenceComponent implements OnInit {
               const hours = Number(hoursAndMinutes[0]);
               const minutes = Number(hoursAndMinutes[1]);
 
-              if ((hours === 9 && minutes > 20) || hours >= 10) {
+              if ((hours === 9 && minutes > 15) || hours >= 10) {
                 presenceRegister.attended = false;
                 this.handleGiveAbsence(presenceRegister, arrivalTime);
                 return;
