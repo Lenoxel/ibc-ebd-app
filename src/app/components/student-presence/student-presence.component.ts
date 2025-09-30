@@ -37,9 +37,7 @@ export class StudentPresenceComponent implements OnInit {
     public authService: AuthService
   ) {}
 
-  ngOnInit() {
-    console.log(this.ebdLabels);
-  }
+  ngOnInit() {}
 
   givePresence(presenceRegister: IPresenceRegister) {
     if (!presenceRegister.attended || !presenceRegister.tempRegisterOn) {
