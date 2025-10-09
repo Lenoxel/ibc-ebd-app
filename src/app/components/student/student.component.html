@@ -66,6 +66,7 @@
         $any($event)?.stopPropagation(); redirectToWhatsapp(student?.whatsapp)
       "
     ></ion-icon>
+
     <ion-icon
       slot="end"
       name="call"
@@ -75,4 +76,11 @@
       "
     ></ion-icon>
   </ng-container>
+
+  <ion-icon
+    slot="end"
+    name="ellipsis-horizontal-outline"
+    color="gray"
+    (click)="$any($event)?.stopPropagation(); openStudentOptions()"
+  ></ion-icon>
 </ion-item>
