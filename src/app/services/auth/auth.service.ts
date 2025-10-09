@@ -119,6 +119,7 @@ export class AuthService {
       let message = '';
 
       let eyePasswordIconTop = '52.5%';
+      let eyePasswordConfirmIconTop = '68.5%';
 
       if (!hasEmail && oldPassword) {
         header = 'Atualização de informações de acesso';
@@ -126,6 +127,7 @@ export class AuthService {
           'Já faz um tempo que você não atualiza suas informações de acesso.';
 
         eyePasswordIconTop = '62.5%';
+        eyePasswordConfirmIconTop = '78.5%';
 
         inputs.push({
           name: 'email',
@@ -133,6 +135,7 @@ export class AuthService {
           placeholder: 'Digite o seu melhor email',
           attributes: {
             required: true,
+            autocomplete: 'email',
           },
         });
         inputs.push({
@@ -164,6 +167,7 @@ export class AuthService {
           placeholder: 'Digite o seu melhor email',
           attributes: {
             required: true,
+            autocomplete: 'email',
           },
         });
       } else {
@@ -293,31 +297,37 @@ export class AuthService {
 
       await alert.present();
 
-      let isPasswordVisible = false;
+      this.handleSeePassword(eyePasswordIconTop, 0);
 
-      const inputElement = document.querySelector<HTMLIonInputElement>(
-        'ion-alert input[type="password"]'
-      );
-
-      const eyeIcon = document.createElement('ion-icon');
-      eyeIcon.setAttribute('name', 'eye-off');
-      eyeIcon.style.position = 'absolute';
-      eyeIcon.style.right = '1.5rem';
-      eyeIcon.style.top = eyePasswordIconTop;
-      eyeIcon.style.transform = 'translateY(-50%)';
-      eyeIcon.style.fontSize = '1.2rem';
-      eyeIcon.style.cursor = 'pointer';
-
-      eyeIcon.addEventListener('click', () => {
-        isPasswordVisible = !isPasswordVisible;
-        inputElement.type = isPasswordVisible ? 'text' : 'password';
-        eyeIcon.setAttribute('name', isPasswordVisible ? 'eye' : 'eye-off');
-      });
-
-      setTimeout(() => {
-        inputElement?.parentElement?.appendChild(eyeIcon);
-      }, 50);
+      this.handleSeePassword(eyePasswordConfirmIconTop, 1);
     }
+  }
+
+  handleSeePassword(iconTop: string, position: number) {
+    let isPasswordVisible = false;
+
+    const inputElement = document.querySelectorAll('ion-alert input')[
+      position
+    ] as HTMLInputElement;
+
+    const eyeIcon = document.createElement('ion-icon');
+    eyeIcon.setAttribute('name', 'eye-off');
+    eyeIcon.style.position = 'absolute';
+    eyeIcon.style.right = '1.5rem';
+    eyeIcon.style.top = iconTop;
+    eyeIcon.style.transform = 'translateY(-50%)';
+    eyeIcon.style.fontSize = '1.2rem';
+    eyeIcon.style.cursor = 'pointer';
+
+    eyeIcon.addEventListener('click', () => {
+      isPasswordVisible = !isPasswordVisible;
+      inputElement.type = isPasswordVisible ? 'text' : 'password';
+      eyeIcon.setAttribute('name', isPasswordVisible ? 'eye' : 'eye-off');
+    });
+
+    setTimeout(() => {
+      inputElement?.parentElement?.appendChild(eyeIcon);
+    }, 50);
   }
 
   login(credentials: { username: string; password: string }): Observable<any> {
