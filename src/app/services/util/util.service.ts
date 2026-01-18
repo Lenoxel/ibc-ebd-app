@@ -16,7 +16,11 @@ export class UtilService {
   datePipe = new DatePipe('pt-BR');
   fakeArrayPipe = new FakeArrayPipe();
 
-  years = ['2022', '2023', '2024', '2025'];
+  firstYear = 2022;
+  years = Array.from(
+    { length: new Date().getFullYear() - this.firstYear + 1 },
+    (_, index) => `${this.firstYear + index}`,
+  );
 
   months = [
     {
@@ -75,7 +79,7 @@ export class UtilService {
 
   setSundaysOnMonth(
     month: number = new Date().getMonth(),
-    year: number = new Date().getFullYear()
+    year: number = new Date().getFullYear(),
   ) {
     const days = new Date(year, month + 1, 0).getDate();
     const sundays = [8 - new Date(`${month + 1}/01/${year}`).getDay()];
@@ -134,7 +138,7 @@ export class UtilService {
     position: 'top' | 'bottom' | 'middle',
     duration = 2500,
     icon: string = '',
-    buttons: ToastButton[] = null
+    buttons: ToastButton[] = null,
   ) {
     if (await this.toastController.getTop()) {
       this.toastController.dismiss();

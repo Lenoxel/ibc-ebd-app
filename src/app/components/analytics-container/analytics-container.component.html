@@ -99,7 +99,7 @@
               [ngClass]="{
                 'ion-chip-active':
                   item?.id ===
-                  filterExemplaryStudentsLabelOptions?.chosenItem?.id
+                  filterExemplaryStudentsLabelOptions?.chosenItem?.id,
               }"
               color="primary"
               (click)="filterExemplaryStudentsLabelOptions.chosenItem = item"
@@ -195,7 +195,7 @@
               [ngClass]="{
                 'ion-chip-active':
                   item?.id ===
-                  filterWorryingStudentsLabelOptions?.chosenItem?.id
+                  filterWorryingStudentsLabelOptions?.chosenItem?.id,
               }"
               color="primary"
               (click)="filterWorryingStudentsLabelOptions.chosenItem = item"
@@ -328,7 +328,7 @@
                           >Frequência</ion-label
                         >
                         <ion-badge style="margin-left: 10px" color="primary">{{
-                          student?.time_frequency | date : "HH:mm"
+                          student?.time_frequency | date: "HH:mm"
                         }}</ion-badge>
                       </ion-chip>
                     </ion-label>
