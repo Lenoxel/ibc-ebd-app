@@ -1,9 +1,14 @@
+type EBDClass = {
+  id: number;
+  name: string;
+};
+
 /* eslint-disable @typescript-eslint/naming-convention */
 export interface IStudent {
   id: number;
   name: string;
   picture: string;
-  ebd_class: string;
+  ebd_class: EBDClass | null;
   date_of_birth?: string;
   is_birthday_person: boolean;
   whatsapp?: string;

@@ -7,20 +7,22 @@ import { IStudentHistory } from 'src/app/interfaces';
 import { IStudent } from 'src/app/interfaces/student';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class StudentService {
-  constructor(
-    private httpClient: HttpClient,
-  ) { }
+  constructor(private httpClient: HttpClient) {}
 
   getEbdStudents(classId?: number): Observable<IStudent[]> {
-    return this.httpClient.get<IStudent[]>(`${API_ENDPOINT}/ebd/people${classId ? `?classId=${classId}` : ''}`).pipe(
-      map(ebdStudents => ebdStudents)
-    );
+    return this.httpClient
+      .get<
+        IStudent[]
+      >(`${API_ENDPOINT}/ebd/people${classId ? `?classId=${classId}` : ''}`)
+      .pipe(map((ebdStudents) => ebdStudents));
   }
 
   getEbdPersonHistory(studentId: number): Observable<IStudentHistory[]> {
-    return this.httpClient.get<IStudentHistory[]>(`${API_ENDPOINT}/ebd/people/${studentId}/history`);
+    return this.httpClient.get<IStudentHistory[]>(
+      `${API_ENDPOINT}/ebd/people/${studentId}/history`,
+    );
   }
 }

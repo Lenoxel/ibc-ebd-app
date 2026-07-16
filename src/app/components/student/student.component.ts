@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { ActionSheetController, AlertController } from '@ionic/angular';
 import { IStudent } from 'src/app/interfaces';
+import { EbdService } from 'src/app/services/ebd/ebd.service';
 
 @Component({
   selector: 'app-student',
@@ -22,10 +23,13 @@ export class StudentComponent implements OnInit {
 
   constructor(
     private readonly actionSheetCtrl: ActionSheetController,
-    private readonly alertController: AlertController
+    private readonly alertController: AlertController,
+    private readonly ebdService: EbdService,
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log('StudentComponent initialized with student:', this.student);
+  }
 
   handlePhoneNumber(whatsApp: string) {
     let formattedNumber = whatsApp.trim().replace(/\s|(-)|(\+)|\(|\)/g, '');
@@ -52,63 +56,187 @@ export class StudentComponent implements OnInit {
   }
 
   async openStudentOptions() {
+    let buttons = [
+      {
+        text: `Tornar ${
+          this.student.ebd_relation === 'visitante' ? 'Aluno' : 'Visitante'
+        }`,
+        data: { action: 'toggleRole' },
+        handler: () => {
+          this.confirmToggleRelation();
+        },
+      },
+      {
+        text: 'Remover da Classe',
+        role: 'destructive',
+        data: { action: 'delete' },
+        handler: () => {
+          this.confirmRemoveFromClass();
+        },
+      },
+      {
+        text: 'Voltar',
+        role: 'cancel',
+        data: { action: 'cancel' },
+        handler: () => {
+          console.log('Ação cancelada');
+        },
+      },
+    ];
+
     const actionSheet = await this.actionSheetCtrl.create({
-      buttons: [
-        {
-          text: `Tornar ${
-            this.student.ebd_relation === 'visitante' ? 'Aluno' : 'Visitante'
-          }`,
-          data: { action: 'toggleRole' },
-          handler: () => {
-            this.toggleRelation();
-          },
-        },
-        {
-          text: 'Remover da Classe',
-          role: 'destructive',
-          data: { action: 'delete' },
-          handler: () => {
-            this.removeFromClass();
-          },
-        },
-        {
-          text: 'Voltar',
-          role: 'cancel',
-          data: { action: 'cancel' },
-          handler: () => {
-            console.log('Ação cancelada');
-          },
-        },
-      ],
+      buttons,
     });
 
     await actionSheet.present();
   }
 
-  async toggleRelation() {
-    // await this.studentService.toggleRelation(this.student.id);
+  async isStudentInClass() {
+    if (!this.student.ebd_class) {
+      const alert = await this.alertController.create({
+        header: 'Erro',
+        message: `${this.student.name} não está em nenhuma classe.`,
+        buttons: ['OK'],
+      });
 
-    this.student.ebd_relation =
-      this.student.ebd_relation === 'visitante' ? 'aluno' : 'visitante';
+      await alert.present();
+
+      return false;
+    }
+
+    return true;
+  }
+
+  async confirmToggleRelation() {
+    const isStudentInClass = await this.isStudentInClass();
+
+    if (!isStudentInClass) {
+      return;
+    }
 
     const alert = await this.alertController.create({
-      header: 'Sucesso',
-      message: `${this.student.name} agora é um(a) ${this.student.ebd_relation}.`,
-      buttons: ['OK'],
+      header: 'Confirmação',
+      message: `Tem certeza que deseja tornar ${this.student.name} um(a) ${
+        this.student.ebd_relation === 'visitante' ? 'Aluno' : 'Visitante'
+      }?`,
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+        },
+        {
+          text: 'Confirmar',
+          handler: () => {
+            this.toggleRelation();
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
+
+  async toggleRelation() {
+    const isStudentInClass = await this.isStudentInClass();
+
+    if (!isStudentInClass) {
+      return;
+    }
+
+    const newRelation =
+      this.student.ebd_relation === 'visitante' ? 'aluno' : 'visitante';
+
+    this.ebdService
+      .toggleMemberRelation(
+        this.student.ebd_class.id,
+        this.student.id,
+        newRelation,
+      )
+      .subscribe(
+        async () => {
+          this.student.ebd_relation =
+            this.student.ebd_relation === 'visitante' ? 'aluno' : 'visitante';
+
+          const alert = await this.alertController.create({
+            header: 'Sucesso',
+            message: `${this.student.name} agora é um(a) ${this.student.ebd_relation}.`,
+            buttons: ['OK'],
+          });
+
+          await alert.present();
+        },
+        async () => {
+          const alert = await this.alertController.create({
+            header: 'Erro',
+            message: `Ocorreu um erro ao tentar alterar a relação de ${this.student.name}.`,
+            buttons: ['OK'],
+          });
+
+          await alert.present();
+        },
+      );
+  }
+
+  async confirmRemoveFromClass() {
+    const isStudentInClass = await this.isStudentInClass();
+
+    if (!isStudentInClass) {
+      return;
+    }
+
+    const alert = await this.alertController.create({
+      header: 'Confirmação',
+      message: `Tem certeza que deseja remover ${this.student.name} da classe ${this.student.ebd_class.name}?`,
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+        },
+        {
+          text: 'Confirmar',
+          handler: () => {
+            this.removeFromClass();
+          },
+        },
+      ],
     });
 
     await alert.present();
   }
 
   async removeFromClass() {
-    // await this.studentService.remove(this.student.id);
+    const isStudentInClass = await this.isStudentInClass();
 
-    const alert = await this.alertController.create({
-      header: 'Sucesso',
-      message: `${this.student.name} foi removido(a) da classe.`,
-      buttons: ['OK'],
-    });
+    if (!isStudentInClass) {
+      return;
+    }
 
-    await alert.present();
+    this.ebdService
+      .removeMemberFromClass(this.student.ebd_class.id, this.student.id)
+      .subscribe(
+        async () => {
+          const className = this.student.ebd_class.name;
+
+          this.student.ebd_class = null;
+
+          const alert = await this.alertController.create({
+            header: 'Sucesso',
+            message: `${this.student.name} foi removido(a) da classe ${className}.`,
+            buttons: ['OK'],
+          });
+
+          await alert.present();
+          this.student.ebd_class = null;
+        },
+        async () => {
+          const alert = await this.alertController.create({
+            header: 'Erro',
+            message: `Ocorreu um erro ao tentar remover ${this.student.name} da classe ${this.student.ebd_class.name}.`,
+            buttons: ['OK'],
+          });
+
+          await alert.present();
+        },
+      );
   }
 }

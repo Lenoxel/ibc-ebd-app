@@ -17,7 +17,9 @@
   <ion-label>
     <h3>{{ student?.name }}</h3>
     <p>
-      {{ student?.ebd_class ? "Classe " + student?.ebd_class : "Sem Classe" }}
+      {{
+        student?.ebd_class ? "Classe " + student?.ebd_class.name : "Sem Classe"
+      }}
     </p>
     <p *ngIf="!student?.is_birthday_person; else isBirthdayPerson">
       {{
@@ -78,6 +80,7 @@
   </ng-container>
 
   <ion-icon
+    *ngIf="student?.ebd_class"
     slot="end"
     name="ellipsis-horizontal-outline"
     color="gray"

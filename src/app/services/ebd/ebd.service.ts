@@ -3,39 +3,52 @@ import { Injectable } from '@angular/core';
 import { API_ENDPOINT } from 'config';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { IEbdClass } from 'src/app/interfaces';
 import { EntityBasic } from 'src/app/types';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EbdService {
-
-  constructor(
-    private httpClient: HttpClient,
-  ) { }
+  constructor(private httpClient: HttpClient) {}
 
   getEbdClasses(): Observable<EntityBasic[]> {
-    return this.httpClient.get(`${API_ENDPOINT}/ebd/classes`).pipe(
-      map((classes: EntityBasic[]) => classes),
+    return this.httpClient
+      .get(`${API_ENDPOINT}/ebd/classes`)
+      .pipe(map((classes: EntityBasic[]) => classes));
+  }
+
+  removeMemberFromClass(classId: number, memberId: number): Observable<any> {
+    return this.httpClient.delete(
+      `${API_ENDPOINT}/ebd/classes/${classId}/members/${memberId}`,
+    );
+  }
+
+  toggleMemberRelation(
+    classId: number,
+    memberId: number,
+    newRelation: string,
+  ): Observable<any> {
+    return this.httpClient.patch(
+      `${API_ENDPOINT}/ebd/classes/${classId}/members/${memberId}/ebd-relation/`,
+      { ebd_relation: newRelation },
     );
   }
 
   getEbdPresencesByClass(classId: number): Observable<any> {
-    return this.httpClient.get(`${API_ENDPOINT}/ebd/classes/${classId}/presences/`).pipe(
-      map((presences: any) => presences),
-    );
+    return this.httpClient
+      .get(`${API_ENDPOINT}/ebd/classes/${classId}/presences/`)
+      .pipe(map((presences: any) => presences));
   }
 
   getEbdPresencesByUser(userId: string): Observable<any> {
-    return this.httpClient.get(`${API_ENDPOINT}/ebd/users/${userId}/presences/`).pipe(
-      map((presences: any) => presences),
-    );
+    return this.httpClient
+      .get(`${API_ENDPOINT}/ebd/users/${userId}/presences/`)
+      .pipe(map((presences: any) => presences));
   }
 
   getEbdPresencesAnalytics(userId: string): Observable<any> {
-    return this.httpClient.get(`${API_ENDPOINT}/ebd/presences/analytics/`).pipe(
-      map((presencesAnalytics: any) => presencesAnalytics),
-    );
+    return this.httpClient
+      .get(`${API_ENDPOINT}/ebd/presences/analytics/`)
+      .pipe(map((presencesAnalytics: any) => presencesAnalytics));
   }
 }
