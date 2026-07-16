@@ -1,13 +1,10 @@
 /*
  * App Global CSS
  * ----------------------------------------------------------------------------
- * Put style rules here that you want to apply globally. These styles are for
- * the entire app and not just one component. Additionally, this file can be
- * used as an entry point to import other CSS/Sass files to be included in the
- * output CSS.
- * For more information on global stylesheets, visit the documentation:
- * https://ionicframework.com/docs/layout/global-stylesheets
  */
+
+/* Nova Fonte de alta legibilidade */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
 /* Core CSS required for Ionic components to work properly */
 @import "~@ionic/angular/css/core.css";
@@ -61,16 +58,25 @@ ion-progress-bar {
     height: 6px;
 }
 
+/* Sombra e profundidade para facilitar identificação visual */
+ion-card {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(0, 0, 0, 0.03);
+}
+
 ion-searchbar {
     .searchbar-input-container {
         input{
-            border-radius: 5px !important;
+            /* Usa a variável global para manter consistência */
+            border-radius: var(--ion-border-radius, 8px) !important;
         }
     }
 }
 
 ion-item:has(ion-select) {
-    border-radius: 5px !important;
+    /* Usa a variável global para manter consistência */
+    border-radius: var(--ion-border-radius, 8px) !important;
 }
 
 .birthday-person {

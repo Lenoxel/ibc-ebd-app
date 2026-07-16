@@ -1,8 +1,8 @@
 {
   "name": "Minha EBD",
   "short_name": "Minha EBD",
-  "theme_color": "#322514",
-  "background_color": "#fafafa",
+  "theme_color": "#1e3a8a",
+  "background_color": "#ffffff",
   "display": "standalone",
   "scope": "./",
   "start_url": "./",
