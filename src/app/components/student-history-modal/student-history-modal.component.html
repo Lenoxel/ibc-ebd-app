@@ -25,7 +25,9 @@
           <h2>{{ student?.name }}</h2>
           <h3>
             {{
-              student?.ebd_class ? "Classe " + student?.ebd_class : "Sem Classe"
+              student?.ebd_class
+                ? "Classe" + student?.ebd_class?.name
+                : "Sem Classe"
             }}
           </h3>
           <ion-chip style="--background: var(--ion-color-success)">
@@ -65,12 +67,12 @@
           <ion-item lines="none">
             <ion-label class="ion-text-wrap">
               <h3>{{ studentHistory?.lesson_title }}</h3>
-              <h4>{{ studentHistory?.lesson_date | date : "dd/MM/yyyy" }}</h4>
+              <h4>{{ studentHistory?.lesson_date | date: "dd/MM/yyyy" }}</h4>
               <p>
                 Recebeu {{ studentHistory?.attended ? "presença" : "falta" }}
                 {{
                   studentHistory?.register_on
-                    ? "de " + (studentHistory?.register_on | date : "HH:mm")
+                    ? "de " + (studentHistory?.register_on | date: "HH:mm")
                     : "automaticamente"
                 }}.
               </p>

@@ -27,9 +27,7 @@ export class StudentComponent implements OnInit {
     private readonly ebdService: EbdService,
   ) {}
 
-  ngOnInit() {
-    console.log('StudentComponent initialized with student:', this.student);
-  }
+  ngOnInit() {}
 
   handlePhoneNumber(whatsApp: string) {
     let formattedNumber = whatsApp.trim().replace(/\s|(-)|(\+)|\(|\)/g, '');
