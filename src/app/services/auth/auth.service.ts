@@ -15,7 +15,7 @@ import { UtilService } from '../util/util.service';
 })
 export class AuthService {
   $isAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
-    null
+    null,
   );
   token: { access: string; refresh: string } = null;
   $user: BehaviorSubject<IUser> = new BehaviorSubject<IUser>(null);
@@ -26,7 +26,7 @@ export class AuthService {
     private readonly utilService: UtilService,
     private readonly alertController: AlertController,
     private readonly userService: UserService,
-    private readonly navController: NavController
+    private readonly navController: NavController,
   ) {
     this.loadToken();
   }
@@ -44,14 +44,14 @@ export class AuthService {
 
   // validAccessToken({ access }: { access: string; refresh: string } = this.token) {
   validAccessToken(
-    { access }: { access: string; refresh: string } = this.token
+    { access }: { access: string; refresh: string } = this.token,
   ) {
     const { exp }: any = jwt_decode(access);
     return !!(new Date().getTime() < Number(`${exp}000`));
   }
 
   validRefreshToken(
-    { refresh }: { access: string; refresh: string } = this.token
+    { refresh }: { access: string; refresh: string } = this.token,
   ) {
     const { exp }: any = jwt_decode(refresh);
     return !!(new Date().getTime() < Number(`${exp}000`));
@@ -74,8 +74,8 @@ export class AuthService {
       user.isSuperuser ||
       user.groups?.find((group) =>
         ['admin', 'secretaria da igreja', 'superintendência'].includes(
-          group?.name?.toLowerCase()
-        )
+          group?.name?.toLowerCase(),
+        ),
       )
     );
 
@@ -84,14 +84,14 @@ export class AuthService {
     await this.userShouldUpdateInfo(
       user.userId,
       user.email,
-      user.passwordChangedAt
+      user.passwordChangedAt,
     );
   }
 
   async userShouldUpdateInfo(
     userId,
     currentEmail = '',
-    passwordChangedAt = null
+    passwordChangedAt = null,
   ) {
     const hasEmail = !!currentEmail;
 
@@ -102,13 +102,13 @@ export class AuthService {
     let userShouldSeeAlert = false;
 
     const lastTimeUserSawAlert = await this.storageService.get(
-      'lastTimeUserSawAlert'
+      'lastTimeUserSawAlert',
     );
     if (lastTimeUserSawAlert) {
       userShouldSeeAlert = this.utilService.olderThan(
         lastTimeUserSawAlert,
         1,
-        'days'
+        'days',
       );
     }
 
@@ -215,7 +215,7 @@ export class AuthService {
                 this.utilService.showToastController(
                   'Por favor, preencha os campos obrigatórios.',
                   'danger',
-                  'top'
+                  'top',
                 );
                 return false;
               }
@@ -224,7 +224,7 @@ export class AuthService {
                 this.utilService.showToastController(
                   'As senhas não conferem.',
                   'danger',
-                  'top'
+                  'top',
                 );
                 return false;
               }
@@ -233,7 +233,7 @@ export class AuthService {
                 this.utilService.showToastController(
                   'A senha deve ter pelo menos 8 caracteres.',
                   'danger',
-                  'top'
+                  'top',
                 );
                 return false;
               }
@@ -259,14 +259,14 @@ export class AuthService {
 
                 await this.storageService.set(
                   'lastTimeUserSawAlert',
-                  new Date()
+                  new Date(),
                 );
 
                 this.utilService.showToastController(
                   'Informações atualizadas com sucesso! Faça login novamente.',
                   'success',
                   'top',
-                  5000
+                  5000,
                 );
               } catch (error) {
                 console.log('error', error);
@@ -274,12 +274,12 @@ export class AuthService {
                   'Houve um erro ao atualizar suas informações. Tente novamente mais tarde.',
                   'danger',
                   'top',
-                  4500
+                  4500,
                 );
 
                 await this.storageService.set(
                   'lastTimeUserSawAlert',
-                  new Date()
+                  new Date(),
                 );
               } finally {
                 buttons.forEach((button) => {
@@ -334,7 +334,7 @@ export class AuthService {
     return this.httpClient.post(`${API_ENDPOINT}/ebd/login/`, credentials).pipe(
       map((token: any) => token),
       switchMap((token) => from(this.handleToken(token))),
-      tap(() => this.$isAuthenticated.next(true))
+      tap(() => this.$isAuthenticated.next(true)),
     );
   }
 
@@ -350,13 +350,13 @@ export class AuthService {
   }
 
   refreshAccessToken(
-    token: { refresh: string } = this.token
+    token: { refresh: string } = this.token,
   ): Observable<{ access: string; refresh: string }> {
     return this.httpClient.post(`${API_ENDPOINT}/token/refresh/`, token).pipe(
       map(({ access }: { access: string }) => ({
         access,
         refresh: token.refresh,
-      }))
+      })),
     );
   }
 }
