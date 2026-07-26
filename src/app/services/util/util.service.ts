@@ -136,9 +136,9 @@ export class UtilService {
     message: string,
     color: string,
     position: 'top' | 'bottom' | 'middle',
-    duration = 2500,
+    duration: number | null = 2500,
     icon: string = '',
-    buttons: ToastButton[] = null,
+    buttons: ToastButton[] | null = null,
   ) {
     if (await this.toastController.getTop()) {
       this.toastController.dismiss();
@@ -148,9 +148,9 @@ export class UtilService {
       message,
       color,
       position,
-      duration,
       icon,
       cssClass: 'toast-controller',
+      ...(duration && { duration }),
       ...(buttons && { buttons }),
     });
 
