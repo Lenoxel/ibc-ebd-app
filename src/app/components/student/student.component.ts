@@ -20,6 +20,7 @@ export class StudentComponent implements OnInit {
   @Input() student: IStudent;
   @Input() show = true;
   @Output() selectStudentEvent = new EventEmitter<IStudent>();
+  @Output() removeStudentEvent = new EventEmitter<IStudent>();
 
   constructor(
     private readonly actionSheetCtrl: ActionSheetController,
@@ -224,7 +225,9 @@ export class StudentComponent implements OnInit {
           });
 
           await alert.present();
+
           this.student.ebd_class = null;
+          this.removeStudentEvent.emit(this.student);
         },
         async () => {
           const alert = await this.alertController.create({

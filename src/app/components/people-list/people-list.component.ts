@@ -1,6 +1,11 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 /* eslint-disable no-underscore-dangle */
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import { IStudent, IStudentHistory } from 'src/app/interfaces';
 import { StudentService } from 'src/app/services/student/student.service';
@@ -20,9 +25,7 @@ export class PeopleListComponent implements OnInit {
   private _filteredName = null;
   private _orderById = 0;
 
-  constructor(
-    private studentService: StudentService,
-  ) { }
+  constructor(private studentService: StudentService) {}
 
   get ebdStudents(): IStudent[] {
     return this._ebdStudents;
@@ -30,7 +33,9 @@ export class PeopleListComponent implements OnInit {
 
   @Input() set ebdStudents(ebdStudents: IStudent[]) {
     this._ebdStudents = ebdStudents;
-    this.filteredEbdStudents = this.filteredEbdStudents?.length ? this.filteredEbdStudents : ebdStudents;
+    this.filteredEbdStudents = this.filteredEbdStudents?.length
+      ? this.filteredEbdStudents
+      : ebdStudents;
   }
 
   get filteredName(): string {
@@ -41,8 +46,11 @@ export class PeopleListComponent implements OnInit {
     this._filteredName = filteredName;
 
     if (filteredName !== null && filteredName !== undefined) {
-      this.filteredEbdStudents = this.ebdStudents.filter(
-        student => student?.name?.toLowerCase()?.trim()?.includes(filteredName?.toLowerCase()?.trim())
+      this.filteredEbdStudents = this.ebdStudents.filter((student) =>
+        student?.name
+          ?.toLowerCase()
+          ?.trim()
+          ?.includes(filteredName?.toLowerCase()?.trim()),
       );
 
       this.sortPeople();
@@ -64,9 +72,21 @@ export class PeopleListComponent implements OnInit {
   onSelectPerson(student: IStudent | null) {
     event.stopImmediatePropagation();
     event.preventDefault();
+
     if (student) {
       this.selectedStudent = student;
       this.getEbdPersonHistory(student.id);
+    }
+  }
+
+  onRemovingPersonFromClass(removedStudent: IStudent | null) {
+    event.stopImmediatePropagation();
+    event.preventDefault();
+
+    if (removedStudent) {
+      this.filteredEbdStudents = this.filteredEbdStudents.filter(
+        ({ id }) => id !== removedStudent.id,
+      );
     }
   }
 
@@ -79,11 +99,17 @@ export class PeopleListComponent implements OnInit {
       // Ordem alfabética
       if (orderById === 0) {
         this.filteredEbdStudents.sort((student1, student2) => {
-          if (student1.name.replace(/[^\x00-\x7F]/g,'') > student2.name.replace(/[^\x00-\x7F]/g,'')) {
+          if (
+            student1.name.replace(/[^\x00-\x7F]/g, '') >
+            student2.name.replace(/[^\x00-\x7F]/g, '')
+          ) {
             return 1;
           }
 
-          if (student1.name.replace(/[^\x00-\x7F]/g,'') < student2.name.replace(/[^\x00-\x7F]/g,'')) {
+          if (
+            student1.name.replace(/[^\x00-\x7F]/g, '') <
+            student2.name.replace(/[^\x00-\x7F]/g, '')
+          ) {
             return -1;
           }
 
@@ -96,17 +122,19 @@ export class PeopleListComponent implements OnInit {
       if (orderById === 1) {
         this.filteredEbdStudents.sort((student1, student2) => {
           if (
-            student1.frequency.presences_in_sequence > student2.frequency.presences_in_sequence
-            ||
-            student1.frequency.absences_in_sequence < student2.frequency.absences_in_sequence
+            student1.frequency.presences_in_sequence >
+              student2.frequency.presences_in_sequence ||
+            student1.frequency.absences_in_sequence <
+              student2.frequency.absences_in_sequence
           ) {
             return -1;
           }
 
           if (
-            student1.frequency.presences_in_sequence < student2.frequency.presences_in_sequence
-            ||
-            student1.frequency.absences_in_sequence > student2.frequency.absences_in_sequence
+            student1.frequency.presences_in_sequence <
+              student2.frequency.presences_in_sequence ||
+            student1.frequency.absences_in_sequence >
+              student2.frequency.absences_in_sequence
           ) {
             return 1;
           }
@@ -124,17 +152,19 @@ export class PeopleListComponent implements OnInit {
           }
 
           if (
-            student1.frequency.absences_in_sequence > student2.frequency.absences_in_sequence
-            ||
-            student1.frequency.presences_in_sequence < student2.frequency.presences_in_sequence
+            student1.frequency.absences_in_sequence >
+              student2.frequency.absences_in_sequence ||
+            student1.frequency.presences_in_sequence <
+              student2.frequency.presences_in_sequence
           ) {
             return -1;
           }
 
           if (
-            student1.frequency.absences_in_sequence < student2.frequency.absences_in_sequence
-            ||
-            student1.frequency.presences_in_sequence > student2.frequency.presences_in_sequence
+            student1.frequency.absences_in_sequence <
+              student2.frequency.absences_in_sequence ||
+            student1.frequency.presences_in_sequence >
+              student2.frequency.presences_in_sequence
           ) {
             return 1;
           }
@@ -147,7 +177,7 @@ export class PeopleListComponent implements OnInit {
   }
 
   getEbdPersonHistory(personId: number) {
-    this.ebdStudentHistoryList$ = this.studentService.getEbdPersonHistory(personId);
+    this.ebdStudentHistoryList$ =
+      this.studentService.getEbdPersonHistory(personId);
   }
-
 }

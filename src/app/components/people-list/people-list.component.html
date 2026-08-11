@@ -14,6 +14,7 @@
       <app-student
         [student]="item"
         (selectStudentEvent)="onSelectPerson($any($event))"
+        (removeStudentEvent)="onRemovingPersonFromClass($any($event))"
       >
       </app-student>
     </div>
