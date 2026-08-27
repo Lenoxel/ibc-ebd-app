@@ -3,7 +3,11 @@ import { Injectable } from '@angular/core';
 import { API_ENDPOINT } from 'config';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { EntityBasic } from 'src/app/types';
+import {
+  EBDClassMemberJoinRequest,
+  EntityBasic,
+  MemberSearchResult,
+} from 'src/app/types';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +17,7 @@ export class EbdService {
 
   getEbdClasses(): Observable<EntityBasic[]> {
     return this.httpClient
-      .get(`${API_ENDPOINT}/ebd/classes`)
+      .get<EntityBasic[]>(`${API_ENDPOINT}/ebd/classes`)
       .pipe(map((classes: EntityBasic[]) => classes));
   }
 
@@ -31,6 +35,36 @@ export class EbdService {
     return this.httpClient.patch(
       `${API_ENDPOINT}/ebd/classes/${classId}/members/${memberId}/ebd-relation/`,
       { ebd_relation: newRelation },
+    );
+  }
+
+  getEbdMembersRequestsToJoinClass(
+    classId: number,
+  ): Observable<EBDClassMemberJoinRequest[]> {
+    return this.httpClient
+      .get<
+        EBDClassMemberJoinRequest[]
+      >(`${API_ENDPOINT}/ebd/classes/${classId}/members/requests`)
+      .pipe(map((requests: EBDClassMemberJoinRequest[]) => requests));
+  }
+
+  requestMemberToJoinClass(
+    classId: number,
+    memberId: number,
+    memberType: string,
+  ): Observable<any> {
+    return this.httpClient.post(
+      `${API_ENDPOINT}/ebd/classes/${classId}/members/request-to-join/`,
+      {
+        member_id: memberId,
+        ebd_class_member_type: memberType,
+      },
+    );
+  }
+
+  searchMembers(query: string): Observable<MemberSearchResult[]> {
+    return this.httpClient.get<MemberSearchResult[]>(
+      `${API_ENDPOINT}/members?name=${query}`,
     );
   }
 

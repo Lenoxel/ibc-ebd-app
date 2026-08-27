@@ -1,0 +1,188 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Solicitações da Classe</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Visualização do Histórico -->
+  <ng-container *ngIf="!isCreating">
+    <ion-button
+      expand="block"
+      (click)="toggleView(true)"
+      class="ion-margin-bottom"
+    >
+      <ion-icon slot="start" name="person-add-outline"></ion-icon>
+      Nova Solicitação
+    </ion-button>
+
+    <div class="section-title">Histórico de Pedidos</div>
+
+    <ng-container *ngIf="existingRequests$ | async as existingRequests">
+      <div
+        *ngIf="existingRequests.length === 0"
+        class="ion-text-center ion-padding empty-state"
+      >
+        <ion-icon name="document-text-outline" color="medium"></ion-icon>
+        <p>Nenhuma solicitação encontrada.</p>
+      </div>
+
+      <!-- Card Reestruturado -->
+      <ion-card
+        *ngFor="let item of existingRequests"
+        class="request-card ion-no-margin ion-margin-bottom"
+      >
+        <ion-card-content>
+          <div class="card-header-row">
+            <div>
+              <h3 class="member-name">{{ item.member_name }}</h3>
+              <ion-note class="member-role">
+                {{ getMemberTypeLabel(item.ebd_class_member_type) }} •
+                {{ item.ebd_class_name }}
+              </ion-note>
+            </div>
+            <ion-badge [color]="getStatusBadgeColor(item.status)">
+              {{ getStatusLabel(item.status) }}
+            </ion-badge>
+          </div>
+
+          <div class="audit-trail">
+            <div class="audit-item">
+              <ion-icon name="time-outline" color="medium"></ion-icon>
+              <span>
+                Solicitado por <strong>{{ item.requested_by_name }}</strong> em
+                {{ item.request_date | date: "dd/MM/yy 'às' HH:mm" }}
+              </span>
+            </div>
+
+            <div *ngIf="item.manager_decision_date" class="audit-item decision">
+              <ion-icon
+                [name]="
+                  item.status === 'approved'
+                    ? 'checkmark-circle-outline'
+                    : 'close-circle-outline'
+                "
+                [color]="getStatusBadgeColor(item.status)"
+              ></ion-icon>
+              <span>
+                {{ item.status === "approved" ? "Aprovado" : "Recusado" }} por
+                <strong>{{ item.manager_name }}</strong> em
+                {{ item.manager_decision_date | date: "dd/MM/yy 'às' HH:mm" }}
+              </span>
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </ng-container>
+  </ng-container>
+
+  <!-- Member Join Request -->
+  <ng-container *ngIf="isCreating">
+    <div
+      style="display: flex; align-items: center; justify-content: space-between"
+      class="ion-margin-bottom"
+    >
+      <h3 style="margin: 0; font-weight: bold">Nova Solicitação</h3>
+      <ion-button fill="clear" size="small" (click)="toggleView(false)">
+        Voltar à lista
+      </ion-button>
+    </div>
+
+    <!-- STEP 1: Member Search -->
+    <ng-container *ngIf="!selectedMember">
+      <ion-searchbar
+        placeholder="Digite o nome do membro"
+        [formControl]="searchControl"
+        debounce="0"
+        animated="true"
+      >
+      </ion-searchbar>
+
+      <div *ngIf="isSearching" class="ion-text-center ion-padding">
+        <ion-spinner name="crescent" color="primary"></ion-spinner>
+      </div>
+
+      <ion-list
+        *ngIf="searchResults.length > 0 && !isSearching"
+        class="search-results"
+      >
+        <ion-item
+          button
+          *ngFor="let member of searchResults"
+          (click)="selectMember(member)"
+        >
+          <ion-avatar style="margin-top: 0.75rem; margin-right: 0.5rem">
+            <img
+              [src]="member?.picture || '/assets/img/person.png'"
+              [alt]="member?.name"
+            />
+          </ion-avatar>
+
+          <ion-label>
+            <h2 style="font-weight: 600">{{ member.name }}</h2>
+            <p *ngIf="member.current_class">
+              Classe {{ member.current_class.name }}
+            </p>
+
+            <p
+              *ngIf="!member.current_class"
+              style="color: var(--ion-color-success)"
+            >
+              Sem classe no momento
+            </p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ng-container>
+
+    <!-- STEP 2: Confirmation and Submission -->
+    <ng-container *ngIf="selectedMember">
+      <ion-item lines="none" class="selected-member-card ion-margin-bottom">
+        <ion-icon
+          name="checkmark-circle"
+          color="success"
+          slot="start"
+        ></ion-icon>
+        <ion-label>
+          <h3 style="font-weight: 600">{{ selectedMember.name }}</h3>
+          <p>Membro selecionado</p>
+        </ion-label>
+        <ion-button
+          fill="clear"
+          slot="end"
+          size="small"
+          (click)="clearSelection()"
+        >
+          Trocar
+        </ion-button>
+      </ion-item>
+
+      <form [formGroup]="requestForm" (ngSubmit)="submitRequest()">
+        <ion-item fill="outline" class="ion-margin-bottom">
+          <ion-label position="floating">Função na classe *</ion-label>
+
+          <ion-select formControlName="role" interface="popover">
+            <ion-select-option value="student">Aluno</ion-select-option>
+            <ion-select-option value="professor">Professor</ion-select-option>
+            <ion-select-option value="secretary">Secretário</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <div class="ion-padding-top">
+          <ion-button
+            expand="block"
+            type="submit"
+            [disabled]="requestForm.invalid"
+          >
+            Confirmar Solicitação
+          </ion-button>
+        </div>
+      </form>
+    </ng-container>
+  </ng-container>
+</ion-content>

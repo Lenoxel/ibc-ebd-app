@@ -1,0 +1,111 @@
+ion-avatar {
+  width: 60px;
+  height: 60px;
+}
+
+.section-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--ion-color-step-600, #666);
+  margin: 16px 0 8px 4px;
+  letter-spacing: 0.5px;
+}
+
+.empty-state {
+  ion-icon {
+    font-size: 42px;
+    margin-bottom: 8px;
+  }
+  p {
+    margin: 0;
+    color: var(--ion-color-step-500, #888);
+  }
+}
+
+.request-card {
+  border-radius: 12px;
+  border: 1px solid var(--ion-color-step-150, #eaeaea);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+
+  ion-card-content {
+    padding: 14px;
+  }
+
+  .card-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 12px;
+
+    .member-name {
+      margin: 0 0 2px 0;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--ion-text-color, #1a1a1a);
+    }
+
+    .member-role {
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    ion-badge {
+      font-size: 0.75rem;
+      padding: 5px 8px;
+      border-radius: 6px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+  }
+
+  .audit-trail {
+    border-top: 1px solid var(--ion-color-step-100, #f0f0f0);
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    .audit-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      color: var(--ion-color-step-600, #666);
+
+      ion-icon {
+        font-size: 1rem;
+        flex-shrink: 0;
+      }
+
+      strong {
+        color: var(--ion-text-color, #333);
+      }
+    }
+  }
+}
+
+.search-results {
+  border: 1px solid var(--ion-color-step-150, #eaeaea);
+  border-radius: 8px;
+  margin-top: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+
+  ion-item {
+    --padding-start: 12px;
+    --inner-padding-end: 12px;
+  }
+}
+
+.selected-member-card {
+  border-radius: 8px;
+  background: var(--ion-color-success-tint, #e5f6e8);
+  border: 1px solid var(--ion-color-success, #2dd36f);
+  margin-top: 10px;
+
+  h3 {
+    color: var(--ion-color-success-shade, #28ba62);
+    margin: 0 0 2px 0;
+  }
+}

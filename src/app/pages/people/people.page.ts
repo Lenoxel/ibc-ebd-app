@@ -4,8 +4,10 @@ import {
   Component,
   OnInit,
 } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { RequestsModalComponent } from 'src/app/components/requests-modal/requests-modal.component';
 import { IStudent } from 'src/app/interfaces';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { EbdService } from 'src/app/services/ebd/ebd.service';
@@ -58,7 +60,8 @@ export class PeoplePage implements OnInit, AfterContentInit {
   constructor(
     public authService: AuthService,
     private ebdService: EbdService,
-    private studentService: StudentService
+    private studentService: StudentService,
+    private modalController: ModalController,
   ) {
     this.hideHeader$
       .pipe(debounceTime(50), distinctUntilChanged())
@@ -101,7 +104,7 @@ export class PeoplePage implements OnInit, AfterContentInit {
 
   getEbdStudents(classId?: number) {
     this.ebdStudents$ = this.studentService.getEbdStudents(
-      classId || this.loggedUserPreferredClass?.id
+      classId || this.loggedUserPreferredClass?.id,
     );
   }
 
@@ -121,5 +124,19 @@ export class PeoplePage implements OnInit, AfterContentInit {
     // setTimeout(() => {
     //   this.ebdStudents$ = tempEbdStudents;
     // }, 100);
+  }
+
+  async openRequestsModal() {
+    const modal = await this.modalController.create({
+      component: RequestsModalComponent,
+      componentProps: {
+        classId: this.loggedUserPreferredClass?.id,
+      },
+      breakpoints: [0, 0.85, 1],
+      initialBreakpoint: 0.85,
+      handle: true,
+    });
+
+    await modal.present();
   }
 }

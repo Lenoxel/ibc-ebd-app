@@ -31,11 +31,14 @@ export class HeaderComponent implements OnInit {
   @Input() selectOptions: SelectOptions<EntityBasic> | null = null;
   @Input() orderByOptions: SelectOptions<EntityBasic> | null = null;
   @Input() buttonOptions: ButtonOptions | null = null;
+  @Input() showViewMemberJoinRequestsButton = false;
+
   @Output() refreshEvent = new EventEmitter<void>();
   @Output() selectEvent = new EventEmitter<EntityBasic>();
   @Output() orderByEvent = new EventEmitter<EntityBasic>();
   @Output() searchEvent = new EventEmitter<string>();
   @Output() buttonClickEvent = new EventEmitter<void>();
+  @Output() viewMemberJoinRequestsEvent = new EventEmitter<void>();
 
   @ViewChild('searchInput', { static: false }) searchInput: IonSearchbar;
 
@@ -45,7 +48,7 @@ export class HeaderComponent implements OnInit {
   constructor(
     public authService: AuthService,
     private alertController: AlertController,
-    private navController: NavController
+    private navController: NavController,
   ) {}
 
   ngOnInit() {}

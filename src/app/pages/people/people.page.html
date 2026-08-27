@@ -11,8 +11,9 @@
     (selectEvent)="loggedUserHasFullAccess ? onSelectClass($event) : null"
     [orderByOptions]="orderByOptions"
     (orderByEvent)="onChangeOrderBy($event)"
-    [searchbarOptions]="searchbarOptions"
     (searchEvent)="onFilterStudents($event)"
+    [showViewMemberJoinRequestsButton]="!!(loggedUserHasFullAccess || loggedUserPreferredClass?.id)"
+    (viewMemberJoinRequestsEvent)="openRequestsModal()"
   ></app-header>
 </ion-header>
 

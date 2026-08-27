@@ -18,6 +18,17 @@
     </ion-button>
 
     <ion-button
+      *ngIf="showViewMemberJoinRequestsButton"
+      fill="clear"
+      slot="icon-only"
+      color="light"
+      size="large"
+      (click)="viewMemberJoinRequestsEvent.emit()"
+    >
+      <ion-icon name="person-add-outline"></ion-icon>
+    </ion-button>
+
+    <ion-button
       fill="clear"
       slot="icon-only"
       color="light"
@@ -86,7 +97,7 @@
     <ion-chip
       *ngFor="let item of orderByOptions?.items"
       [ngClass]="{
-        'ion-chip-active': item?.name === orderByOptions?.chosenItem?.name
+        'ion-chip-active': item?.name === orderByOptions?.chosenItem?.name,
       }"
       color="light"
       (click)="doOrderBy(item)"
