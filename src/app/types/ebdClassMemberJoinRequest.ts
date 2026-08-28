@@ -18,5 +18,6 @@ export interface MemberCurrentClass {
 export interface MemberSearchResult {
   id: number;
   name: string;
+  picture: string | null;
   current_class: MemberCurrentClass | null;
 }
