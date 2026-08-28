@@ -69,7 +69,7 @@ ion-avatar {
 
     .audit-item {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 6px;
       font-size: 0.8rem;
       color: var(--ion-color-step-600, #666);
@@ -107,5 +107,38 @@ ion-avatar {
   h3 {
     color: var(--ion-color-success-shade, #28ba62);
     margin: 0 0 2px 0;
+  }
+}
+
+.audit-item {
+  display: flex;
+  align-items: flex-start; /* Impede que o ícone fique centralizado no meio de blocos grandes */
+  gap: 8px;
+
+  .audit-icon {
+    margin-top: 2px; /* Alinha o ícone visualmente com a primeira linha de texto */
+    flex-shrink: 0; /* Impede que o ícone seja esmagado se o texto for muito longo */
+  }
+
+  .audit-content {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+
+    .audit-meta {
+      font-size: 0.8rem;
+      color: var(--ion-color-step-600, #666);
+    }
+
+    .reason-box {
+      background-color: var(--ion-color-step-50, #f4f5f8); /* Fundo cinza bem claro */
+      border-left: 3px solid var(--ion-color-danger, #eb445a); /* Borda lateral vermelha */
+      padding: 8px 10px;
+      border-radius: 0 4px 4px 0;
+      font-size: 0.75rem;
+      color: var(--ion-color-step-800, #333);
+      line-height: 1.4;
+    }
   }
 }

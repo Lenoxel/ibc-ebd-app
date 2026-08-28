@@ -67,12 +67,20 @@
                     : 'close-circle-outline'
                 "
                 [color]="getStatusBadgeColor(item.status)"
+                class="audit-icon"
               ></ion-icon>
-              <span>
-                {{ item.status === "approved" ? "Aprovado" : "Recusado" }} por
-                <strong>{{ item.manager_name }}</strong> em
-                {{ item.manager_decision_date | date: "dd/MM/yy 'às' HH:mm" }}
-              </span>
+
+              <div class="audit-content">
+                <span class="audit-meta">
+                  {{ item.status === "approved" ? "Aprovado" : "Recusado" }} por
+                  <strong>{{ item.manager_name }}</strong> em
+                  {{ item.manager_decision_date | date: "dd/MM/yy 'às' HH:mm" }}
+                </span>
+
+                <div *ngIf="item.manager_decision_reason" class="reason-box">
+                  <strong>Motivo:</strong> {{ item.manager_decision_reason }}
+                </div>
+              </div>
             </div>
           </div>
         </ion-card-content>
@@ -121,7 +129,7 @@
             </ion-avatar>
 
             <ion-label>
-              <h2 style="font-weight: 600">{{ member.name }}</h2>
+              <h3 style="font-weight: 600">{{ member.name }}</h3>
               <p *ngIf="member.current_class">
                 Classe {{ member.current_class.name }}
               </p>
@@ -177,7 +185,7 @@
 
           <ion-select formControlName="role" interface="popover">
             <ion-select-option value="student">Aluno</ion-select-option>
-            <ion-select-option value="professor">Professor</ion-select-option>
+            <ion-select-option value="teacher">Professor</ion-select-option>
             <ion-select-option value="secretary">Secretário</ion-select-option>
           </ion-select>
         </ion-item>

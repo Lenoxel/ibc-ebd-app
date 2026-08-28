@@ -134,7 +134,7 @@ export class RequestsModalComponent implements OnInit, OnDestroy {
       const toast = await this.toastController.create({
         message: `${this.selectedMember.name} já está na classe.`,
         duration: 3000,
-        color: 'error',
+        color: 'danger',
         position: 'top',
       });
 
