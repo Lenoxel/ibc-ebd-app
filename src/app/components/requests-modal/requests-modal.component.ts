@@ -35,7 +35,9 @@ export class RequestsModalComponent implements OnInit, OnDestroy {
   searchControl = new FormControl('');
   searchResults: MemberSearchResult[] = [];
   isSearching: boolean = false;
+  lastTermSearched: string = '';
   selectedMember: MemberSearchResult | null = null;
+
   private searchSub!: Subscription;
 
   requestForm!: FormGroup;
@@ -79,15 +81,20 @@ export class RequestsModalComponent implements OnInit, OnDestroy {
         distinctUntilChanged(),
         tap(() => (this.isSearching = true)),
         switchMap((term) => {
-          if (!term || term.trim().length < 3) {
+          this.lastTermSearched = term?.trim() || '';
+
+          if (!this.lastTermSearched || this.lastTermSearched.length < 3) {
             this.searchResults = [];
             return of([]);
           }
-          return this.ebdService.searchMembers(term.trim()).pipe(
-            catchError(() => {
-              return of([]);
-            }),
-          );
+
+          return this.ebdService
+            .searchMembers(this.lastTermSearched.trim())
+            .pipe(
+              catchError(() => {
+                return of([]);
+              }),
+            );
         }),
         tap(() => (this.isSearching = false)),
       )
@@ -98,6 +105,7 @@ export class RequestsModalComponent implements OnInit, OnDestroy {
 
   toggleView(creating: boolean) {
     this.isCreating = creating;
+
     if (!creating) {
       this.clearSelection();
     }
@@ -111,6 +119,7 @@ export class RequestsModalComponent implements OnInit, OnDestroy {
 
   clearSelection() {
     this.selectedMember = null;
+    this.lastTermSearched = '';
     this.requestForm.reset({ role: 'student' });
     this.searchControl.setValue('', { emitEvent: false });
     this.searchResults = [];

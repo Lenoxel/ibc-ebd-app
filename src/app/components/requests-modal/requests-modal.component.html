@@ -106,37 +106,47 @@
         <ion-spinner name="crescent" color="primary"></ion-spinner>
       </div>
 
-      <ion-list
-        *ngIf="searchResults.length > 0 && !isSearching"
-        class="search-results"
-      >
-        <ion-item
-          button
-          *ngFor="let member of searchResults"
-          (click)="selectMember(member)"
+      <ng-container *ngIf="!isSearching">
+        <ion-list *ngIf="searchResults.length > 0" class="search-results">
+          <ion-item
+            button
+            *ngFor="let member of searchResults"
+            (click)="selectMember(member)"
+          >
+            <ion-avatar style="margin-top: 0.75rem; margin-right: 0.5rem">
+              <img
+                [src]="member?.picture || '/assets/img/person.png'"
+                [alt]="member?.name"
+              />
+            </ion-avatar>
+
+            <ion-label>
+              <h2 style="font-weight: 600">{{ member.name }}</h2>
+              <p *ngIf="member.current_class">
+                Classe {{ member.current_class.name }}
+              </p>
+
+              <p
+                *ngIf="!member.current_class"
+                style="color: var(--ion-color-success)"
+              >
+                Sem classe no momento
+              </p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+
+        <p
+          *ngIf="!searchResults.length && lastTermSearched.length >= 3"
+          class="ion-text-center"
         >
-          <ion-avatar style="margin-top: 0.75rem; margin-right: 0.5rem">
-            <img
-              [src]="member?.picture || '/assets/img/person.png'"
-              [alt]="member?.name"
-            />
-          </ion-avatar>
-
-          <ion-label>
-            <h2 style="font-weight: 600">{{ member.name }}</h2>
-            <p *ngIf="member.current_class">
-              Classe {{ member.current_class.name }}
-            </p>
-
-            <p
-              *ngIf="!member.current_class"
-              style="color: var(--ion-color-success)"
-            >
-              Sem classe no momento
-            </p>
-          </ion-label>
-        </ion-item>
-      </ion-list>
+          É possível que a pessoa ainda não esteja cadastrada. Nesse caso,
+          oriente-a a fazer o cadastro por
+          <a href="https://forms.gle/jv9AVubcRhUZomVT6" target="_blank"
+            >esse link</a
+          >.
+        </p>
+      </ng-container>
     </ng-container>
 
     <!-- STEP 2: Confirmation and Submission -->
