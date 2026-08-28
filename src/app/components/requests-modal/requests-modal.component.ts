@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -120,6 +121,19 @@ export class RequestsModalComponent implements OnInit, OnDestroy {
       return;
     }
 
+    if (this.selectedMember.current_class?.id === this.classId) {
+      const toast = await this.toastController.create({
+        message: `${this.selectedMember.name} já está na classe.`,
+        duration: 3000,
+        color: 'error',
+        position: 'top',
+      });
+
+      await toast.present();
+
+      return;
+    }
+
     const formValues = this.requestForm.value;
 
     try {
@@ -138,16 +152,24 @@ export class RequestsModalComponent implements OnInit, OnDestroy {
         message: 'Solicitação enviada com sucesso!',
         duration: 3000,
         color: 'success',
-        position: 'bottom',
+        position: 'top',
       });
 
       await toast.present();
     } catch (error) {
+      const httpError = error as HttpErrorResponse;
+      const responseError = httpError.error;
+
+      const message =
+        responseError?.detail ||
+        responseError?.message ||
+        'Erro ao enviar solicitação.';
+
       const toast = await this.toastController.create({
-        message: 'Erro ao enviar solicitação.',
-        duration: 3000,
+        message,
+        duration: 5000,
         color: 'danger',
-        position: 'bottom',
+        position: 'top',
       });
 
       await toast.present();

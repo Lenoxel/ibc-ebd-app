@@ -42,8 +42,7 @@
             <div>
               <h3 class="member-name">{{ item.member_name }}</h3>
               <ion-note class="member-role">
-                {{ getMemberTypeLabel(item.ebd_class_member_type) }} •
-                {{ item.ebd_class_name }}
+                {{ getMemberTypeLabel(item.ebd_class_member_type) }}
               </ion-note>
             </div>
             <ion-badge [color]="getStatusBadgeColor(item.status)">
